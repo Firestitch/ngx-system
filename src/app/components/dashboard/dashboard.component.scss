@@ -1,0 +1,33 @@
+
+.actions {
+  button {
+    width: 100%;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  h2 {
+    margin-bottom: 17px;
+  }
+}
+
+table td {
+  padding: 3px;
+}
+
+.attention {
+   display: flex;
+   align-items: center;
+
+   mat-icon {
+     display: none;
+     margin-left: 2px;
+   }
+
+   &.needs-attention {
+    color: #cc0000;
+    mat-icon {
+      display: inline;
+    }
+   }
+}

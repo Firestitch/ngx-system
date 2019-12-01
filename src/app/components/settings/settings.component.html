@@ -1,0 +1,46 @@
+
+<mat-accordion>
+  <mat-expansion-panel hideToggle *ngFor="let group of groups">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{group || 'General'}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div hideToggle *ngFor="let setting of groupedSettings[group]">
+
+      <mat-form-field class="full-width">
+        <input
+          *ngIf="setting.interface_type===settingInterfaceType.InputBox"
+          matInput
+          [placeholder]="setting.label"
+          [(ngModel)]="setting.value"
+          [name]="'setting_' + setting.id">
+
+        <textarea
+          *ngIf="setting.interface_type===settingInterfaceType.Textarea"
+          matInput
+          [placeholder]="setting.label"
+          [(ngModel)]="setting.value"
+          [name]="'setting_' + setting.id">
+        </textarea>
+
+        <mat-select
+          *ngIf="setting.interface_type===settingInterfaceType.DropDown"
+          [placeholder]="setting.label"
+          [(ngModel)]="setting.value"
+          [name]="'setting_' + setting.id">
+          <mat-option *ngFor="let item of setting.values | keyNameValue" [value]="item.value">
+            {{item.name}}
+          </mat-option>
+        </mat-select>
+
+        <mat-hint>{{setting.instruction}}</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="primary" type="button" (click)="saveGroup(group)">Save</button>
+
+  </mat-expansion-panel>
+
+</mat-accordion>

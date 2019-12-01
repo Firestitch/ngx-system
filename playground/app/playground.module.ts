@@ -6,17 +6,28 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FsExampleModule } from '@firestitch/example';
 import { FsMessageModule } from '@firestitch/message';
-import { FsComponentModule } from '@firestitch/package';
+import { FsSystemModule } from '@firestitch/package';
 import { FsLabelModule } from '@firestitch/label';
 import { ToastrModule } from 'ngx-toastr';
 
 import { AppMaterialModule } from './material.module';
 import {
-  KitchenSinkComponent,
+  DashboardComponent,
   ExamplesComponent
 } from './components';
 import { AppComponent } from './app.component';
 import { KitchenSinkConfigureComponent } from './components/kitchen-sink-configure';
+import { CronsComponent } from './components/crons';
+import { FsListModule } from '@firestitch/list';
+import { FsScrollModule } from '@firestitch/scroll';
+import { FsSelectionModule } from '@firestitch/selection';
+import { SettingsComponent } from './components/settings';
+import { FileManagerComponent } from './components/file-manager';
+import { FsFileModule } from '@firestitch/file';
+import { ProcessesComponent } from './components/processes';
+import { ServerLogsComponent } from './components/server-logs';
+import { UpgradeLogsComponent } from './components/upgrade-logs';
+import { ApiLogsComponent } from './components/api-logs';
 
 const routes: Routes = [
   { path: '', component: ExamplesComponent },
@@ -26,7 +37,7 @@ const routes: Routes = [
   bootstrap: [ AppComponent ],
   imports: [
     BrowserModule,
-    FsComponentModule,
+    FsSystemModule,
     BrowserAnimationsModule,
     AppMaterialModule,
     FormsModule,
@@ -35,6 +46,10 @@ const routes: Routes = [
     FsMessageModule.forRoot(),
     ToastrModule.forRoot({ preventDuplicates: true }),
     RouterModule.forRoot(routes),
+    FsListModule.forRoot(),
+    FsFileModule.forRoot(),
+    FsScrollModule.forRoot(),
+    FsSelectionModule.forRoot()
   ],
   entryComponents: [
     KitchenSinkConfigureComponent
@@ -42,8 +57,15 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     ExamplesComponent,
-    KitchenSinkComponent,
-    KitchenSinkConfigureComponent
+    CronsComponent,
+    DashboardComponent,
+    SettingsComponent,
+    KitchenSinkConfigureComponent,
+    FileManagerComponent,
+    ProcessesComponent,
+    ServerLogsComponent,
+    UpgradeLogsComponent,
+    ApiLogsComponent
   ],
 })
 export class PlaygroundModule {
