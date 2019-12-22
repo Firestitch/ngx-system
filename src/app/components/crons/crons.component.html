@@ -17,8 +17,13 @@
   <fs-list-column>
     <ng-template fs-list-header>Last Ran</ng-template>
     <ng-template fs-list-cell let-row="row">
-      <fs-date-ago [date]="row.create_date"></fs-date-ago>
-      <div><small *ngIf="row.duration">Duration: {{ row.duration | fsDateDuration }}</small></div>
+      <ng-container *ngIf="row.duration===null; else lastRan">
+        Never
+      </ng-container>
+      <ng-template #lastRan>
+        <fs-date-ago [date]="row.create_date"></fs-date-ago>
+        <div><small *ngIf="row.duration">Duration: {{ row.duration | fsDateDuration }}</small></div>
+      </ng-template>
     </ng-template>
   </fs-list-column>
 </fs-list>
