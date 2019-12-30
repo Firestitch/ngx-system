@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 
 import { FsMessage } from '@firestitch/message';
-import { chain } from 'lodash-es';
 import { CronStates } from '../../consts';
 import { FsListConfig, FsListComponent } from '@firestitch/list';
 import { map } from 'rxjs/operators';
 import { ItemType } from '@firestitch/filter';
-import { indexNameValue } from 'src/app/helpers/index-name-value';
+import { indexNameValue } from '../../helpers/index-name-value';
 
 
 @Component({

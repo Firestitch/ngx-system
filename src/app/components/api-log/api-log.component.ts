@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { chain } from 'lodash-es';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ApiLogStates } from '../../consts';
-import { indexNameValue } from 'src/app/helpers/index-name-value';
+import { indexNameValue } from '../../helpers/index-name-value';
 
 
 @Component({

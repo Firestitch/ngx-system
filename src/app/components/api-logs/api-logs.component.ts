@@ -4,9 +4,8 @@ import { FsListConfig, FsListComponent } from '@firestitch/list';
 import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { ApiLogStates } from '../../consts';
-import { chain } from 'lodash-es';
 import { ApiLogComponent } from '../api-log/api-log.component';
-import { indexNameValue } from 'src/app/helpers/index-name-value';
+import { indexNameValue } from '../../helpers/index-name-value';
 
 
 @Component({
