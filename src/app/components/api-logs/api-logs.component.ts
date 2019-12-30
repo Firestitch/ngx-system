@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material';
 import { ApiLogStates } from '../../consts';
 import { chain } from 'lodash-es';
 import { ApiLogComponent } from '../api-log/api-log.component';
+import { indexNameValue } from 'src/app/helpers/index-name-value';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class ApiLogsComponent implements OnInit {
   @Input() load: Function;
 
   public config: FsListConfig = null;
-  public apiLogStates = [];
+  public apiLogStates = indexNameValue(ApiLogStates);
 
   constructor(
     private _dialog: MatDialog,
@@ -28,10 +29,6 @@ export class ApiLogsComponent implements OnInit {
 
   ngOnInit() {
 
-    this.apiLogStates = chain(ApiLogStates)
-                      .keyBy('value')
-                      .mapValues('name')
-                      .value();
     this._configList();
   }
 

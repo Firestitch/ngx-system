@@ -6,6 +6,7 @@ import { CronStates } from '../../consts';
 import { FsListConfig, FsListComponent } from '@firestitch/list';
 import { map } from 'rxjs/operators';
 import { ItemType } from '@firestitch/filter';
+import { indexNameValue } from 'src/app/helpers/index-name-value';
 
 
 @Component({
@@ -25,10 +26,8 @@ export class CronsComponent implements OnInit {
   @Input() load: Function;
 
   public config: FsListConfig = null;
-  public cronStates = chain(CronStates)
-                        .keyBy('value')
-                        .mapValues('name')
-                        .value();
+  public cronStates = indexNameValue(CronStates);
+
   constructor(
     private _message: FsMessage,
   ) { }
