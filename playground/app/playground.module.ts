@@ -28,6 +28,7 @@ import { ProcessesComponent } from './components/processes';
 import { ServerLogsComponent } from './components/server-logs';
 import { UpgradeLogsComponent } from './components/upgrade-logs';
 import { ApiLogsComponent } from './components/api-logs';
+import { InfoComponent } from './components/info';
 
 const routes: Routes = [
   { path: '', component: ExamplesComponent },
@@ -65,7 +66,8 @@ const routes: Routes = [
     ProcessesComponent,
     ServerLogsComponent,
     UpgradeLogsComponent,
-    ApiLogsComponent
+    ApiLogsComponent,
+    InfoComponent
   ],
 })
 export class PlaygroundModule {

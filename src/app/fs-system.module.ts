@@ -25,6 +25,7 @@ import { ServerLogComponent } from './components/server-log/server-log.component
 import { UpgradeLogsComponent } from './components/upgrade-logs/upgrade-logs.component';
 import { ApiLogsComponent } from './components/api-logs/api-logs.component';
 import { ApiLogComponent } from './components/api-log/api-log.component';
+import { InfoComponent } from './components/info/info.component';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { ApiLogComponent } from './components/api-log/api-log.component';
     ProcessesComponent,
     ServerLogsComponent,
     UpgradeLogsComponent,
-    ApiLogsComponent
+    ApiLogsComponent,
+    InfoComponent
   ],
   declarations: [
     DashboardComponent,
@@ -68,7 +70,8 @@ import { ApiLogComponent } from './components/api-log/api-log.component';
     ServerLogsComponent,
     UpgradeLogsComponent,
     ApiLogsComponent,
-    ApiLogComponent
+    ApiLogComponent,
+    InfoComponent
   ],
   entryComponents: [
     ServerLogComponent,

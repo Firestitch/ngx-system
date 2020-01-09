@@ -1,95 +1,101 @@
 
   <div
+    class="h2-container"
     fxLayout="row"
+    fxLayout.xs="column"
+    fxLayout.md="column"
+    fxLayoutGap.xs="0px"
+    fxLayoutGap.md="0px"
     fxLayoutAlign="start start"
     fxLayoutGap="50px"
     *fsSkeleton="dashboard">
-    <table>
-      <tr>
-        <td colspan="2">
-          <h2 class="mt-0">Server</h2>
-        </td>
-      </tr>
-      <tr>
-        <td>Time:</td>
-        <td>{{dashboard.server_time | fsDateFormat: 'full-date-time'}}</td>
-      </tr>
-      <tr>
-        <td>Timezone:</td>
-        <td>{{dashboard.server_timezone}}</td>
-      </tr>
-      <tr>
-        <td>Hostname:</td>
-        <td>{{dashboard.server_hostname}}</td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <h2>Database</h2>
-        </td>
-      </tr>
-      <tr>
-        <td>Name:</td>
-        <td>{{dashboard.database_name}}</td>
-      </tr>
-      <tr>
-        <td>Time:</td>
-        <td>{{dashboard.database_time | fsDateFormat: 'full-date-time'}}</td>
-      </tr>
-      <tr>
-        <td>Timezone:</td>
-        <td>{{dashboard.database_timezone}}</td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <h2>App</h2>
-        </td>
-      </tr>
-      <tr>
-        <td>Mode:</td>
-        <td>{{dashboard.app_mode}}</td>
-      </tr>
-      <tr>
-        <td>Directory:</td>
-        <td>{{dashboard.app_directory}}</td>
-      </tr>
-      <tr>
-        <td>GIT Branch:</td>
-        <td>{{dashboard.git_branch}}</td>
-      </tr>
-      <tr>
-          <td>Pending Upgrades:</td>
-          <td>
-            <span class="attention" [ngClass]="{ 'needs-attention': !!dashboard.upgrades.length }">
-              {{dashboard.upgrades.length}}
-              <mat-icon [matTooltip]="dashboard.upgrades.join('<br>')">warning</mat-icon>
-            </span>
-          </td>
-        </tr>
-      <tr>
-        <td>Last Upgrade:</td>
-        <td>{{dashboard.last_upgrade | fsDateFormat: 'full-date-time'}}</td>
-      </tr>
-      <tr>
-        <td>Notify Recipients:</td>
-        <td>{{dashboard.notify_recipients.join(', ')}}</td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <h2>Cron</h2>
-        </td>
-      </tr>
-      <tr>
-        <td>Last Ran:</td>
-        <td>
-          <span class="attention" [ngClass]="{ 'needs-attention': dashboard.cron_ran_attention }">
-            {{dashboard.cron_ran | fsDateFormat: 'full-date-time'}}
-            <mat-icon>warning</mat-icon>
-          </span>
-        </td>
-      </tr>
-    </table>
+
+    <div>
+      <h2>Server</h2>
+
+      <fs-label-field>
+        <fs-label>Time</fs-label>
+        {{dashboard.server_time | fsDateFormat: 'full-date-time'}}
+      </fs-label-field>
+
+      <fs-label-field>
+        <fs-label>Timezone</fs-label>
+        {{dashboard.server_timezone}}
+      </fs-label-field>
+
+      <fs-label-field>
+        <fs-label>Hostname</fs-label>
+        {{dashboard.server_hostname}}
+      </fs-label-field>
+
+      <h2>Database</h2>
+
+      <fs-label-field>
+        <fs-label>Name</fs-label>
+        {{dashboard.database_name}}
+      </fs-label-field>
+
+      <fs-label-field>
+        <fs-label>Time</fs-label>
+        {{dashboard.database_time | fsDateFormat: 'full-date-time'}}
+      </fs-label-field>
+
+      <fs-label-field>
+        <fs-label>Timezone</fs-label>
+        {{dashboard.database_timezone}}
+      </fs-label-field>
+    </div>
+
+    <div>
+
+      <h2>App</h2>
+
+      <fs-label-field>
+        <fs-label>Mode</fs-label>
+        {{dashboard.app_mode}}
+      </fs-label-field>
+
+      <fs-label-field>
+        <fs-label>Directory</fs-label>
+        {{dashboard.app_directory}}
+      </fs-label-field>
+
+      <fs-label-field *ngIf="dashboard.git_branch">
+        <fs-label>GIT Branch</fs-label>
+        {{dashboard.git_branch}}
+      </fs-label-field>
+
+      <fs-label-field>
+        <fs-label>Pending Upgrades</fs-label>
+        <span class="attention" [ngClass]="{ 'needs-attention': !!dashboard.upgrades.length }">
+          {{dashboard.upgrades.length}}
+          <mat-icon [matTooltip]="dashboard.upgrades.join('<br>')">warning</mat-icon>
+        </span>
+      </fs-label-field>
+
+      <fs-label-field *ngIf="dashboard.last_upgrade">
+        <fs-label>Last Upgrade</fs-label>
+        {{dashboard.last_upgrade | fsDateFormat: 'full-date-time'}}
+      </fs-label-field>
+
+      <fs-label-field>
+        <fs-label>System Notification Recipients</fs-label>
+        {{dashboard.notify_recipients.join(', ')}}
+      </fs-label-field>
+
+      <h2>Cron</h2>
+
+      <fs-label-field>
+        <fs-label>Last Ran</fs-label>
+        <span class="attention" [ngClass]="{ 'needs-attention': dashboard.cron_ran_attention }">
+          {{dashboard.cron_ran | fsDateFormat: 'full-date-time'}}
+          <mat-icon>warning</mat-icon>
+        </span>
+      </fs-label-field>
+    </div>
+
     <div class="actions">
-      <h2 class="mt-0">Actions</h2>
+      <h2>Actions</h2>
       <button mat-raised-button (click)="initClick()" color="primary">Init System</button>
       <button mat-raised-button (click)="upgradeClick()" color="primary">Run Upgrades</button>
     </div>
