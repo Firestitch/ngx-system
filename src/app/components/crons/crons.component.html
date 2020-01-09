@@ -3,7 +3,7 @@
     <ng-template fs-list-header>Name</ng-template>
     <ng-template fs-list-cell let-row="row">
       {{row.name}}
-      <div>
+      <div *ngIf="row.cron_setting">
         <small>{{row.cron_setting.summary}}</small>
       </div>
     </ng-template>
