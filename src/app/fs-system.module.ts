@@ -1,6 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FsDateModule } from '@firestitch/date';
+import { FsDatePickerModule } from '@firestitch/datepicker';
 import { FsSkeletonModule } from '@firestitch/skeleton';
 import { FsListModule } from '@firestitch/list';
 import { FsFileManagerModule } from '@firestitch/file-manager';
@@ -46,7 +47,8 @@ import { InfoComponent } from './components/info/info.component';
     FsFileManagerModule,
     FsLabelModule,
     MatDialogModule,
-    FsDialogModule
+    FsDialogModule,
+    FsDatePickerModule
   ],
   exports: [
     DashboardComponent,

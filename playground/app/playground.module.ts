@@ -29,6 +29,7 @@ import { ServerLogsComponent } from './components/server-logs';
 import { UpgradeLogsComponent } from './components/upgrade-logs';
 import { ApiLogsComponent } from './components/api-logs';
 import { InfoComponent } from './components/info';
+import { FsDatePickerModule } from '@firestitch/datepicker';
 
 const routes: Routes = [
   { path: '', component: ExamplesComponent },
@@ -50,6 +51,7 @@ const routes: Routes = [
     FsListModule.forRoot(),
     FsFileModule.forRoot(),
     FsScrollModule.forRoot(),
+    FsDatePickerModule.forRoot(),
     FsSelectionModule.forRoot()
   ],
   entryComponents: [

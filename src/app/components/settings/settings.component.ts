@@ -17,7 +17,7 @@ export class SettingsComponent implements OnInit {
 
   public groupedSettings = [];
   public groups = [];
-  public settingInterfaceType = SettingInterfaceType;
+  public SettingInterfaceType = SettingInterfaceType;
 
   constructor(
     private _message: FsMessage,
