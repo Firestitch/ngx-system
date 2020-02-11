@@ -6,7 +6,7 @@ import { CronStates } from '../../consts';
 import { FsListConfig, FsListComponent } from '@firestitch/list';
 import { map } from 'rxjs/operators';
 import { ItemType } from '@firestitch/filter';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { ServerLogComponent } from '../server-log/server-log.component';
 
 
