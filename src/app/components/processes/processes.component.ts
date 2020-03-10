@@ -4,6 +4,7 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ItemType } from '@firestitch/filter';
 import { ProcessStates } from '../../consts';
 import { FsListComponent, FsListConfig } from '@firestitch/list';
+import { MatDialog } from '@angular/material/dialog';
 import { map } from 'rxjs/operators';
 import { indexNameValue } from '../../helpers/index-name-value';
 

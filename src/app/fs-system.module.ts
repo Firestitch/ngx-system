@@ -3,6 +3,18 @@ import { FS_SYSTEM_CONFIG } from './injectors/system-config.injector';
 import { SystemService } from './services/system.service';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatButtonModule } from '@angular/material/button';
+
 import { FsDateModule } from '@firestitch/date';
 import { FsDatePickerModule } from '@firestitch/datepicker';
 import { FsSkeletonModule } from '@firestitch/skeleton';
@@ -10,13 +22,6 @@ import { FsListModule } from '@firestitch/list';
 import { FsFileManagerModule } from '@firestitch/file-manager';
 import { FsDialogModule } from '@firestitch/dialog';
 import { FsLabelModule } from '@firestitch/label';
-
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatIconModule } from '@angular/material/icon';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatButtonModule } from '@angular/material/button';
-import { FormsModule } from '@angular/forms';
-import { MatExpansionModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatDialogModule } from '@angular/material';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CronsComponent } from './components/crons/crons.component';

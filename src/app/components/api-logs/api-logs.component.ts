@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ItemType } from '@firestitch/filter';
 import { FsListConfig, FsListComponent } from '@firestitch/list';
 import { map } from 'rxjs/operators';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { ApiLogStates } from '../../consts';
 import { ApiLogComponent } from '../api-log/api-log.component';
 import { indexNameValue } from '../../helpers/index-name-value';
