@@ -1,8 +1,6 @@
+import { SystemService } from './../../services/system.service';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 
-import { FsMessage } from '@firestitch/message';
-import { chain } from 'lodash-es';
-import { CronStates } from '../../consts';
 import { FsListConfig, FsListComponent } from '@firestitch/list';
 import { map } from 'rxjs/operators';
 import { ItemType } from '@firestitch/filter';
@@ -25,7 +23,8 @@ export class ServerLogsComponent implements OnInit {
   public logTypes = [];
 
   constructor(
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _systemService: SystemService
   ) { }
 
   ngOnInit() {
@@ -46,7 +45,7 @@ export class ServerLogsComponent implements OnInit {
         Object.assign(query, { });
         return this.load(query)
           .pipe(
-            map((response: any) => ({ data: response.logs, paging: response.paging }))
+            map((response: any) => ({ data: this._systemService.input(response.data), paging: response.paging }))
           );
       }
     };

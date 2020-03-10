@@ -1,3 +1,4 @@
+import { SystemService } from './../../services/system.service';
 import { Component, OnInit, Input } from '@angular/core';
 
 import { FsMessage } from '@firestitch/message';
@@ -21,12 +22,13 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private _message: FsMessage,
+    private _systemService: SystemService
   ) { }
 
   ngOnInit() {
     this.load()
     .subscribe(settings => {
-      this.groupedSettings = groupBy(settings, (item) => {
+      this.groupedSettings = groupBy(this._systemService.input(settings), (item) => {
         return item.group;
       });
       this.groups = Object.keys(this.groupedSettings);

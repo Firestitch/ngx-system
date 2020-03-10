@@ -1,3 +1,4 @@
+import { SystemService } from './../../services/system.service';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ItemType } from '@firestitch/filter';
 import { FsListConfig, FsListComponent } from '@firestitch/list';
@@ -18,7 +19,7 @@ export class UpgradeLogsComponent implements OnInit {
   public config: FsListConfig = null;
   public logTypes = [];
 
-  constructor() { }
+  constructor(private _systemService: SystemService) {}
 
   ngOnInit() {
     this._configList();
@@ -37,7 +38,7 @@ export class UpgradeLogsComponent implements OnInit {
       fetch: query => {
         return this.load(query)
         .pipe(
-          map(response => ({ data: response }))
+          map((response: any) => ({ data: this._systemService.input(response.data), paging: response.paging }))
         );
       }
     };

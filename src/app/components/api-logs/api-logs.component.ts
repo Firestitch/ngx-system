@@ -1,3 +1,4 @@
+import { SystemService } from './../../services/system.service';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ItemType } from '@firestitch/filter';
 import { FsListConfig, FsListComponent } from '@firestitch/list';
@@ -24,10 +25,10 @@ export class ApiLogsComponent implements OnInit {
 
   constructor(
     private _dialog: MatDialog,
+    private _systemService: SystemService
   ) { }
 
   ngOnInit() {
-
     this._configList();
   }
 
@@ -47,7 +48,7 @@ export class ApiLogsComponent implements OnInit {
           values: ApiLogStates
         },
         {
-          name: 'create_date',
+          name: 'createDate',
           type: ItemType.DateRange,
           label: ['From Date', 'To Date'],
         }
@@ -56,15 +57,15 @@ export class ApiLogsComponent implements OnInit {
         Object.assign(query, { });
         return this.load(query)
           .pipe(
-            map((response: any) => ({ data: response.api_logs, paging: response.paging }))
+            map((response: any) => ({ data: this._systemService.input(response.data), paging: response.paging }))
           );
       }
     };
   }
 
-  public open(api_log) {
+  public open(apiLog) {
     this._dialog.open(ApiLogComponent, {
-      data: { api_log: api_log },
+      data: { apiLog: apiLog },
       width: '85%'
     });
   }

@@ -11,7 +11,7 @@ import { ProcessState } from 'src/app/enums';
 export class ProcessesComponent {
 
   public load = () => {
-    return of({"paging":{"limit":25,"records":0,"offset":0},"processes":[{
+    return of({"paging":{"limit":25,"records":0,"offset":0},"data":[{
       name: 'Process Name',
       message: 'Something happened',
       state: ProcessState.Completed

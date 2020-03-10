@@ -10,7 +10,7 @@ import { indexNameValue } from '../../helpers/index-name-value';
 })
 export class ApiLogComponent implements OnInit {
 
-  public api_log;
+  public apiLog;
   public apiLogStates;
 
   constructor(private _dialogRef: MatDialogRef<ApiLogComponent>,
@@ -20,8 +20,8 @@ export class ApiLogComponent implements OnInit {
 
     this.apiLogStates = indexNameValue(ApiLogStates);
 
-    if (this.data.api_log) {
-      this.api_log = this.data.api_log;
+    if (this.data.apiLog) {
+      this.apiLog = this.data.apiLog;
     }
   }
 }

@@ -1,3 +1,6 @@
+import { FsSystemConfig } from './interfaces/system-config';
+import { FS_SYSTEM_CONFIG } from './injectors/system-config.injector';
+import { SystemService } from './services/system.service';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FsDateModule } from '@firestitch/date';
@@ -78,12 +81,21 @@ import { InfoComponent } from './components/info/info.component';
   entryComponents: [
     ServerLogComponent,
     ApiLogComponent
+  ],
+  providers: [
+    SystemService
   ]
 })
 export class FsSystemModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(config: FsSystemConfig): ModuleWithProviders {
     return {
-      ngModule: FsSystemModule
+      ngModule: FsSystemModule,
+      providers: [
+        { provide: FS_SYSTEM_CONFIG, useValue: config || {} },
+      ]
     };
   }
 }
+
+
+

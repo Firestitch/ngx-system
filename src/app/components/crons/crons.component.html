@@ -3,8 +3,8 @@
     <ng-template fs-list-header>Name</ng-template>
     <ng-template fs-list-cell let-row="row">
       {{row.name}}
-      <div *ngIf="row.cron_setting">
-        <small>{{row.cron_setting.summary}}</small>
+      <div *ngIf="row.cronSetting">
+        <small>{{row.cronSetting.summary}}</small>
       </div>
     </ng-template>
   </fs-list-column>
@@ -21,7 +21,7 @@
         Never
       </ng-container>
       <ng-template #lastRan>
-        <fs-date-ago [date]="row.create_date"></fs-date-ago>
+        <fs-date-ago [date]="row.createDate"></fs-date-ago>
         <div><small *ngIf="row.duration">Duration: {{ row.duration | fsDateDuration }}</small></div>
       </ng-template>
     </ng-template>

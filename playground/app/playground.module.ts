@@ -39,7 +39,7 @@ const routes: Routes = [
   bootstrap: [ AppComponent ],
   imports: [
     BrowserModule,
-    FsSystemModule,
+    FsSystemModule.forRoot({ case: 'snake' }),
     BrowserAnimationsModule,
     AppMaterialModule,
     FormsModule,

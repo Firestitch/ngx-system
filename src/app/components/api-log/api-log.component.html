@@ -1,4 +1,4 @@
-<fs-dialog *fsSkeleton="api_log">
+<fs-dialog *fsSkeleton="apiLog">
   <div mat-dialog-title>API Log</div>
   <mat-dialog-content>
     <div fxLayout="column">
@@ -6,63 +6,63 @@
         <fs-label>
           Type
         </fs-label>
-        {{api_log.type}}
+        {{apiLog.type}}
       </fs-label-field>
 
       <fs-label-field>
         <fs-label>
           Status
         </fs-label>
-        {{apiLogStates[api_log.state]}}
+        {{apiLogStates[apiLog.state]}}
       </fs-label-field>
 
       <fs-label-field>
         <fs-label>
           Date
         </fs-label>
-        {{api_log.create_date|fsDateFormat: 'full-date-time'}}
+        {{apiLog.createDate|fsDateFormat: 'full-date-time'}}
       </fs-label-field>
 
-      <fs-label-field *ngIf="api_log.length">
+      <fs-label-field *ngIf="apiLog.length">
         <fs-label>
           Duration
         </fs-label>
-        {{ api_log.length | fsDateDuration }}
+        {{ apiLog.length | fsDateDuration }}
       </fs-label-field>
 
-      <fs-label-field *ngIf="api_log.code">
+      <fs-label-field *ngIf="apiLog.code">
         <fs-label>
           Code
         </fs-label>
-        {{api_log.code}}
+        {{apiLog.code}}
       </fs-label-field>
 
-      <fs-label-field *ngIf="api_log.message">
+      <fs-label-field *ngIf="apiLog.message">
         <fs-label>
           Message
         </fs-label>
-        {{api_log.message}}
+        {{apiLog.message}}
       </fs-label-field>
 
-      <fs-label-field *ngIf="api_log.url">
+      <fs-label-field *ngIf="apiLog.url">
         <fs-label>
           URL
         </fs-label>
-        {{api_log.url}}
+        {{apiLog.url}}
       </fs-label-field>
 
-      <fs-label-field *ngIf="api_log.request">
+      <fs-label-field *ngIf="apiLog.request">
         <fs-label>
           Request
         </fs-label>
-        <pre>{{api_log.request|json}}</pre>
+        <pre>{{apiLog.request|json}}</pre>
       </fs-label-field>
 
-      <fs-label-field *ngIf="api_log.response">
+      <fs-label-field *ngIf="apiLog.response">
         <fs-label>
           Response
         </fs-label>
-        <pre>{{api_log.response|json}}</pre>
+        <pre>{{apiLog.response|json}}</pre>
       </fs-label-field>
 
     </div>

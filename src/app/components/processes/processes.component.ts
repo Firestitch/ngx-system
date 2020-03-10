@@ -1,9 +1,9 @@
+import { SystemService } from './../../services/system.service';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 
 import { ItemType } from '@firestitch/filter';
 import { ProcessStates } from '../../consts';
 import { FsListComponent, FsListConfig } from '@firestitch/list';
-import { MatDialog } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { indexNameValue } from '../../helpers/index-name-value';
 
@@ -23,7 +23,7 @@ export class ProcessesComponent implements OnInit {
   public processStates = indexNameValue(ProcessStates);
 
   constructor(
-    private _dialog: MatDialog,
+    private _systemService: SystemService,
   ) { }
 
   ngOnInit() {
@@ -50,7 +50,7 @@ export class ProcessesComponent implements OnInit {
         Object.assign(query, { });
         return this.load(query)
           .pipe(
-            map((response: any) => ({ data: response.processes, paging: response.paging }))
+            map((response: any) => ({ data: this._systemService.input(response.data), paging: response.paging }))
           );
       }
     };

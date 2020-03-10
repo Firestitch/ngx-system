@@ -1,3 +1,4 @@
+import { SystemService } from './../../services';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 
 import { FsMessage } from '@firestitch/message';
@@ -29,6 +30,7 @@ export class CronsComponent implements OnInit {
 
   constructor(
     private _message: FsMessage,
+    private _systemService: SystemService
   ) { }
 
   ngOnInit() {
@@ -49,7 +51,7 @@ export class CronsComponent implements OnInit {
       rowActions: [
         {
           click: data => {
-            return this.enable(data)
+            return this.enable(this._systemService.output(data))
             .subscribe(() => {
               this._message.success('Enabled cron');
               this.list.reload();
@@ -59,7 +61,7 @@ export class CronsComponent implements OnInit {
         },
         {
           click: data => {
-            return this.disable(data)
+            return this.disable(this._systemService.output(data))
             .subscribe(() => {
               this._message.success('Disabled cron');
               this.list.reload();
@@ -69,7 +71,7 @@ export class CronsComponent implements OnInit {
         },
         {
           click: data => {
-            return this.kill(data)
+            return this.kill(this._systemService.output(data))
             .subscribe(() => {
               this._message.success('Killed cron');
               this.list.reload();
@@ -79,7 +81,7 @@ export class CronsComponent implements OnInit {
         },
         {
           click: data => {
-            return this.queue(data)
+            return this.queue(this._systemService.output(data))
             .subscribe(() => {
               this._message.success('Queued cron');
               this.list.reload();
@@ -89,8 +91,8 @@ export class CronsComponent implements OnInit {
         },
         {
           click: data => {
-            return this.run(data)
-            .subscribe((response) => {
+            return this.run(this._systemService.output(data))
+            .subscribe(() => {
               this._message.success('Cron ran');
               this.list.reload();
             })
@@ -102,7 +104,7 @@ export class CronsComponent implements OnInit {
         query.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         return this.load(query, { key: null })
           .pipe(
-            map(response => ({ data: response }))
+            map(response => ({ data: this._systemService.input(response) }))
           );
       }
     };

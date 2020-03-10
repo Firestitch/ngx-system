@@ -1,3 +1,4 @@
+import { SystemService } from './../../services/system.service';
 import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
 import { FsMessage } from '@firestitch/message';
 import { map } from 'rxjs/operators';
@@ -20,7 +21,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private _message: FsMessage,
-    private _cdRef: ChangeDetectorRef
+    private _cdRef: ChangeDetectorRef,
+    private _systemService: SystemService
   ) { }
 
   ngOnInit() {
@@ -30,15 +32,15 @@ export class DashboardComponent implements OnInit {
   private _load() {
     this.load()
     .subscribe(dashboard => {
-      dashboard.cron_ran_attention = differenceInHours(new Date(), new Date(dashboard.cron_ran)) > 1;
-      this.dashboard = dashboard;
+      this.dashboard = this._systemService.input(dashboard);
+      this.dashboard.cronRanAttention = differenceInHours(new Date(), new Date(dashboard.cronRan)) > 1;
       this._cdRef.markForCheck();
     });
   }
 
   initClick() {
     this.init()
-    .subscribe((dashboard) => {
+    .subscribe(() => {
       this._message.success('Successfully initialized the system');
     });
   }

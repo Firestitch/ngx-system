@@ -9,7 +9,7 @@
 
     <div hideToggle *ngFor="let setting of groupedSettings[group]">
 
-      <mat-form-field class="full-width" *ngIf="setting.interface_type===SettingInterfaceType.InputBox">
+      <mat-form-field class="full-width" *ngIf="setting.interfaceType===SettingInterfaceType.InputBox">
         <input
           matInput
           [placeholder]="setting.label"
@@ -18,7 +18,7 @@
           <mat-hint>{{setting.instruction}}</mat-hint>
       </mat-form-field>
 
-      <mat-form-field class="full-width" *ngIf="setting.interface_type===SettingInterfaceType.Textarea">
+      <mat-form-field class="full-width" *ngIf="setting.interfaceType===SettingInterfaceType.Textarea">
         <textarea
           matInput
           [placeholder]="setting.label"
@@ -28,7 +28,7 @@
         <mat-hint>{{setting.instruction}}</mat-hint>
       </mat-form-field>
 
-      <mat-form-field class="full-width" *ngIf="setting.interface_type===SettingInterfaceType.DropDown">
+      <mat-form-field class="full-width" *ngIf="setting.interfaceType===SettingInterfaceType.DropDown">
         <mat-select
            [placeholder]="setting.label"
           [(ngModel)]="setting.value"
@@ -40,7 +40,7 @@
         <mat-hint>{{setting.instruction}}</mat-hint>
       </mat-form-field>
 
-      <mat-form-field class="full-width" *ngIf="setting.interface_type===SettingInterfaceType.Date">
+      <mat-form-field class="full-width" *ngIf="setting.interfaceType===SettingInterfaceType.Date">
         <input
           matInput
           fsDatePicker

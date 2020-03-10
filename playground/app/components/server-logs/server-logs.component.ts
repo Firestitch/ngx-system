@@ -11,8 +11,9 @@ import { ProcessState } from 'src/app/enums';
 export class ServerLogsComponent {
 
   public load = () => {
-    return of({"paging":{"limit":25,"records":0,"offset":0},"logs":[{
-      message: 'Something happened'
+    return of({"paging":{"limit":25,"records":0,"offset":0},"data":[{
+      message: 'Something happened',
+      create_date: new Date()
     }]});
   }
 }
