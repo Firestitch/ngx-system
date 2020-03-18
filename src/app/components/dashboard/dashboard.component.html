@@ -1,102 +1,118 @@
+<div *fsSkeleton="dashboard">
 
-  <div
-    class="h2-container"
-    fxLayout="row"
-    fxLayout.xs="column"
-    fxLayout.md="column"
-    fxLayoutGap.xs="0px"
-    fxLayoutGap.md="0px"
-    fxLayoutAlign="start start"
-    fxLayoutGap="50px"
-    *fsSkeleton="dashboard">
-
-    <div>
-      <h2>Server</h2>
-
-      <fs-label-field>
-        <fs-label>Time</fs-label>
-        {{dashboard.serverTime | fsDateFormat: 'full-date-time'}}
-      </fs-label-field>
-
-      <fs-label-field>
-        <fs-label>Timezone</fs-label>
-        {{dashboard.serverTimezone}}
-      </fs-label-field>
-
-      <fs-label-field>
-        <fs-label>Hostname</fs-label>
-        {{dashboard.serverHostname}}
-      </fs-label-field>
-
-      <h2>Database</h2>
-
-      <fs-label-field>
-        <fs-label>Name</fs-label>
-        {{dashboard.databaseName}}
-      </fs-label-field>
-
-      <fs-label-field>
-        <fs-label>Time</fs-label>
-        {{dashboard.databaseTime | fsDateFormat: 'full-date-time'}}
-      </fs-label-field>
-
-      <fs-label-field>
-        <fs-label>Timezone</fs-label>
-        {{dashboard.databaseTimezone}}
-      </fs-label-field>
-    </div>
-
-    <div>
-
-      <h2>App</h2>
-
-      <fs-label-field>
-        <fs-label>Mode</fs-label>
-        {{dashboard.appMode}}
-      </fs-label-field>
-
-      <fs-label-field>
-        <fs-label>Directory</fs-label>
-        {{dashboard.appDirectory}}
-      </fs-label-field>
-
-      <fs-label-field *ngIf="dashboard.gitBranch">
-        <fs-label>GIT Branch</fs-label>
-        {{dashboard.gitBranch}}
-      </fs-label-field>
-
-      <fs-label-field>
-        <fs-label>Pending Upgrades</fs-label>
-        <span class="attention" [ngClass]="{ 'needs-attention': !!dashboard.upgrades.length }">
-          {{dashboard.upgrades.length}}
-          <mat-icon [matTooltip]="dashboard.upgrades.join('<br>')">warning</mat-icon>
-        </span>
-      </fs-label-field>
-
-      <fs-label-field *ngIf="dashboard.lastUpgrade">
-        <fs-label>Last Upgrade</fs-label>
-        {{dashboard.lastUpgrade | fsDateFormat: 'full-date-time'}}
-      </fs-label-field>
-
-      <fs-label-field>
-        <fs-label>System Notification Recipients</fs-label>
-        {{dashboard.notifyRecipients.join(', ')}}
-      </fs-label-field>
-
-      <h2>Cron</h2>
-
-      <fs-label-field>
-        <fs-label>Last Ran</fs-label>
-        <span class="attention" [ngClass]="{ 'needs-attention': dashboard.cronRanAttention }">
-          {{dashboard.cronRan | fsDateFormat: 'full-date-time'}}
-          <mat-icon>warning</mat-icon>
-        </span>
-      </fs-label-field>
-    </div>
+  <div class="h2-container">
 
     <div class="actions">
-      <h2>Actions</h2>
-      <button mat-raised-button (click)="initClick()" color="primary">Init System</button>
-      <button mat-raised-button (click)="upgradeClick()" color="primary">Run Upgrades</button>
+        <h2>Actions</h2>
+        <div fxLayout="row" fxLayoutGap="10px">
+          <button mat-raised-button (click)="upgradeClick()">Run Upgrades</button>
+          <button mat-raised-button (click)="initClick()">Init System</button>
+          <button
+            *ngFor="let action of actions"
+            mat-raised-button
+            (click)="actionClick(action)">
+            {{action.label}}
+          </button>
+
+        </div>
+      </div>
     </div>
+
+    <div
+      fxLayout="row wrap"
+      fxLayout.xs="column"
+      fxLayoutGap.xs="0px"
+      fxLayoutAlign="start start"
+      fxLayoutGap="50px">
+
+      <div>
+        <h2>Server</h2>
+
+        <fs-label-field>
+          <fs-label>Time</fs-label>
+          {{dashboard.serverTime | fsDateFormat: 'full-date-time'}}
+        </fs-label-field>
+
+        <fs-label-field>
+          <fs-label>Timezone</fs-label>
+          {{dashboard.serverTimezone}}
+        </fs-label-field>
+
+        <fs-label-field>
+          <fs-label>Hostname</fs-label>
+          {{dashboard.serverHostname}}
+        </fs-label-field>
+      </div>
+
+      <div>
+        <h2>Database</h2>
+
+        <fs-label-field>
+          <fs-label>Name</fs-label>
+          {{dashboard.databaseName}}
+        </fs-label-field>
+
+        <fs-label-field>
+          <fs-label>Time</fs-label>
+          {{dashboard.databaseTime | fsDateFormat: 'full-date-time'}}
+        </fs-label-field>
+
+        <fs-label-field>
+          <fs-label>Timezone</fs-label>
+          {{dashboard.databaseTimezone}}
+        </fs-label-field>
+      </div>
+
+      <div>
+        <h2>System</h2>
+        <fs-label-field>
+          <fs-label>Mode</fs-label>
+          {{dashboard.appMode}}
+        </fs-label-field>
+
+        <fs-label-field>
+          <fs-label>Notification Recipients</fs-label>
+          {{dashboard.notifyRecipients.join(', ')}}
+        </fs-label-field>
+      </div>
+
+      <div>
+        <h2>Code</h2>
+
+        <fs-label-field>
+          <fs-label>Directory</fs-label>
+          {{dashboard.appDirectory}}
+        </fs-label-field>
+
+        <fs-label-field *ngIf="dashboard.gitBranch">
+          <fs-label>GIT Branch</fs-label>
+          {{dashboard.gitBranch}}
+        </fs-label-field>
+
+        <fs-label-field>
+          <fs-label>Pending Upgrades</fs-label>
+          <span class="attention" [ngClass]="{ 'needs-attention': !!dashboard.upgrades.length }">
+            {{dashboard.upgrades.length}}
+            <mat-icon [matTooltip]="dashboard.upgrades.join('<br>')">warning</mat-icon>
+          </span>
+        </fs-label-field>
+
+        <fs-label-field *ngIf="dashboard.lastUpgrade">
+          <fs-label>Last Upgrade</fs-label>
+          {{dashboard.lastUpgrade | fsDateFormat: 'full-date-time'}}
+        </fs-label-field>
+      </div>
+
+      <div>
+        <h2>Cron</h2>
+
+        <fs-label-field>
+          <fs-label>Last Ran</fs-label>
+          <span class="attention" [ngClass]="{ 'needs-attention': dashboard.cronRanAttention }">
+            {{dashboard.cronRan | fsDateFormat: 'full-date-time'}}
+            <mat-icon>warning</mat-icon>
+          </span>
+        </fs-label-field>
+      </div>
   </div>
+</div>

@@ -1,7 +1,8 @@
+import { DashboardAction } from './../../interfaces/dashboard-action';
 import { SystemService } from './../../services/system.service';
 import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
 import { FsMessage } from '@firestitch/message';
-import { map } from 'rxjs/operators';
+import { map, delay } from 'rxjs/operators';
 import { differenceInHours } from 'date-fns';
 import { isObject } from 'lodash-es';
 
@@ -18,6 +19,8 @@ export class DashboardComponent implements OnInit {
   @Input() init: Function;
   @Input() upgrade: Function;
   @Input() load: Function;
+
+  @Input() actions: DashboardAction[] = [];
 
   constructor(
     private _message: FsMessage,
@@ -36,6 +39,10 @@ export class DashboardComponent implements OnInit {
       this.dashboard.cronRanAttention = differenceInHours(new Date(), new Date(dashboard.cronRan)) > 1;
       this._cdRef.markForCheck();
     });
+  }
+
+  public actionClick(action) {
+    action.click();
   }
 
   initClick() {
