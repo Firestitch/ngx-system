@@ -4,15 +4,30 @@
 
     <div class="actions">
         <h2>Actions</h2>
-        <div fxLayout="row" fxLayoutGap="10px">
+        <div fxLayout="row" fxLayoutGap="5px" fxLayout.xs="column">
           <button mat-raised-button (click)="upgradeClick()">Run Upgrades</button>
           <button mat-raised-button (click)="initClick()">Init System</button>
+
           <button
-            *ngFor="let action of actions"
+            *ngFor="let action of buttonActions"
             mat-raised-button
             (click)="actionClick(action)">
             {{action.label}}
           </button>
+
+          <ng-container *ngIf="menuActions.length">
+
+            <fs-menu buttonClass="mat-raised-button menu-button">
+              <ng-template
+                *ngFor="let action of menuActions"
+                fs-menu-item
+                (click)="actionClick(action)">
+                {{action.label}}
+              </ng-template>
+            </fs-menu>
+
+
+          </ng-container>
 
         </div>
       </div>
@@ -45,6 +60,19 @@
       </div>
 
       <div>
+        <h2>System</h2>
+        <fs-label-field>
+          <fs-label>Mode</fs-label>
+          {{dashboard.appMode}}
+        </fs-label-field>
+
+        <fs-label-field>
+          <fs-label>Notification Recipients</fs-label>
+          {{dashboard.notifyRecipients.join(', ')}}
+        </fs-label-field>
+      </div>
+
+      <div>
         <h2>Database</h2>
 
         <fs-label-field>
@@ -60,19 +88,6 @@
         <fs-label-field>
           <fs-label>Timezone</fs-label>
           {{dashboard.databaseTimezone}}
-        </fs-label-field>
-      </div>
-
-      <div>
-        <h2>System</h2>
-        <fs-label-field>
-          <fs-label>Mode</fs-label>
-          {{dashboard.appMode}}
-        </fs-label-field>
-
-        <fs-label-field>
-          <fs-label>Notification Recipients</fs-label>
-          {{dashboard.notifyRecipients.join(', ')}}
         </fs-label-field>
       </div>
 

@@ -22,6 +22,7 @@ import { FsListModule } from '@firestitch/list';
 import { FsFileManagerModule } from '@firestitch/file-manager';
 import { FsDialogModule } from '@firestitch/dialog';
 import { FsLabelModule } from '@firestitch/label';
+import { FsMenuModule } from '@firestitch/menu';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CronsComponent } from './components/crons/crons.component';
@@ -56,7 +57,8 @@ import { InfoComponent } from './components/info/info.component';
     FsLabelModule,
     MatDialogModule,
     FsDialogModule,
-    FsDatePickerModule
+    FsDatePickerModule,
+    FsMenuModule
   ],
   exports: [
     DashboardComponent,

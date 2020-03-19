@@ -20,6 +20,13 @@ export class DashboardComponent {
       click: () => {
         this.message.success('Did Something');
       }
+    },
+    {
+      label: 'Do Something Menu',
+      menu: true,
+      click: () => {
+        this.message.success('Did Something');
+      }
     }
   ];
 

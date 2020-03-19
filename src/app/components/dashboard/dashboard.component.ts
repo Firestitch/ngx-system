@@ -2,9 +2,8 @@ import { DashboardAction } from './../../interfaces/dashboard-action';
 import { SystemService } from './../../services/system.service';
 import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
 import { FsMessage } from '@firestitch/message';
-import { map, delay } from 'rxjs/operators';
 import { differenceInHours } from 'date-fns';
-import { isObject } from 'lodash-es';
+
 
 @Component({
   selector: 'fs-system-dashboard',
@@ -15,6 +14,8 @@ import { isObject } from 'lodash-es';
 export class DashboardComponent implements OnInit {
 
   public dashboard;
+  public buttonActions: DashboardAction[] = [];
+  public menuActions: DashboardAction[] = [];
 
   @Input() init: Function;
   @Input() upgrade: Function;
@@ -30,6 +31,8 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this._load();
+    this.buttonActions = this.actions.filter(item => { return !item.menu; });
+    this.menuActions = this.actions.filter(item => { return item.menu; });
   }
 
   private _load() {

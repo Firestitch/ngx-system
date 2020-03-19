@@ -1,4 +1,5 @@
 export interface DashboardAction {
   label: string,
-  click: Function
+  click: Function,
+  menu?: boolean
 }
