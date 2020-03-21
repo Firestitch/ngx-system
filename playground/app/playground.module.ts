@@ -1,3 +1,4 @@
+import { ProcessDialogComponent } from './components/process-dialog/process-dialog.component';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
@@ -30,6 +31,8 @@ import { UpgradeLogsComponent } from './components/upgrade-logs';
 import { ApiLogsComponent } from './components/api-logs';
 import { InfoComponent } from './components/info';
 import { FsDatePickerModule } from '@firestitch/datepicker';
+import { FsDialogModule } from '@firestitch/dialog';
+import { FsFormModule } from '@firestitch/form';
 
 const routes: Routes = [
   { path: '', component: ExamplesComponent },
@@ -44,6 +47,8 @@ const routes: Routes = [
     AppMaterialModule,
     FormsModule,
     FsLabelModule,
+    FsFormModule,
+    FsDialogModule,
     FsExampleModule.forRoot(),
     FsMessageModule.forRoot(),
     ToastrModule.forRoot({ preventDuplicates: true }),
@@ -55,7 +60,8 @@ const routes: Routes = [
     FsSelectionModule.forRoot()
   ],
   entryComponents: [
-    KitchenSinkConfigureComponent
+    KitchenSinkConfigureComponent,
+    ProcessDialogComponent
   ],
   declarations: [
     AppComponent,
@@ -69,7 +75,8 @@ const routes: Routes = [
     ServerLogsComponent,
     UpgradeLogsComponent,
     ApiLogsComponent,
-    InfoComponent
+    InfoComponent,
+    ProcessDialogComponent
   ],
 })
 export class PlaygroundModule {

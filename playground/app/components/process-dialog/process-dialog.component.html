@@ -1,0 +1,18 @@
+<form fsForm [submit]="save">
+  <fs-dialog>
+    <h1 mat-dialog-title>Import Dialog</h1>
+    <mat-dialog-content>
+      <mat-form-field>
+        <input
+          matInput
+          [(ngModel)]="setting"
+          name="setting"
+          placeholder="Setting">
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button color="primary">Create</button>
+      <button mat-button mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+  </fs-dialog>
+</form>

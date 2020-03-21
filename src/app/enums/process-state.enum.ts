@@ -2,7 +2,7 @@ export enum ProcessState {
   Queued = 'Q',
   Running = 'R',
   Completed = 'C',
-  Canceled = 'L',
+  Killed = 'K',
   Deleted = 'D',
   Failed = 'F'
 }

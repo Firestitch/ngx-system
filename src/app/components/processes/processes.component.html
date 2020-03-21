@@ -2,26 +2,39 @@
   <fs-list-column>
     <ng-template fs-list-header>Name</ng-template>
     <ng-template fs-list-cell let-row="row">
-      <a href="javascript:;">{{row.name || 'Unknown'}}</a>
+      {{row.prettyName || row.name}}
     </ng-template>
   </fs-list-column>
-  <fs-list-column>
-      <ng-template fs-list-header>Message</ng-template>
-      <ng-template fs-list-cell let-row="row">
-        {{row.message}}
-      </ng-template>
-    </fs-list-column>
+
   <fs-list-column>
     <ng-template fs-list-header>Status</ng-template>
     <ng-template fs-list-cell let-row="row">
       {{processStates[row.state]}}
+      <div><small *ngIf="row.state==='R'">Percent: {{ row.percent }}%</small></div>
+      <div><small *ngIf="row.pid">PID: {{ row.pid }}</small></div>
+      <div><small *ngIf="row.notify">Notify: {{ row.notify }}</small></div>
     </ng-template>
   </fs-list-column>
-  <!-- <fs-list-column>
-    <ng-template fs-list-header>Date</ng-template>
+
+  <fs-list-column>
+    <ng-template fs-list-header>Duration</ng-template>
+    <ng-template fs-list-cell let-row="row">
+      {{ row.duration | fsDateDuration: {hours: true, minutes: true, seconds: true} }}
+    </ng-template>
+  </fs-list-column>
+
+
+  <fs-list-column>
+    <ng-template fs-list-header>Message</ng-template>
+    <ng-template fs-list-cell let-row="row">
+      {{row.message}}
+    </ng-template>
+  </fs-list-column>
+
+  <fs-list-column>
+    <ng-template fs-list-header>Created</ng-template>
     <ng-template fs-list-cell let-row="row">
       <fs-date-ago [date]="row.createDate"></fs-date-ago>
-      <div><small *ngIf="row.length">Duration: {{ row.length | fsDateDuration }}</small></div>
     </ng-template>
-  </fs-list-column> -->
+  </fs-list-column>
 </fs-list>

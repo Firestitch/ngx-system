@@ -1,12 +1,15 @@
+import { FsMessage } from '@firestitch/message';
+import { ProcessAction } from './../../interfaces/process-action';
 import { SystemService } from './../../services/system.service';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 
 import { ItemType } from '@firestitch/filter';
 import { ProcessStates } from '../../consts';
 import { FsListComponent, FsListConfig } from '@firestitch/list';
-import { MatDialog } from '@angular/material/dialog';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { indexNameValue } from '../../helpers/index-name-value';
+import { MatDialog } from '@angular/material/dialog';
+import { Subject, Observable } from 'rxjs';
 
 
 @Component({
@@ -14,17 +17,25 @@ import { indexNameValue } from '../../helpers/index-name-value';
   templateUrl: './processes.component.html',
   styleUrls: ['./processes.component.scss']
 })
-export class ProcessesComponent implements OnInit {
+export class ProcessesComponent implements OnInit, OnDestroy {
 
-  @ViewChild('list', { static: true }) list: FsListComponent;
+  @ViewChild(FsListComponent, { static: false }) list: FsListComponent;
 
-  @Input() load: Function;
+  @Input() load: (data: any) => Observable<any>;
+  @Input() run: (data: any) => Observable<any>;
+  @Input() kill: (data: any) => Observable<any>;
+  @Input() delete: (data: any) => Observable<any>;
+  @Input() actions: ProcessAction[] = [];
 
   public config: FsListConfig = null;
   public processStates = indexNameValue(ProcessStates);
 
+  private _destroy$ = new Subject();
+
   constructor(
     private _systemService: SystemService,
+    private _dialog: MatDialog,
+    private _message: FsMessage
   ) { }
 
   ngOnInit() {
@@ -34,6 +45,8 @@ export class ProcessesComponent implements OnInit {
   private _configList() {
 
     this.config = {
+      actions: [],
+      rowActions: [],
       filters: [
         {
           type: ItemType.Keyword,
@@ -48,12 +61,95 @@ export class ProcessesComponent implements OnInit {
         },
       ],
       fetch: query => {
-        Object.assign(query, { });
         return this.load(query)
           .pipe(
             map((response: any) => ({ data: this._systemService.input(response.data), paging: response.paging }))
           );
       }
     };
+
+    if (this.run) {
+      this.config.rowActions.push({
+        label: 'Run',
+        click: (data) => {
+          this._message.info('Running process...');
+          this.run(data)
+          .subscribe(() => {
+            this.list.reload();
+            this._message.success('Succesfully ran process');
+          });
+
+          setTimeout(() => {
+            this.list.reload();
+          }, 500);
+        }
+      });
+    }
+
+    if (this.kill) {
+      this.config.rowActions.push({
+        label: 'Kill',
+        show: (data) => {
+          return !!data.pid;
+        },
+        click: (data) => {
+          this._message.info('Killing process...');
+          this.kill(data)
+          .subscribe(() => {
+            this.list.reload();
+            this._message.success('Succesfully killed process');
+          });
+
+          setTimeout(() => {
+            this.list.reload();
+          }, 500);
+        }
+      });
+    }
+
+    if (this.delete) {
+      this.config.rowActions.push({
+        label: 'Delete',
+        click: (data) => {
+          this.delete(data)
+          .subscribe(() => {
+            this.list.reload();
+            this._message.success('Deleted process');
+          });
+        }
+      });
+    }
+
+    this.actions.forEach(action => {
+      this.config.actions.push({
+        primary: false,
+        label: action.label,
+        menu: action.menu,
+        click: () => {
+          if (action.click) {
+            action.click();
+          }
+
+          if (action.component) {
+              const dialogRef = this._dialog.open(action.component, {
+                width: '800px'
+              });
+
+              dialogRef.afterClosed()
+              .pipe(
+                takeUntil(this._destroy$)
+              )
+              .subscribe(result => {
+                this.list.reload();
+              });
+          }
+        },
+      });
+    });
+  }
+
+  public ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }
