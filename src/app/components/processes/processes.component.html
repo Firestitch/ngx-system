@@ -9,10 +9,13 @@
   <fs-list-column>
     <ng-template fs-list-header>Status</ng-template>
     <ng-template fs-list-cell let-row="row">
-      {{processStates[row.state]}}
-      <div><small *ngIf="row.state==='R'">Percent: {{ row.percent }}%</small></div>
-      <div><small *ngIf="row.pid">PID: {{ row.pid }}</small></div>
-      <div><small *ngIf="row.notify">Notify: {{ row.notify }}</small></div>
+      {{ProcessStates[row.state]}}
+      <small>
+        <div *ngIf="row.state===ProcessState.Running">Complete: {{ row.percent }}%</div>
+        <div *ngIf="row.state===ProcessState.Completed && row.filename">Download: <a href="javascript:;" (click)="download(row)">{{ row.filename }}</a></div>
+        <div *ngIf="row.pid">PID: {{ row.pid }}</div>
+        <div *ngIf="row.state===ProcessState.Running && row.notify">Notify: {{ row.notify }}</div>
+      </small>
     </ng-template>
   </fs-list-column>
 
@@ -32,9 +35,9 @@
   </fs-list-column>
 
   <fs-list-column>
-    <ng-template fs-list-header>Created</ng-template>
+    <ng-template fs-list-header>Completed</ng-template>
     <ng-template fs-list-cell let-row="row">
-      <fs-date-ago [date]="row.createDate"></fs-date-ago>
+      <fs-date-ago [date]="row.endDate"></fs-date-ago>
     </ng-template>
   </fs-list-column>
 </fs-list>

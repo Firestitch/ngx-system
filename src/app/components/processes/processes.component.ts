@@ -1,3 +1,4 @@
+import { ProcessState } from '../../enums';
 import { FsMessage } from '@firestitch/message';
 import { ProcessAction } from './../../interfaces/process-action';
 import { SystemService } from './../../services/system.service';
@@ -25,10 +26,12 @@ export class ProcessesComponent implements OnInit, OnDestroy {
   @Input() run: (data: any) => Observable<any>;
   @Input() kill: (data: any) => Observable<any>;
   @Input() delete: (data: any) => Observable<any>;
+  @Input() download: (data: any) => any;
   @Input() actions: ProcessAction[] = [];
 
   public config: FsListConfig = null;
-  public processStates = indexNameValue(ProcessStates);
+  public ProcessStates = indexNameValue(ProcessStates);
+  public ProcessState = ProcessState;
 
   private _destroy$ = new Subject();
 

@@ -42,7 +42,8 @@ export class ProcessesComponent {
         message: 'Something happened',
         state: ProcessState.Completed,
         create_date: '2019-12-12T05:45:45',
-        duration: 32982
+        duration: 32982,
+        filename: 'processed.pdf'
       },
       {
         name: 'Process X',
@@ -52,13 +53,17 @@ export class ProcessesComponent {
         duration: 32982,
         percent: 80,
         pid: 23344,
-        notify_email: 'email@email.com'
+        notify: 'email@email.com'
       }
     ]});
   }
 
   public run = (process) => {
     return of(true);
+  }
+
+  public download = (process) => {
+    this._message.info('Starting download...');
   }
 
   public kill = (process) => {
