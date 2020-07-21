@@ -1,3 +1,4 @@
+import { ProcessComponent } from './../process/process.component';
 import { ProcessState } from '../../enums';
 import { FsMessage } from '@firestitch/message';
 import { ProcessAction } from './../../interfaces/process-action';
@@ -23,6 +24,7 @@ export class ProcessesComponent implements OnInit, OnDestroy {
   @ViewChild(FsListComponent, { static: false }) list: FsListComponent;
 
   @Input() load: (data: any) => Observable<any>;
+  @Input() loadProcess: (data: any) => Observable<any>;
   @Input() run: (data: any) => Observable<any>;
   @Input() kill: (data: any) => Observable<any>;
   @Input() delete: (data: any) => Observable<any>;
@@ -41,7 +43,7 @@ export class ProcessesComponent implements OnInit, OnDestroy {
     private _message: FsMessage
   ) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     this._configList();
   }
 
@@ -148,6 +150,16 @@ export class ProcessesComponent implements OnInit, OnDestroy {
           }
         },
       });
+    });
+  }
+
+  public open(process) {
+    this._dialog.open(ProcessComponent, {
+      data: {
+        process,
+        loadProcess: this.loadProcess,
+      },
+      width: '85%'
     });
   }
 

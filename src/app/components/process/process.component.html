@@ -1,0 +1,90 @@
+<fs-dialog *fsSkeleton="process">
+  <div mat-dialog-title>Process</div>
+  <mat-dialog-content>
+    <div fxLayout="column">
+      <fs-label-field>
+        <fs-label>
+          Name
+        </fs-label>
+        {{process.prettyName}}
+      </fs-label-field>
+
+      <div fxLayout="row" fxLayoutGap="20px">
+
+        <fs-label-field>
+          <fs-label>
+            Status
+          </fs-label>
+          {{ProcessStates[process.state]}}
+        </fs-label-field>
+
+        <fs-label-field *ngIf="process.notify">
+          <fs-label>
+            Notification Email
+          </fs-label>
+          {{process.notify}}
+        </fs-label-field>
+
+        <fs-label-field *ngIf="process.pid">
+          <fs-label>
+            PID
+          </fs-label>
+          {{process.pid}}
+        </fs-label-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="20px">
+        <fs-label-field>
+          <fs-label>
+            Create Date
+          </fs-label>
+          {{ process.createDate | fsDateFormat: 'date-time' }}
+        </fs-label-field>
+
+        <fs-label-field *ngIf="process.startDate">
+          <fs-label>
+            Start Date
+          </fs-label>
+          {{ process.startDate | fsDateFormat: 'date-time' }}
+        </fs-label-field>
+
+        <fs-label-field *ngIf="process.endDate">
+          <fs-label>
+            Complete Date
+          </fs-label>
+          {{ process.endDate | fsDateFormat: 'date-time' }}
+        </fs-label-field>
+
+        <fs-label-field *ngIf="process.duration">
+          <fs-label>
+            Duration
+          </fs-label>
+          {{ process.duration | fsDateDuration: {hours: true, minutes: true, seconds: true} }}
+        </fs-label-field>
+      </div>
+
+      <fs-label-field *ngIf="process.message">
+        <fs-label>
+          Message
+        </fs-label>
+        {{process.message}}
+      </fs-label-field>
+
+      <fs-label-field *ngIf="process.log" class="log">
+        <fs-label>
+          Log
+        </fs-label>{{process.log}}
+      </fs-label-field>
+
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="true" color="primary">Done</button>
+    <button
+      *ngIf="process.state===ProcessState.Running && data.loadProcess"
+      mat-button
+      (click)="load()">
+      Reload
+    </button>
+  </mat-dialog-actions>
+</fs-dialog>

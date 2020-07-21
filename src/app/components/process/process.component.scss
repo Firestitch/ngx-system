@@ -1,0 +1,10 @@
+:host ::ng-deep {
+
+  .log {
+    .field-content {
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 14px;
+    }
+  }
+}

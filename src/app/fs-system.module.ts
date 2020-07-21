@@ -36,7 +36,7 @@ import { UpgradeLogsComponent } from './components/upgrade-logs/upgrade-logs.com
 import { ApiLogsComponent } from './components/api-logs/api-logs.component';
 import { ApiLogComponent } from './components/api-log/api-log.component';
 import { InfoComponent } from './components/info/info.component';
-
+import { ProcessComponent } from './components/process/process.component';
 
 @NgModule({
   imports: [
@@ -58,7 +58,7 @@ import { InfoComponent } from './components/info/info.component';
     MatDialogModule,
     FsDialogModule,
     FsDatePickerModule,
-    FsMenuModule
+    FsMenuModule,
   ],
   exports: [
     DashboardComponent,
@@ -69,7 +69,7 @@ import { InfoComponent } from './components/info/info.component';
     ServerLogsComponent,
     UpgradeLogsComponent,
     ApiLogsComponent,
-    InfoComponent
+    InfoComponent,
   ],
   declarations: [
     DashboardComponent,
@@ -83,15 +83,17 @@ import { InfoComponent } from './components/info/info.component';
     UpgradeLogsComponent,
     ApiLogsComponent,
     ApiLogComponent,
-    InfoComponent
+    InfoComponent,
+    ProcessComponent,
   ],
   entryComponents: [
     ServerLogComponent,
-    ApiLogComponent
+    ApiLogComponent,
+    ProcessComponent,
   ],
   providers: [
     SystemService
-  ]
+  ],
 })
 export class FsSystemModule {
   static forRoot(config: FsSystemConfig): ModuleWithProviders {

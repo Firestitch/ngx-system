@@ -2,7 +2,7 @@
   <fs-list-column>
     <ng-template fs-list-header>Name</ng-template>
     <ng-template fs-list-cell let-row="row">
-      {{row.prettyName || row.name}}
+      <a (click)="open(row)">{{row.prettyName}}</a>
     </ng-template>
   </fs-list-column>
 
@@ -11,7 +11,7 @@
     <ng-template fs-list-cell let-row="row">
       {{ProcessStates[row.state]}}
       <small>
-        <div *ngIf="row.state===ProcessState.Running">Complete: {{ row.percent }}%</div>
+        <div *ngIf="row.state===ProcessState.Running && row.percent">Complete: {{ row.percent }}%</div>
         <div *ngIf="row.state===ProcessState.Completed && row.filename">Download: <a href="javascript:;" (click)="download(row)">{{ row.filename }}</a></div>
         <div *ngIf="row.pid">PID: {{ row.pid }}</div>
         <div *ngIf="row.state===ProcessState.Running && row.notify">Notify: {{ row.notify }}</div>
