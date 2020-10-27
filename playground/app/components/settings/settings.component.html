@@ -1,4 +1,6 @@
 <fs-system-settings
   [load]="load"
-  [save]="save">
+  [save]="save"
+  (fileSelect)="fileSelect($event)"
+  (fileRemove)="fileRemove($event)">
 </fs-system-settings>

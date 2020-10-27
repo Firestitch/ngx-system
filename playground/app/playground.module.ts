@@ -54,10 +54,14 @@ const routes: Routes = [
     ToastrModule.forRoot({ preventDuplicates: true }),
     RouterModule.forRoot(routes),
     FsListModule.forRoot(),
-    FsFileModule.forRoot(),
     FsScrollModule.forRoot(),
     FsDatePickerModule.forRoot(),
-    FsSelectionModule.forRoot()
+    FsSelectionModule.forRoot(),
+       FsFileModule.forRoot({
+      allowDownload: true,
+      allowRemove: true,
+      dragoverMessage: true
+    }),
   ],
   entryComponents: [
     KitchenSinkConfigureComponent,

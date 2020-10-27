@@ -1,20 +1,26 @@
-import { SystemService } from './../../services/system.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { FsMessage } from '@firestitch/message';
+import { FsFile } from '@firestitch/file';
+
 import { groupBy, reduce } from 'lodash-es';
+
+import { SystemService } from './../../services/system.service';
 import { SettingInterfaceType } from '../../enums';
 
 
 @Component({
   selector: 'fs-system-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit {
 
-  @Input() load: Function;
-  @Input() save: Function;
+  @Input() public load: Function;
+  @Input() public save: Function;
+
+  @Output() public fileRemove = new EventEmitter();
+  @Output() public fileSelect = new EventEmitter<{ setting: any, file: Blob }>();
 
   public groupedSettings = [];
   public groups = [];
@@ -25,18 +31,26 @@ export class SettingsComponent implements OnInit {
     private _systemService: SystemService
   ) { }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.load()
-    .subscribe(settings => {
-      this.groupedSettings = groupBy(this._systemService.input(settings), (item) => {
-        return item.group;
+      .subscribe((settings) => {
+        settings = this._systemService.input(settings);
+
+        // settings = settings.map((setting) => {
+        //   if (setting.interfaceType === SettingInterfaceType.File && setting.value) {
+        //     setting.value = new FsFile(setting.value);
+        //   }
+        //   return setting;
+        // });
+
+        this.groupedSettings = groupBy(settings, (item) => {
+          return item.group;
+        });
+        this.groups = Object.keys(this.groupedSettings);
       });
-      this.groups = Object.keys(this.groupedSettings);
-    });
   }
 
-  public saveGroup(group) {
-
+  public saveGroup(group): void {
     const settings = this.groupedSettings[group];
     const values = reduce(settings, (result, value, key) => {
       return (result[value.name] = value.value, result);

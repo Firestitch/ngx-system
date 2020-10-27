@@ -22,6 +22,7 @@ import { FsListModule } from '@firestitch/list';
 import { FsFileManagerModule } from '@firestitch/file-manager';
 import { FsDialogModule } from '@firestitch/dialog';
 import { FsLabelModule } from '@firestitch/label';
+import { FsFileModule } from '@firestitch/file';
 import { FsMenuModule } from '@firestitch/menu';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -41,21 +42,24 @@ import { ProcessComponent } from './components/process/process.component';
 @NgModule({
   imports: [
     CommonModule,
-    FsDateModule,
+    FlexLayoutModule,
+    FormsModule,
+
+    MatButtonModule,
+    MatExpansionModule,
     MatTooltipModule,
     MatIconModule,
-    FsSkeletonModule,
-    FlexLayoutModule,
-    MatButtonModule,
-    FsListModule,
-    MatExpansionModule,
-    FormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatDialogModule,
+
+    FsDateModule,
+    FsSkeletonModule,
+    FsListModule,
+    FsFileModule,
     FsFileManagerModule,
     FsLabelModule,
-    MatDialogModule,
     FsDialogModule,
     FsDatePickerModule,
     FsMenuModule,
