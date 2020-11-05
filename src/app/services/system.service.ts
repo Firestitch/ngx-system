@@ -16,20 +16,20 @@ export class SystemService {
   public input(data) {
     if (isArray(data)) {
       return data.map(item => {
-        return this._config.case === 'snake' ? camelcaseKeys(item) : item;
+        return this._config.case === 'snake' ? camelcaseKeys(item, { deep: true }) : item;
       });
     } else {
-      return this._config.case === 'snake' ? camelcaseKeys(data) : data;
+      return this._config.case === 'snake' ? camelcaseKeys(data, { deep: true }) : data;
     }
   }
 
   public output(data) {
     if (isArray(data)) {
       return data.map(item => {
-        return this._config.case === 'snake' ? snakecaseKeys(item) : item;
+        return this._config.case === 'snake' ? snakecaseKeys(item, { deep: true }) : item;
       });
     } else {
-      return this._config.case === 'snake' ? snakecaseKeys(data) : data;
+      return this._config.case === 'snake' ? snakecaseKeys(data, { deep: true }) : data;
     }
   }
 }
