@@ -38,6 +38,7 @@ import { ApiLogsComponent } from './components/api-logs/api-logs.component';
 import { ApiLogComponent } from './components/api-log/api-log.component';
 import { InfoComponent } from './components/info/info.component';
 import { ProcessComponent } from './components/process/process.component';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   imports: [
@@ -63,6 +64,9 @@ import { ProcessComponent } from './components/process/process.component';
     FsDialogModule,
     FsDatePickerModule,
     FsMenuModule,
+
+    ClipboardModule,
+
   ],
   exports: [
     DashboardComponent,

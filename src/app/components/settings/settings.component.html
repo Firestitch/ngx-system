@@ -3,12 +3,29 @@
   <mat-expansion-panel hideToggle *ngFor="let group of groups">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{group || 'General'}}
+        <div class="title-row">
+          <div class="title">{{group || 'General'}}</div>
+          <div class="actions">
+            <button
+              type="button"
+              [matTooltip]="'Export ' + (group || 'General') + ' Settings'"
+              mat-icon-button
+              (click)="export($event, groupedSettings[group])">
+              <mat-icon>cloud_upload</mat-icon>
+            </button>
+            <button
+              type="button"
+              [matTooltip]="'Import ' + (group || 'General') + ' Settings'"
+              mat-icon-button
+              (click)="import($event, group)">
+              <mat-icon>cloud_download</mat-icon>
+            </button>
+          </div>
+        </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
 
     <div hideToggle *ngFor="let setting of groupedSettings[group]">
-
       <mat-form-field class="full-width" *ngIf="setting.interfaceType===SettingInterfaceType.InputBox">
         <input
           matInput

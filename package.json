@@ -1,8 +1,8 @@
 {
   "name": "@firestitch/system",
   "title": "System",
-  "description": "@firestitch/package",
-  "version": "8.5.15",
+  "description": "@firestitch/system",
+  "version": "8.5.16",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-system"
@@ -88,7 +88,8 @@
     "zone.js": "^0.10.2",
     "camelcase-keys": "^6.2.1",
     "change-case": "^4.1.1",
-    "snakecase-keys": "^3.1.2"
+    "snakecase-keys": "^3.1.2",
+    "ngx-clipboard": "^13.0.1"
   },
   "engines": {
     "node": ">=6.0.0"

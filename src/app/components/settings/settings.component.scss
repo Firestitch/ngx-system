@@ -5,3 +5,37 @@
 .full-width {
   width: 100%;
 }
+
+.title-row {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  place-content: center flex-start;
+  align-items: center;
+  width: 100%;
+
+  .title {
+    display: flex;
+    flex: 1;
+  }
+}
+
+
+:host ::ng-deep {
+
+  .mat-expansion-panel-header-title {
+    margin: 0;
+  }
+
+  .mat-expansion-panel {
+    .actions {
+      display: none;
+    }
+
+    &.mat-expanded {
+      .actions {
+        display: block;
+      }
+    }
+  }
+}

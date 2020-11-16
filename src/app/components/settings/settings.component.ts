@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
+import { FsPrompt } from '@firestitch/prompt';
 import { FsMessage } from '@firestitch/message';
-import { FsFile } from '@firestitch/file';
 
 import { groupBy, reduce } from 'lodash-es';
+import { ClipboardService } from 'ngx-clipboard';
 
 import { SystemService } from './../../services/system.service';
 import { SettingInterfaceType } from '../../enums';
@@ -28,7 +29,9 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private _message: FsMessage,
-    private _systemService: SystemService
+    private _systemService: SystemService,
+    private _clipboardService: ClipboardService,
+    private _prompt: FsPrompt,
   ) { }
 
   public ngOnInit(): void {
@@ -47,6 +50,50 @@ export class SettingsComponent implements OnInit {
           return item.group;
         });
         this.groups = Object.keys(this.groupedSettings);
+      });
+  }
+
+  public export(event: UIEvent, settings): void {
+    event.stopPropagation();
+    const data = settings.map((setting) => {
+      return {
+        name: setting.name,
+        value: setting.value,
+        group: setting.group,
+      }
+    });
+
+    this._clipboardService.copy(JSON.stringify(data));
+    this._message.success('Copied to clipboard');
+  }
+
+  public import(event: UIEvent, group): void {
+    event.stopPropagation();
+    this._prompt.input({
+        label: 'JSON Import',
+        title: 'Import Settings',
+        commitLabel: 'Import',
+        required: true,
+      }).subscribe((value: string) => {
+        if (value) {
+          try {
+            const settings = this.groupedSettings[group];
+            const data = JSON.parse(value);
+
+            data.forEach((item) => {
+              const setting = settings.find((s) => {
+                return item.name === s.name;
+              });
+
+              if (setting) {
+                Object.assign(setting, item);
+              }
+            });
+
+          } catch (e) {
+            this._message.error(e);
+          }
+        }
       });
   }
 
