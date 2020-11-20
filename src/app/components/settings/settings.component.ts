@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 
 import { FsPrompt } from '@firestitch/prompt';
 import { FsMessage } from '@firestitch/message';
@@ -14,6 +14,7 @@ import { SettingInterfaceType } from '../../enums';
   selector: 'fs-system-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsComponent implements OnInit {
 
@@ -32,6 +33,7 @@ export class SettingsComponent implements OnInit {
     private _systemService: SystemService,
     private _clipboardService: ClipboardService,
     private _prompt: FsPrompt,
+    private _cdRef: ChangeDetectorRef,
   ) { }
 
   public ngOnInit(): void {
@@ -50,6 +52,7 @@ export class SettingsComponent implements OnInit {
           return item.group;
         });
         this.groups = Object.keys(this.groupedSettings);
+        this._cdRef.markForCheck();
       });
   }
 
@@ -90,6 +93,7 @@ export class SettingsComponent implements OnInit {
               }
             });
 
+            this._cdRef.markForCheck();
           } catch (e) {
             this._message.error(e);
           }
@@ -104,7 +108,7 @@ export class SettingsComponent implements OnInit {
     }, {});
 
     this.save(group, values)
-    .subscribe(response => {
+    .subscribe(() => {
       this._message.success('Changes Saved');
     });
   }
