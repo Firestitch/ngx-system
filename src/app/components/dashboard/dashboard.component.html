@@ -122,20 +122,10 @@
         <h2>Cron</h2>
 
         <fs-label-field>
-          <fs-label>Status</fs-label>
-          <span class="attention" [ngClass]="{ 'needs-attention': !dashboard.cronStatus }">
-            <ng-container [ngSwitch]=" dashboard.cronStatus">
-              <ng-container *ngSwitchCase="true">Enabled</ng-container>
-              <ng-container *ngSwitchCase="false"><mat-icon>warning</mat-icon> Disabled</ng-container>
-              <ng-container *ngSwitchDefault><mat-icon>warning</mat-icon> Unknown</ng-container>
-            </ng-container>
-          </span>
-        </fs-label-field>
-
-        <fs-label-field>
           <fs-label>Last Ran</fs-label>
           <span class="attention" [ngClass]="{ 'needs-attention': dashboard.cronRanAttention }">
-            {{dashboard.cronRan | fsDateFormat: 'full-date-time'}}
+            <span *ngIf="!dashboard.cronRan">Never</span>
+            <span *ngIf="dashboard.cronRan">{{dashboard.cronRan | fsDateFormat: 'full-date-time'}}</span>
             <mat-icon>warning</mat-icon>
           </span>
         </fs-label-field>

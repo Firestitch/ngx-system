@@ -2,7 +2,7 @@ import { DashboardAction } from './../../interfaces/dashboard-action';
 import { SystemService } from './../../services/system.service';
 import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
 import { FsMessage } from '@firestitch/message';
-import { differenceInHours } from 'date-fns';
+import { differenceInHours, differenceInMinutes } from 'date-fns';
 
 
 @Component({
@@ -37,9 +37,10 @@ export class DashboardComponent implements OnInit {
 
   private _load() {
     this.load()
-    .subscribe(dashboard => {
+    .subscribe((dashboard) => {
       this.dashboard = this._systemService.input(dashboard);
-      this.dashboard.cronRanAttention = differenceInHours(new Date(), new Date(dashboard.cronRan)) > 1;
+      this.dashboard.cronRanAttention = !dashboard.cronRan ||
+         differenceInMinutes(new Date(), new Date(dashboard.cronRan)) > 15;
       this._cdRef.markForCheck();
     });
   }
