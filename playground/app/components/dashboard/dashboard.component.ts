@@ -48,7 +48,7 @@ export class DashboardComponent {
       cron_ran: '2019-11-30T17:00:02+00:00',
       app_directory: '\/var\/www\/boilerplate',
       server_hostname: 'boilerplate.firestitch.com',
-      upgrades: [],
+      upgrades: ['upgrade 1', 'upgrade 2', 'upgrade 3'],
       server_time: '2019-11-30T17:00:34+00:00',
     })
     .pipe(

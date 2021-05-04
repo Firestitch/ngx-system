@@ -24,6 +24,12 @@ table td {
    }
 }
 
+::ng-deep {
+  .tooltip-pending-upgrades {
+    white-space: pre-line;
+  }
+}
+
 
 @media (max-width: 600px) {
 

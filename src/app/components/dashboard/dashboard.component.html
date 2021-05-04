@@ -44,7 +44,7 @@
         <h2>Server</h2>
 
         <fs-label-field>
-          <fs-label>Time</fs-label>
+          <fs-label>Date/Time</fs-label>
           {{dashboard.serverTime | fsDateFormat: 'date-time'}}
         </fs-label-field>
 
@@ -86,7 +86,7 @@
         </fs-label-field>
 
         <fs-label-field>
-          <fs-label>Time</fs-label>
+          <fs-label>Date/Time</fs-label>
           {{dashboard.databaseTime | fsDateFormat: 'date-time'}}
         </fs-label-field>
 
@@ -96,8 +96,8 @@
         </fs-label-field>
       </div>
 
-      <div>
-        <h2>Code</h2>
+      <div *ngIf="build || dashboard.upgrades.length">
+        <h2>Build</h2>
 
         <ng-container *ngIf="build">
           <fs-label-field>
@@ -106,22 +106,22 @@
           </fs-label-field>
 
           <fs-label-field>
-            <fs-label>Last Updated</fs-label>
+            <fs-label>Date</fs-label>
             {{ build.date | fsDateFormat: 'date-time' }}
           </fs-label-field>
         </ng-container>
 
-        <fs-label-field>
+        <fs-label-field *ngIf="dashboard.upgrades.length">
           <fs-label>Pending Upgrades</fs-label>
           <span class="attention" [ngClass]="{ 'needs-attention': !!dashboard.upgrades.length }">
             {{dashboard.upgrades.length}}
-            <mat-icon [matTooltip]="dashboard.upgrades.join('<br>')">warning</mat-icon>
+            <mat-icon
+                [matTooltip]="dashboard.upgrades.join('\n')"
+                matTooltipClass="tooltip-pending-upgrades"
+                >
+              warning
+            </mat-icon>
           </span>
-        </fs-label-field>
-
-        <fs-label-field *ngIf="dashboard.lastUpgrade">
-          <fs-label>Last Upgrade</fs-label>
-          {{dashboard.lastUpgrade | fsDateFormat: 'date-time'}}
         </fs-label-field>
       </div>
 
