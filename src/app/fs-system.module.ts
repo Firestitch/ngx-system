@@ -104,7 +104,7 @@ import { ClipboardModule } from 'ngx-clipboard';
   ],
 })
 export class FsSystemModule {
-  static forRoot(config: FsSystemConfig): ModuleWithProviders {
+  static forRoot(config: FsSystemConfig): ModuleWithProviders<FsSystemModule> {
     return {
       ngModule: FsSystemModule,
       providers: [

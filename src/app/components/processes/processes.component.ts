@@ -21,7 +21,7 @@ import { Subject, Observable } from 'rxjs';
 })
 export class ProcessesComponent implements OnInit, OnDestroy {
 
-  @ViewChild(FsListComponent, { static: false }) list: FsListComponent;
+  @ViewChild(FsListComponent) list: FsListComponent;
 
   @Input() load: (data: any) => Observable<any>;
   @Input() loadProcess: (data: any) => Observable<any>;

@@ -9,7 +9,7 @@ import { Component, ChangeDetectionStrategy,  Input, ElementRef, ViewChild, Afte
 })
 export class InfoComponent implements AfterViewInit {
 
-  @ViewChild('iframe', { static: false }) iframe: ElementRef;
+  @ViewChild('iframe') iframe: ElementRef;
   @Input() load: Function;
 
   ngAfterViewInit() {
