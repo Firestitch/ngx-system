@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FsExampleModule } from '@firestitch/example';
 import { FsMessageModule } from '@firestitch/message';
 import { FsSystemModule } from '@firestitch/package';
+import { FsBuildModule } from '@firestitch/build';
 import { FsLabelModule } from '@firestitch/label';
 import { ToastrModule } from 'ngx-toastr';
 
@@ -55,6 +56,10 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     FsListModule.forRoot(),
     FsScrollModule.forRoot(),
+    FsBuildModule.forRoot({
+      origin: 'https://firestitch-dev.s3.us-west-2.amazonaws.com',
+      path: 'pub/build.json',
+    }),
     FsDatePickerModule.forRoot(),
     FsSelectionModule.forRoot(),
        FsFileModule.forRoot({
