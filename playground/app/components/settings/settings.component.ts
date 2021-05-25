@@ -32,7 +32,8 @@ export class SettingsComponent {
       {"data_type":"S","label":"Client Secret","group":"Google","values":null,"interface_type":"I","instruction":"","id":20,"name":"GOOGLE_CLIENT_SECRET","value":"xxxxxxxxxxxxx"},
       {"data_type":"S","label":"API Key","group":"SMTP","values":null,"interface_type":"I","instruction":"","id":21,"name":"SMTP_API_KEY","value":"xxxxxxxxxxxxx"},
       {"data_type":"S","label":"Date","group":"Date","values":null,"interface_type":"A","instruction":"","id":21,"name":"DATE","value":""},
-      {"data_type":"F","label":"File","group":"File","interface_type":"F","instruction":"","id":21,"name":"DATE","value":"https://cdn.hipwallpaper.com/i/30/77/AKPMDF.jpg"}
+      {"data_type":"F","label":"File","group":"File","interface_type":"F","instruction":"","id":21,"name":"DATE","value":"https://cdn.hipwallpaper.com/i/30/77/AKPMDF.jpg"},
+      {"data_type":"S","label":"Time","group":"Date","interface_type":"M","instruction":"","id":22,"name":"TIME","value":""}
     ]);
   }
 

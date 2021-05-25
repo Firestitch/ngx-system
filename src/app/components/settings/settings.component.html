@@ -11,14 +11,14 @@
               [matTooltip]="'Export ' + (group || 'General') + ' Settings'"
               mat-icon-button
               (click)="export($event, groupedSettings[group])">
-              <mat-icon>cloud_upload</mat-icon>
+              <mat-icon>cloud_download</mat-icon>
             </button>
             <button
               type="button"
               [matTooltip]="'Import ' + (group || 'General') + ' Settings'"
               mat-icon-button
               (click)="import($event, group)">
-              <mat-icon>cloud_download</mat-icon>
+              <mat-icon>cloud_upload</mat-icon>
             </button>
           </div>
         </div>
@@ -61,6 +61,16 @@
         <input
           matInput
           fsDatePicker
+          [placeholder]="setting.label"
+          [(ngModel)]="setting.value"
+          [name]="'setting_' + setting.id">
+          <mat-hint>{{setting.instruction}}</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="full-width" *ngIf="setting.interfaceType===SettingInterfaceType.Time">
+        <input
+          matInput
+          fsTimePicker
           [placeholder]="setting.label"
           [(ngModel)]="setting.value"
           [name]="'setting_' + setting.id">

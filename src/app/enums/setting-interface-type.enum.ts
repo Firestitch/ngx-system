@@ -6,5 +6,6 @@ export enum SettingInterfaceType {
   Date = 'A',
   File = 'F',
   Static = 'S',
-  Password = 'P'
+  Password = 'P',
+  Time = 'M',
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 
 import { FsPrompt } from '@firestitch/prompt';
+import { parse } from '@firestitch/date';
 import { FsMessage } from '@firestitch/message';
 
 import { groupBy, reduce } from 'lodash-es';
@@ -41,12 +42,15 @@ export class SettingsComponent implements OnInit {
       .subscribe((settings) => {
         settings = this._systemService.input(settings);
 
-        // settings = settings.map((setting) => {
-        //   if (setting.interfaceType === SettingInterfaceType.File && setting.value) {
-        //     setting.value = new FsFile(setting.value);
-        //   }
-        //   return setting;
-        // });
+        settings = settings.map((setting) => {
+          switch (setting.interfaceType) {
+            case SettingInterfaceType.Date:
+            case SettingInterfaceType.Time:
+              setting.value = parse(setting.value);
+              break;
+          }
+          return setting;
+        });
 
         this.groupedSettings = groupBy(settings, (item) => {
           return item.group;
