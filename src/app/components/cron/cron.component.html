@@ -1,0 +1,91 @@
+<fs-dialog *fsSkeleton="cron">
+  <h1 mat-dialog-title>
+    Cron
+    <div class="small">{{cron.name}}</div>
+  </h1>
+  <mat-dialog-content>
+    <mat-tab-group (selectedIndexChange)="selectedIndexChange($event)">
+      <mat-tab label="Overview">
+        <div class="row">
+          <fs-label-field>
+            <fs-label>
+              Status
+            </fs-label>
+            {{CronStates[cron.state]}}
+          </fs-label-field>
+
+          <fs-label-field *ngIf="cron.cronSetting">
+            <fs-label>
+              Run Frequency
+            </fs-label>
+            {{cron.cronSetting.summary}}
+          </fs-label-field>
+
+          <fs-label-field>
+            <fs-label>
+              Last Ran
+            </fs-label>
+            <ng-container *ngIf="cron.duration===null; else lastRan">
+              Never
+            </ng-container>
+            <ng-template #lastRan>
+              <fs-date-ago [date]="cron.createDate"></fs-date-ago>
+              <div><small *ngIf="cron.duration">Duration: {{ cron.duration | fsDateDuration }}</small></div>
+            </ng-template>
+          </fs-label-field>
+        </div>
+
+        <fs-label-field *ngIf="cron.message">
+          <fs-label>
+            Last Message
+          </fs-label>
+          <div class="message">{{cron.message}}</div>
+        </fs-label-field>
+      </mat-tab>
+      <mat-tab label="Logs" *ngIf="config">
+        <ng-template matTabContent>
+          <fs-list [config]="config">
+            <fs-list-column name="state" title="Status">
+              <ng-template fs-list-cell let-row="row">
+                <a 
+                    (click)="cronLogOpen(row)"
+                    [ngStyle]="{ color: CronLogStateColors[row.state] }">
+                  {{CronLogStates[row.state] || row.state}}
+                </a>
+              </ng-template>
+            </fs-list-column>
+            
+            <fs-list-column title="Message" class="col-message">
+              <ng-template fs-list-cell let-row="row">
+                <div class="message">{{row.message}}</div>
+              </ng-template>
+            </fs-list-column>
+
+            <fs-list-column name="create_date" title="Date" class="col-date">
+              <ng-template fs-list-cell let-row="row">
+                <fs-date-ago [date]="row.createDate"></fs-date-ago>
+              </ng-template>
+            </fs-list-column>
+          </fs-list> 
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+
+  </mat-dialog-content>
+  <mat-dialog-actions>   
+    <button 
+        mat-button 
+        [mat-dialog-close]="true" 
+        color="primary">
+      Done
+    </button>
+    <ng-container *ngIf="tabIndex === 0">
+      <button   
+          *ngFor="let cronAction of cronActions"
+          mat-button 
+          (click)="cronActionClick(cronAction)">
+        {{cronAction.label}}
+      </button>  
+    </ng-container>
+  </mat-dialog-actions>
+</fs-dialog>

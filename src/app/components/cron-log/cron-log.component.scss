@@ -1,0 +1,11 @@
+.message {
+  white-space: pre-line;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  fs-label-field:not(:last-child) {
+    margin-right: 40px;
+  }
+}

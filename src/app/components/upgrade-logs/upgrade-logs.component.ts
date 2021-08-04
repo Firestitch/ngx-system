@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ItemType } from '@firestitch/filter';
 import { FsListConfig, FsListComponent } from '@firestitch/list';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -14,7 +15,7 @@ export class UpgradeLogsComponent implements OnInit {
 
   @ViewChild(FsListComponent, { static: true }) list: FsListComponent;
 
-  @Input() load: Function;
+  @Input() loadUpgradeLogs: (data: any) => Observable<{ data: any[], paging: any }>;
 
   public config: FsListConfig = null;
   public logTypes = [];
@@ -36,7 +37,7 @@ export class UpgradeLogsComponent implements OnInit {
         }
       ],
       fetch: query => {
-        return this.load(query)
+        return this.loadUpgradeLogs(query)
         .pipe(
           map((response: any) => ({ data: this._systemService.input(response.data), paging: response.paging }))
         );

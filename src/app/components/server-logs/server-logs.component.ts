@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { ItemType } from '@firestitch/filter';
 import { MatDialog } from '@angular/material/dialog';
 import { ServerLogComponent } from '../server-log/server-log.component';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -15,9 +16,9 @@ import { ServerLogComponent } from '../server-log/server-log.component';
 })
 export class ServerLogsComponent implements OnInit {
 
-  @ViewChild('list', { static: true }) list: FsListComponent;
+  @ViewChild('list', { static: true }) public list: FsListComponent;
 
-  @Input() load: Function;
+  @Input() public loadLogs: (data: any) => Observable<{ data: any[], paging: any }>;
 
   public config: FsListConfig = null;
   public logTypes = [];
@@ -42,8 +43,7 @@ export class ServerLogsComponent implements OnInit {
         }
       ],
       fetch: query => {
-        Object.assign(query, { });
-        return this.load(query)
+        return this.loadLogs(query)
           .pipe(
             map((response: any) => ({ data: this._systemService.input(response.data), paging: response.paging }))
           );

@@ -1,0 +1,33 @@
+:host ::ng-deep {
+  .col-message {
+    .message {
+      white-space: break-spaces;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+
+  .col-date {
+    white-space: nowrap;
+  }
+}
+
+h1 {
+  .small {
+    line-height: normal;
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  fs-label-field:not(:last-child) {
+    margin-right: 40px;
+  }
+}
+
+.message {
+  white-space: pre-line;
+}

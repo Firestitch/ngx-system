@@ -8,3 +8,9 @@
 
 @include fs-drawer($mat-blue);
 @include fs-file($mat-blue);
+
+
+.small {
+  font-size: 11px;
+  color: rgb(65, 65, 65);
+}

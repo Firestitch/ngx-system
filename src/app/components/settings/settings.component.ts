@@ -9,6 +9,7 @@ import { ClipboardService } from 'ngx-clipboard';
 
 import { SystemService } from './../../services/system.service';
 import { SettingInterfaceType } from '../../enums';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -19,8 +20,8 @@ import { SettingInterfaceType } from '../../enums';
 })
 export class SettingsComponent implements OnInit {
 
-  @Input() public load: Function;
-  @Input() public save: Function;
+  @Input() public loadSettings: () => Observable<any[]>;
+  @Input() public save: (data: any, group: string) => Observable<any>;
 
   @Output() public fileRemove = new EventEmitter();
   @Output() public fileSelect = new EventEmitter<{ setting: any, file: Blob }>();
@@ -38,7 +39,7 @@ export class SettingsComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
-    this.load()
+    this.loadSettings()
       .subscribe((settings) => {
         settings = this._systemService.input(settings);
 

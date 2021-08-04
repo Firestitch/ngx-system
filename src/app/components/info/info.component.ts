@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy,  Input, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -9,8 +10,10 @@ import { Component, ChangeDetectionStrategy,  Input, ElementRef, ViewChild, Afte
 })
 export class InfoComponent implements AfterViewInit {
 
-  @ViewChild('iframe') iframe: ElementRef;
-  @Input() load: Function;
+  @ViewChild('iframe') 
+  public iframe: ElementRef;
+
+  @Input() public load: () => Observable<any>;
 
   ngAfterViewInit() {
     this._load();
@@ -18,7 +21,7 @@ export class InfoComponent implements AfterViewInit {
 
   private _load() {
     this.load()
-    .subscribe(info => {
+    .subscribe((info) => {
 
       info += '<style>body { background: transparent; }</style>';
 

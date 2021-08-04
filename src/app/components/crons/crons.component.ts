@@ -1,44 +1,52 @@
-import { SystemService } from './../../services';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 import { FsMessage } from '@firestitch/message';
-import { CronStates } from '../../consts';
-import { FsListConfig, FsListComponent } from '@firestitch/list';
-import { map } from 'rxjs/operators';
 import { ItemType } from '@firestitch/filter';
+import { FsListConfig, FsListComponent } from '@firestitch/list';
+
+import { map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+
+import { SystemService } from './../../services';
 import { indexNameValue } from '../../helpers/index-name-value';
+import { CronComponent } from '../cron/cron.component';
+import { CronStates } from '../../consts';
+import { CronState } from '../../enums';
 
 
 @Component({
   selector: 'fs-system-crons',
   templateUrl: './crons.component.html',
-  styleUrls: ['./crons.component.scss']
+  styleUrls: ['./crons.component.scss'],
 })
 export class CronsComponent implements OnInit {
 
   @ViewChild(FsListComponent, { static: true }) list: FsListComponent;
 
-  @Input() enable: Function;
-  @Input() disable: Function;
-  @Input() kill: Function;
-  @Input() queue: Function;
-  @Input() run: Function;
-  @Input() load: Function;
+  @Input() public enable: (data: any) => Observable<any>;
+  @Input() public disable: (data: any) => Observable<any>;
+  @Input() public kill: (data: any) => Observable<any>;
+  @Input() public queue: (data: any) => Observable<any>;
+  @Input() public run: (data: any) => Observable<any>;
+  @Input() public loadCrons: (data: any) => Observable<any[]>;
+  @Input() public loadCron: (data: any) => Observable<any>;
+  @Input() public loadCronLogs: (data: any) => Observable<{ data: any[], paging: any }>;
 
   public config: FsListConfig = null;
   public cronStates = indexNameValue(CronStates);
 
   constructor(
     private _message: FsMessage,
-    private _systemService: SystemService
+    private _systemService: SystemService,
+    private _dialog: MatDialog,
   ) { }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this._configList();
   }
 
-  private _configList() {
-
+  private _configList(): void {
     this.config = {
       paging: false,
       filters: [
@@ -48,65 +56,115 @@ export class CronsComponent implements OnInit {
           label: 'Search'
         }
       ],
-      rowActions: [
-        {
-          click: data => {
-            return this.enable(this._systemService.output(data))
-            .subscribe(() => {
-              this._message.success('Enabled cron');
-              this.list.reload();
-            })
+      rowActions: this.getCronActions()
+      .map((rowAction) => {
+        return {
+          ...rowAction,
+          click: (cron) => {
+            rowAction.action(cron)
+            .subscribe();
           },
-          label: 'Enable'
-        },
-        {
-          click: data => {
-            return this.disable(this._systemService.output(data))
-            .subscribe(() => {
-              this._message.success('Disabled cron');
-              this.list.reload();
-            })
-          },
-          label: 'Disable'
-        },
-        {
-          click: data => {
-            return this.kill(this._systemService.output(data))
-            .subscribe(() => {
-              this._message.success('Killed cron');
-              this.list.reload();
-            })
-          },
-          label: 'Kill'
-        },
-        {
-          click: data => {
-            return this.queue(this._systemService.output(data))
-            .subscribe(() => {
-              this._message.success('Queued cron');
-              this.list.reload();
-            })
-          },
-          label: 'Queue'
-        },
-        {
-          click: data => {
-            return this.run(this._systemService.output(data))
-            .subscribe(() => {
-              this._message.success('Cron ran');
-              this.list.reload();
-            })
-          },
-          label: 'Run'
         }
-      ],
+      }),
       fetch: query => {
         query.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        return this.load(query, { key: null })
+        return this.loadCrons(query)
           .pipe(
-            map(response => ({ data: this._systemService.input(response) }))
+            map((response) => ({ data: this._systemService.input(response) }))
           );
       }
     };
+  }
+
+  public open(cron) {
+    this._dialog.open(CronComponent, {
+      data: { 
+        cron,
+        loadCronLogs: this.loadCronLogs,
+        loadCron: this.loadCron,
+        cronActions: this.getCronActions(),
+      },
+      width: '85%'
+    });
+  }  
+
+  public getCronActions() {
+    return [
+      {
+        action: (data) => {
+          return this.queue(this._systemService.output(data))
+          .pipe(
+            tap(() => {
+              this._message.success('Queued cron');
+              this.list.reload();
+            }),
+          );
+        },
+        label: 'Queue',
+        show: (cron) => {
+          return cron.state === CronState.Idle || cron.state === CronState.Failed;
+        },
+      },
+      {
+        action: (data) => {
+          return this.run(this._systemService.output(data))
+          .pipe(
+            tap(() => {
+              this._message.success('Cron ran');
+              this.list.reload();
+            })
+          );
+        },
+        label: 'Run',
+        show: (cron) => {
+          return cron.state === CronState.Idle || cron.state === CronState.Failed;
+        },
+      },
+      {
+        action: (data) => {
+          return this.enable(this._systemService.output(data))
+          .pipe(
+            tap(() => {
+              this._message.success('Enabled cron');
+              this.list.reload();
+            }),
+          );
+        },
+        label: 'Enable',
+        show: (cron) => {
+          return cron.state === CronState.Disabled;
+        },
+      },
+      {
+        action: (data) => {
+          return this.disable(this._systemService.output(data))
+          .pipe(
+            tap(() => {
+              this._message.success('Disabled cron');
+              this.list.reload();
+            }),
+          );
+        },
+        label: 'Disable',
+        show: (cron) => {
+          return cron.state === CronState.Idle || cron.state === CronState.Failed;
+        },
+      },
+      {
+        action: (data) => {
+          return this.kill(this._systemService.output(data))
+          .pipe(
+            tap(() => {
+              this._message.success('Killed cron');
+              this.list.reload();
+            }),
+          );
+        },
+        label: 'Kill',
+        show: (cron) => {
+          return cron.state === CronState.Running;
+        },
+      },
+    ];    
   }
 }

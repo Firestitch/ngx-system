@@ -39,6 +39,9 @@ import { ApiLogComponent } from './components/api-log/api-log.component';
 import { InfoComponent } from './components/info/info.component';
 import { ProcessComponent } from './components/process/process.component';
 import { ClipboardModule } from 'ngx-clipboard';
+import { CronComponent } from './components/cron';
+import { MatTabsModule } from '@angular/material/tabs';
+import { CronLogComponent } from './components/cron-log';
 
 @NgModule({
   imports: [
@@ -54,6 +57,7 @@ import { ClipboardModule } from 'ngx-clipboard';
     MatInputModule,
     MatSelectModule,
     MatDialogModule,
+    MatTabsModule,
 
     FsDateModule,
     FsSkeletonModule,
@@ -66,7 +70,6 @@ import { ClipboardModule } from 'ngx-clipboard';
     FsMenuModule,
 
     ClipboardModule,
-
   ],
   exports: [
     DashboardComponent,
@@ -93,11 +96,8 @@ import { ClipboardModule } from 'ngx-clipboard';
     ApiLogComponent,
     InfoComponent,
     ProcessComponent,
-  ],
-  entryComponents: [
-    ServerLogComponent,
-    ApiLogComponent,
-    ProcessComponent,
+    CronComponent,
+    CronLogComponent,
   ],
   providers: [
     SystemService

@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ApiLogStates } from '../../consts';
 import { ApiLogComponent } from '../api-log/api-log.component';
 import { indexNameValue } from '../../helpers/index-name-value';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -16,9 +17,10 @@ import { indexNameValue } from '../../helpers/index-name-value';
 })
 export class ApiLogsComponent implements OnInit {
 
-  @ViewChild(FsListComponent, { static: true }) list: FsListComponent;
+  @ViewChild(FsListComponent, { static: true }) 
+  public list: FsListComponent;
 
-  @Input() load: Function;
+  @Input() loadApiLogs: (data: any) => Observable<{ data: any[], paging: any }>;
 
   public config: FsListConfig = null;
   public apiLogStates = indexNameValue(ApiLogStates);
@@ -55,7 +57,7 @@ export class ApiLogsComponent implements OnInit {
       ],
       fetch: query => {
         Object.assign(query, { });
-        return this.load(query)
+        return this.loadApiLogs(query)
           .pipe(
             map((response: any) => ({ data: this._systemService.input(response.data), paging: response.paging }))
           );

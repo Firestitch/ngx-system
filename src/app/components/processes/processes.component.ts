@@ -23,13 +23,13 @@ export class ProcessesComponent implements OnInit, OnDestroy {
 
   @ViewChild(FsListComponent) list: FsListComponent;
 
-  @Input() load: (data: any) => Observable<any>;
-  @Input() loadProcess: (data: any) => Observable<any>;
-  @Input() run: (data: any) => Observable<any>;
-  @Input() kill: (data: any) => Observable<any>;
-  @Input() delete: (data: any) => Observable<any>;
-  @Input() download: (data: any) => any;
-  @Input() actions: ProcessAction[] = [];
+  @Input() public loadProcesses: (data: any) => Observable<{ data: any[], paging: any }>;
+  @Input() public loadProcess: (data: any) => Observable<any>;
+  @Input() public run: (data: any) => Observable<any>;
+  @Input() public kill: (data: any) => Observable<any>;
+  @Input() public delete: (data: any) => Observable<any>;
+  @Input() public download: (data: any) => any;
+  @Input() public actions: ProcessAction[] = [];
 
   public config: FsListConfig = null;
   public ProcessStates = indexNameValue(ProcessStates);
@@ -66,7 +66,7 @@ export class ProcessesComponent implements OnInit, OnDestroy {
         },
       ],
       fetch: query => {
-        return this.load(query)
+        return this.loadProcesses(query)
           .pipe(
             map((response: any) => ({ data: this._systemService.input(response.data), paging: response.paging }))
           );

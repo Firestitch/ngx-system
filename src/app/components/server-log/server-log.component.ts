@@ -15,15 +15,15 @@ export class ServerLogComponent implements OnInit {
   public ngOnInit() {
 
     if (this.data.log) {
-       this.log = this.data.log;
+      this.log = this.data.log;
 
-        try {
-          this.log.backtrace = JSON.parse(this.log.backtrace);
-        } catch (e) {}
+      try {
+        this.log.backtrace = JSON.parse(this.log.backtrace);
+      } catch (e) {}
 
-        try {
-          this.log.server = JSON.parse(this.log.server);
-        } catch (e) {}
+      try {
+        this.log.server = JSON.parse(this.log.server);
+      } catch (e) {}
     }
   }
 }
