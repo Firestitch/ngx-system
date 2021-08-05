@@ -7,7 +7,7 @@
           Status
         </fs-label>
         <div [ngStyle]="{ color: CronLogStateColors[cronLog.state]}">
-          {{CronLogStates[cronLog.state]}}
+          {{CronLogStates[cronLog.state] || cronLog.state}}
         </div>
       </fs-label-field>
 

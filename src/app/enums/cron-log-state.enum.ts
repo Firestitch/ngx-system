@@ -8,4 +8,6 @@ export enum CronLogState {
   Killed = 'killed',
   Queued = 'queued',
   Reset = 'reset',
+  Stagnant = 'stagnant',
+  LongRunning = 'long_running',
 }

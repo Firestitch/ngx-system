@@ -10,4 +10,6 @@ export const CronLogStates = [
   { name: 'Killed', value: CronLogState.Killed, color: '#29B7FF' },
   { name: 'Queued', value: CronLogState.Queued, color: '#29B7FF' },
   { name: 'Reset', value: CronLogState.Reset, color: '#29B7FF' },
+  { name: 'Stagnant', value: CronLogState.Stagnant, color: '#FA7567' },
+  { name: 'Long Running', value: CronLogState.LongRunning, color: '#FA7567' },
 ];
