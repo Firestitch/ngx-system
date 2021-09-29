@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { FsMessage } from '@firestitch/message';
 import { ItemType } from '@firestitch/filter';
-import { FsListConfig, FsListComponent } from '@firestitch/list';
+import { FsListConfig, FsListComponent, FsListActionSelected } from '@firestitch/list';
 
 import { map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -13,6 +13,7 @@ import { indexNameValue } from '../../helpers/index-name-value';
 import { CronComponent } from '../cron/cron.component';
 import { CronStates } from '../../consts';
 import { CronState } from '../../enums';
+import { SelectionActionType } from '@firestitch/selection';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class CronsComponent implements OnInit {
   @Input() public loadCrons: (data: any) => Observable<any[]>;
   @Input() public loadCron: (data: any) => Observable<any>;
   @Input() public loadCronLogs: (data: any) => Observable<{ data: any[], paging: any }>;
+  @Input() public bulk: (actionName: string, data: any[]) => Observable<any>;
 
   public config: FsListConfig = null;
   public cronStates = indexNameValue(CronStates);
@@ -72,8 +74,35 @@ export class CronsComponent implements OnInit {
           .pipe(
             map((response) => ({ data: this._systemService.input(response) }))
           );
-      }
+      },    
     };
+
+    if(this.bulk) {
+      this.config.selection = {
+        selectAll: false,
+        actions: [
+          {
+            type: SelectionActionType.Action,
+            name: 'disable',
+            label: 'Disable'
+          },
+          {
+            type: SelectionActionType.Action,
+            name: 'enable',
+            label: 'Enable'
+          },
+        ],
+        actionSelected: (action: FsListActionSelected) => {
+          return this.bulk(action.action.name, action.selected)
+          .pipe(
+            tap(() => {
+              this.list.reload();
+              this._message.success('Applied Changes');
+            }),
+          );
+        },
+      };
+    }
   }
 
   public open(cron) {
