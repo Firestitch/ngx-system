@@ -37,19 +37,19 @@ export class DashboardComponent {
 
   public load = () => {
     return of({
-      git_branch: 'develop',
-      notify_recipients: ['sysadmin@firestitch.com'],
-      server_timezone: 'UTC +00:00',
-      database_name: 'boilerplate',
-      database_time: '2019-11-30T17:00:34+00:00',
-      database_timezone: 'SYSTEM',
-      app_mode: 'Debug',
-      last_upgrade: '2019-11-29T15:13:22+00:00',
-      cron_ran: '2019-11-30T17:00:02+00:00',
-      app_directory: '\/var\/www\/boilerplate',
-      server_hostname: 'boilerplate.firestitch.com',
+      gitBranch: 'develop',
+      notifyRecipients: ['sysadmin@firestitch.com'],
+      serverTimezone: 'UTC +00:00',
+      databaseName: 'boilerplate',
+      databaseTime: '2019-11-30T17:00:34+00:00',
+      databaseTimezone: 'SYSTEM',
+      appMode: 'Debug',
+      lastUpgrade: '2019-11-29T15:13:22+00:00',
+      cronRan: '2019-11-30T17:00:02+00:00',
+      appDirectory: '\/var\/www\/boilerplate',
+      serverHostname: 'boilerplate.firestitch.com',
       upgrades: ['upgrade 1', 'upgrade 2', 'upgrade 3'],
-      server_time: '2019-11-30T17:00:34+00:00',
+      serverTime: '2019-11-30T17:00:34+00:00',
     })
     .pipe(
       delay(0)

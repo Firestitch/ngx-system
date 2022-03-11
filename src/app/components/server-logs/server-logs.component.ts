@@ -1,4 +1,3 @@
-import { SystemService } from './../../services/system.service';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 
 import { FsListConfig, FsListComponent } from '@firestitch/list';
@@ -25,7 +24,6 @@ export class ServerLogsComponent implements OnInit {
 
   constructor(
     private _dialog: MatDialog,
-    private _systemService: SystemService
   ) { }
 
   ngOnInit() {
@@ -45,14 +43,14 @@ export class ServerLogsComponent implements OnInit {
       fetch: query => {
         return this.loadLogs(query)
           .pipe(
-            map((response: any) => ({ data: this._systemService.input(response.data), paging: response.paging }))
+            map((response: any) => ({ data: response.data, paging: response.paging }))
           );
       }
     };
   }
 
   public open(log) {
-    const dialogRef = this._dialog.open(ServerLogComponent, {
+    this._dialog.open(ServerLogComponent, {
       data: { log: log },
       width: '85%'
     });

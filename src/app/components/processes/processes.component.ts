@@ -2,7 +2,6 @@ import { ProcessComponent } from './../process/process.component';
 import { ProcessState } from '../../enums';
 import { FsMessage } from '@firestitch/message';
 import { ProcessAction } from './../../interfaces/process-action';
-import { SystemService } from './../../services/system.service';
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 
 import { ItemType } from '@firestitch/filter';
@@ -38,7 +37,6 @@ export class ProcessesComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
   constructor(
-    private _systemService: SystemService,
     private _dialog: MatDialog,
     private _message: FsMessage
   ) { }
@@ -68,7 +66,7 @@ export class ProcessesComponent implements OnInit, OnDestroy {
       fetch: query => {
         return this.loadProcesses(query)
           .pipe(
-            map((response: any) => ({ data: this._systemService.input(response.data), paging: response.paging }))
+            map((response: any) => ({ data: response.data, paging: response.paging }))
           );
       }
     };

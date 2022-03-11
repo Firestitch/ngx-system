@@ -31,7 +31,7 @@
           matInput
           [placeholder]="setting.label"
           [(ngModel)]="setting.value"
-          [name]="'setting_' + setting.id">
+          [name]="'setting' + setting.id">
           <mat-hint>{{setting.instruction}}</mat-hint>
       </mat-form-field>
 
@@ -40,16 +40,17 @@
           matInput
           [placeholder]="setting.label"
           [(ngModel)]="setting.value"
-          [name]="'setting_' + setting.id">
+          [name]="'setting' + setting.id">
         </textarea>
         <mat-hint>{{setting.instruction}}</mat-hint>
       </mat-form-field>
 
-      <mat-form-field class="full-width" *ngIf="setting.interfaceType===SettingInterfaceType.DropDown">
+      <mat-form-field class="full-width" *ngIf="setting.interfaceType===SettingInterfaceType.Select || setting.interfaceType===SettingInterfaceType.SelectMultiple">
         <mat-select
-           [placeholder]="setting.label"
-          [(ngModel)]="setting.value"
-          [name]="'setting_' + setting.id">
+            [placeholder]="setting.label"
+            [(ngModel)]="setting.value"
+            [multiple]="setting.interfaceType===SettingInterfaceType.SelectMultiple"
+            [name]="'setting' + setting.id">
           <mat-option *ngFor="let item of setting.values | keyNameValue" [value]="item.value">
             {{item.name}}
           </mat-option>
@@ -63,7 +64,7 @@
           fsDatePicker
           [placeholder]="setting.label"
           [(ngModel)]="setting.value"
-          [name]="'setting_' + setting.id">
+          [name]="'setting' + setting.id">
           <mat-hint>{{setting.instruction}}</mat-hint>
       </mat-form-field>
 
@@ -73,7 +74,7 @@
           fsTimePicker
           [placeholder]="setting.label"
           [(ngModel)]="setting.value"
-          [name]="'setting_' + setting.id">
+          [name]="'setting' + setting.id">
           <mat-hint>{{setting.instruction}}</mat-hint>
       </mat-form-field>
 

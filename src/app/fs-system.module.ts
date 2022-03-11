@@ -1,6 +1,5 @@
 import { FsSystemConfig } from './interfaces/system-config';
 import { FS_SYSTEM_CONFIG } from './injectors/system-config.injector';
-import { SystemService } from './services/system.service';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -98,9 +97,6 @@ import { CronLogComponent } from './components/cron-log';
     ProcessComponent,
     CronComponent,
     CronLogComponent,
-  ],
-  providers: [
-    SystemService
   ],
 })
 export class FsSystemModule {

@@ -9,7 +9,6 @@ import { Subject } from 'rxjs';
 import { differenceInMinutes } from 'date-fns';
 
 import { DashboardAction } from './../../interfaces/dashboard-action';
-import { SystemService } from './../../services/system.service';
 
 
 @Component({
@@ -36,7 +35,6 @@ export class DashboardComponent implements OnInit {
   constructor(
     private _message: FsMessage,
     private _cdRef: ChangeDetectorRef,
-    private _systemService: SystemService,
     private _buildService: FsBuildService,
   ) { }
 
@@ -59,7 +57,7 @@ export class DashboardComponent implements OnInit {
   private _load() {
     this.load()
     .subscribe((dashboard) => {
-      this.dashboard = this._systemService.input(dashboard);
+      this.dashboard = dashboard;
       this.dashboard.cronRanAttention = !dashboard.cronRan ||
          differenceInMinutes(new Date(), new Date(dashboard.cronRan)) > 15;
       this._cdRef.markForCheck();

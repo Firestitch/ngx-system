@@ -7,7 +7,6 @@ import { FsMessage } from '@firestitch/message';
 import { groupBy, reduce } from 'lodash-es';
 import { ClipboardService } from 'ngx-clipboard';
 
-import { SystemService } from './../../services/system.service';
 import { SettingInterfaceType } from '../../enums';
 import { Observable } from 'rxjs';
 
@@ -32,7 +31,6 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private _message: FsMessage,
-    private _systemService: SystemService,
     private _clipboardService: ClipboardService,
     private _prompt: FsPrompt,
     private _cdRef: ChangeDetectorRef,
@@ -41,13 +39,14 @@ export class SettingsComponent implements OnInit {
   public ngOnInit(): void {
     this.loadSettings()
       .subscribe((settings) => {
-        settings = this._systemService.input(settings);
-
         settings = settings.map((setting) => {
           switch (setting.interfaceType) {
             case SettingInterfaceType.Date:
             case SettingInterfaceType.Time:
               setting.value = parse(setting.value);
+
+            case SettingInterfaceType.SelectMultiple:
+              setting.value = Array.isArray(setting.value) ? setting.value : [];
               break;
           }
           return setting;

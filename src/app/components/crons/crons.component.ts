@@ -8,7 +8,6 @@ import { FsListConfig, FsListComponent, FsListActionSelected } from '@firestitch
 import { map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import { SystemService } from './../../services';
 import { indexNameValue } from '../../helpers/index-name-value';
 import { CronComponent } from '../cron/cron.component';
 import { CronStates } from '../../consts';
@@ -40,7 +39,6 @@ export class CronsComponent implements OnInit {
 
   constructor(
     private _message: FsMessage,
-    private _systemService: SystemService,
     private _dialog: MatDialog,
   ) { }
 
@@ -72,7 +70,7 @@ export class CronsComponent implements OnInit {
         query.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         return this.loadCrons(query)
           .pipe(
-            map((response) => ({ data: this._systemService.input(response) }))
+            map((response) => ({ data: response }))
           );
       },    
     };
@@ -121,7 +119,7 @@ export class CronsComponent implements OnInit {
     return [
       {
         action: (data) => {
-          return this.queue(this._systemService.output(data))
+          return this.queue(data)
           .pipe(
             tap(() => {
               this._message.success('Queued cron');
@@ -136,7 +134,7 @@ export class CronsComponent implements OnInit {
       },
       {
         action: (data) => {
-          return this.run(this._systemService.output(data))
+          return this.run(data)
           .pipe(
             tap(() => {
               this._message.success('Cron ran');
@@ -151,7 +149,7 @@ export class CronsComponent implements OnInit {
       },
       {
         action: (data) => {
-          return this.enable(this._systemService.output(data))
+          return this.enable(data)
           .pipe(
             tap(() => {
               this._message.success('Enabled cron');
@@ -166,7 +164,7 @@ export class CronsComponent implements OnInit {
       },
       {
         action: (data) => {
-          return this.disable(this._systemService.output(data))
+          return this.disable(data)
           .pipe(
             tap(() => {
               this._message.success('Disabled cron');
@@ -181,7 +179,7 @@ export class CronsComponent implements OnInit {
       },
       {
         action: (data) => {
-          return this.kill(this._systemService.output(data))
+          return this.kill(data)
           .pipe(
             tap(() => {
               this._message.success('Killed cron');

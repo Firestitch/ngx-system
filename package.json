@@ -2,7 +2,7 @@
   "name": "@firestitch/system",
   "title": "System",
   "description": "@firestitch/system",
-  "version": "9.1.8",
+  "version": "9.2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-system"
@@ -73,7 +73,6 @@
     "@firestitch/skeleton": "^8.1.4",
     "@firestitch/store": "^8.1.0",
     "@firestitch/style": "^8.2.1",
-    "camelcase-keys": "^6.2.1",
     "change-case": "^4.1.1",
     "codelyzer": "^5.1.2",
     "cpx": "^1.5.0",
@@ -90,7 +89,6 @@
     "ngx-toastr": "^12.1.0",
     "npm-run-all": "^4.1.5",
     "rxjs": "^6.5.3",
-    "snakecase-keys": "^3.1.2",
     "tslint": "^5.20.0",
     "tsmodels": "^0.4.7",
     "typescript": "^3.8.3",
