@@ -39,7 +39,11 @@ export class SettingsComponent implements OnInit {
   public ngOnInit(): void {
     this.loadSettings()
       .subscribe((settings) => {
-        settings = settings.map((setting) => {
+        settings = settings
+        .filter((setting) => {
+          return setting.interfaceType !== SettingInterfaceType.None;
+        })
+        .map((setting) => {
           switch (setting.interfaceType) {
             case SettingInterfaceType.Date:
             case SettingInterfaceType.Time:
@@ -55,6 +59,7 @@ export class SettingsComponent implements OnInit {
         this.groupedSettings = groupBy(settings, (item) => {
           return item.group;
         });
+        
         this.groups = Object.keys(this.groupedSettings);
         this._cdRef.markForCheck();
       });

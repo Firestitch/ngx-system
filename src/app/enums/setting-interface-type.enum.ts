@@ -9,4 +9,5 @@ export enum SettingInterfaceType {
   Static = 'S',
   Password = 'P',
   Time = 'M',
+  None = 'N',
 }
