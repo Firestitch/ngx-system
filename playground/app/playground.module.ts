@@ -53,7 +53,7 @@ const routes: Routes = [
     FsExampleModule.forRoot(),
     FsMessageModule.forRoot(),
     ToastrModule.forRoot({ preventDuplicates: true }),
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
     FsListModule.forRoot(),
     FsScrollModule.forRoot(),
     FsBuildModule.forRoot({
@@ -61,7 +61,7 @@ const routes: Routes = [
       path: 'pub/build.json',
     }),
     FsDatePickerModule.forRoot(),
-    FsSelectionModule.forRoot(),
+    FsSelectionModule,
        FsFileModule.forRoot({
       allowDownload: true,
       allowRemove: true,
