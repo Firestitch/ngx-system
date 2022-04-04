@@ -2,7 +2,7 @@
   "name": "@firestitch/system",
   "title": "System",
   "description": "@firestitch/system",
-  "version": "12.1.1",
+  "version": "12.1.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-system"
@@ -49,6 +49,7 @@
     "@firestitch/chip": "^12.0.0",
     "@firestitch/clear": "^12.0.0",
     "@firestitch/common": "^12.0.0",
+    "@firestitch/colorpicker": "^12.0.0",
     "@firestitch/date": "^12.0.0",
     "@firestitch/datepicker": "^12.1.0",
     "@firestitch/dialog": "^12.0.1",
@@ -95,7 +96,8 @@
     "tslint": "~6.1.0",
     "tsmodels": "^0.4.7",
     "typescript": "4.3.5",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "color": "^4.2.1"
   },
   "engines": {
     "node": ">=6.0.0"

@@ -17,8 +17,9 @@ export class SettingsComponent {
 
   public load = () => {
     return of([
-      {"label":"App Name","group":"","values":null,"interfaceType":"I","instruction":"","id":1,"name":"APP_NAME","value":"FS Boilerplate"},
+      {"label":"App Name","group":"","values":null,"interfaceType":"I","instruction":"Human readable name","id":1,"name":"APP_NAME","value":"FS Boilerplate"},
       {"label":"App URL","group":"","values":null,"interfaceType":"I","instruction":"","id":2,"name":"APP_URL","value":"https:\/\/boilerplate.firestitch.com\/"},
+      {"label":"Color","group":"","values":null,"interfaceType":"C","instruction":"","id":1,"name":"APP_COLOR","value":"#CB5858"},
       {"label":"From Email Address","group":"SMTP","values":null,"interfaceType":"I","instruction":"","id":7,"name":"SMTP_FROM_EMAIL","value":"noreply@firestitch.com"},
       {"label":"From Email Name","group":"SMTP","values":null,"interfaceType":"I","instruction":"","id":8,"name":"SMTP_FROM_NAME","value":"noreply@firestitch.com"},
       {"label":"AWS Access Key ID","group":"AWS","values":null,"interfaceType":"I","instruction":"","id":9,"name":"AWS_ACCESS_KEY_ID","value":"xxxxxxxxxxxxx"},
@@ -33,7 +34,7 @@ export class SettingsComponent {
       {"label":"Client Secret","group":"Google","values":null,"interfaceType":"I","instruction":"","id":20,"name":"GOOGLE_CLIENT_SECRET","value":"xxxxxxxxxxxxx"},
       {"label":"API Key","group":"SMTP","values":null,"interfaceType":"I","instruction":"","id":21,"name":"SMTP_API_KEY","value":"xxxxxxxxxxxxx"},
       {"label":"Date","group":"Date","values":null,"interfaceType":"A","instruction":"","id":21,"name":"DATE","value":""},
-      {"label":"File","group":"File","interfaceType":"F","instruction":"","id":21,"name":"DATE","value":"https://cdn.hipwallpaper.com/i/30/77/AKPMDF.jpg"},
+      {"label":"File","group":"File","interfaceType":"F","instruction":"Png's are only supported","id":21,"name":"DATE","value":"https://cdn.hipwallpaper.com/i/30/77/AKPMDF.jpg"},
       {"label":"Time","group":"Date","interfaceType":"M","instruction":"","id":22,"name":"TIME","value":""}
     ]);
   }

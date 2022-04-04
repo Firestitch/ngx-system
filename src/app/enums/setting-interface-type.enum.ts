@@ -10,4 +10,5 @@ export enum SettingInterfaceType {
   Password = 'P',
   Time = 'M',
   None = 'N',
+  Color = 'C',
 }

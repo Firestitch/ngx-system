@@ -25,7 +25,11 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div hideToggle *ngFor="let setting of groupedSettings[group]">
+    <div 
+        hideToggle 
+        *ngFor="let setting of groupedSettings[group]" 
+        class="setting"
+        [ngClass]="{ 'has-instruction': !! setting.instruction }">
       <mat-form-field 
           class="full-width form-field-multiline-subscript"
           *ngIf="setting.interfaceType===SettingInterfaceType.InputBox">
@@ -78,6 +82,18 @@
 
       <mat-form-field 
           class="full-width form-field-multiline-subscript" 
+          *ngIf="setting.interfaceType===SettingInterfaceType.Color">
+        <input
+          matInput
+          fsColorPicker
+          [placeholder]="setting.label"
+          [(ngModel)]="setting.value"
+          [name]="'setting' + setting.id">
+          <mat-hint>{{setting.instruction}}</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field 
+          class="full-width form-field-multiline-subscript" 
           *ngIf="setting.interfaceType===SettingInterfaceType.Time">
         <input
           matInput
@@ -96,6 +112,7 @@
         (remove)="fileRemove.emit(setting)"
         [url]="setting.value">
         <div fsFileLabel>{{setting.label}}</div>
+        <div fsFileLabelMessage>{{setting.instruction}}</div>
       </fs-file-picker>
     </div>
 
