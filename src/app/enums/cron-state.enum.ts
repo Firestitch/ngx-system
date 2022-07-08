@@ -3,5 +3,6 @@ export enum CronState {
   Idle = 'idle',
   Failed = 'failed',
   Queued = 'queued',
-  Disabled = 'disabled'
+  Disabled = 'disabled',
+  Killing = 'killing'
 }

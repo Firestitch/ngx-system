@@ -23,6 +23,7 @@ import { FsDialogModule } from '@firestitch/dialog';
 import { FsLabelModule } from '@firestitch/label';
 import { FsFileModule } from '@firestitch/file';
 import { FsMenuModule } from '@firestitch/menu';
+import { FsPopoverModule } from '@firestitch/popover';
 import { FsColorPickerModule } from '@firestitch/colorpicker';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -68,6 +69,7 @@ import { CronLogComponent } from './components/cron-log';
     FsDialogModule,
     FsDatePickerModule,
     FsMenuModule,
+    FsPopoverModule,
     FsColorPickerModule,
 
     ClipboardModule,

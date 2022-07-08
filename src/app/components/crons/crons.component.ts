@@ -1,18 +1,19 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { FsMessage } from '@firestitch/message';
 import { ItemType } from '@firestitch/filter';
 import { FsListConfig, FsListComponent, FsListActionSelected } from '@firestitch/list';
 
-import { map, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 
 import { indexNameValue } from '../../helpers/index-name-value';
 import { CronComponent } from '../cron/cron.component';
 import { CronStates } from '../../consts';
 import { CronState } from '../../enums';
 import { SelectionActionType } from '@firestitch/selection';
+import { FsPrompt } from '@firestitch/prompt';
 
 
 @Component({
@@ -20,7 +21,7 @@ import { SelectionActionType } from '@firestitch/selection';
   templateUrl: './crons.component.html',
   styleUrls: ['./crons.component.scss'],
 })
-export class CronsComponent implements OnInit {
+export class CronsComponent implements OnInit, OnDestroy {
 
   @ViewChild(FsListComponent, { static: true }) list: FsListComponent;
 
@@ -37,9 +38,12 @@ export class CronsComponent implements OnInit {
   public config: FsListConfig = null;
   public cronStates = indexNameValue(CronStates);
 
+  private _destroy$ = new Subject();
+  
   constructor(
     private _message: FsMessage,
     private _dialog: MatDialog,
+    private _prompt: FsPrompt,
   ) { }
 
   public ngOnInit(): void {
@@ -179,19 +183,53 @@ export class CronsComponent implements OnInit {
       },
       {
         action: (data) => {
-          return this.kill(data)
-          .pipe(
-            tap(() => {
-              this._message.success('Killed cron');
-              this.list.reload();
-            }),
-          );
+          return this._prompt.confirm({
+            title: 'Confirm',
+            template: 'Are you sure you would like to kill the cron?',
+          })
+            .pipe(
+              switchMap(() => {
+                return this.kill(data);
+              }),
+              tap(() => {
+                this._message.success('Killed cron');
+                this.list.reload();
+              }),              
+              takeUntil(this._destroy$),
+            );          
         },
         label: 'Kill',
         show: (cron) => {
           return cron.state === CronState.Running;
         },
       },
+      {
+        action: (data) => {
+          return this._prompt.confirm({
+            title: 'Confirm',
+            template: 'Are you sure you would like to reset the cron?',
+          })
+            .pipe(
+              switchMap(() => {
+                return this.enable(data);
+              }),
+              tap(() => {
+                this._message.success('Reset cron');
+                this.list.reload();
+              }),              
+              takeUntil(this._destroy$),
+            ); 
+        },
+        label: 'Reset',
+        show: (cron) => {
+          return cron.state === CronState.Killing || cron.state === CronState.Running || cron.state === CronState.Failed || cron.state === CronState.Queued;
+        },
+      },
     ];    
+  }
+
+  public ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }

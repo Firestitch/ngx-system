@@ -8,10 +8,24 @@
       </div>
     </ng-template>
   </fs-list-column>
-  <fs-list-column>
+  <fs-list-column align="center">
     <ng-template fs-list-header>Status</ng-template>
     <ng-template fs-list-cell let-row="row">
-      {{cronStates[row.state]}}
+      <ng-container *ngIf="row.host || row.processId; else status">
+        <fs-popover 
+            [maxWidth]="false"
+            [template]="statusPopover" 
+            size="small">
+          <ng-container *ngTemplateOutlet="status"></ng-container>
+        </fs-popover>
+        <ng-template #statusPopover>
+          <div *ngIf="row.host">Host: {{row.host}}</div>
+          <div *ngIf="row.processId">Process ID: {{row.processId}}</div>
+        </ng-template>
+      </ng-container>
+      <ng-template #status>
+        {{cronStates[row.state]}}
+      </ng-template>
     </ng-template>
   </fs-list-column>
   <fs-list-column>

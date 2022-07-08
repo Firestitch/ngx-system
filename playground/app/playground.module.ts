@@ -34,6 +34,7 @@ import { InfoComponent } from './components/info';
 import { FsDatePickerModule } from '@firestitch/datepicker';
 import { FsDialogModule } from '@firestitch/dialog';
 import { FsFormModule } from '@firestitch/form';
+import { FsPopoverModule } from '@firestitch/popover';
 
 const routes: Routes = [
   { path: '', component: ExamplesComponent },
@@ -51,6 +52,7 @@ const routes: Routes = [
     FsFormModule,
     FsDialogModule,
     FsExampleModule.forRoot(),
+    FsPopoverModule.forRoot(),
     FsMessageModule.forRoot(),
     ToastrModule.forRoot({ preventDuplicates: true }),
     RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
