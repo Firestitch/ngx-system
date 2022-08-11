@@ -3,9 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy
 import { FsPrompt } from '@firestitch/prompt';
 import { parse } from '@firestitch/date';
 import { FsMessage } from '@firestitch/message';
-
-import { groupBy, reduce } from 'lodash-es';
-import { ClipboardService } from 'ngx-clipboard';
+import { FsClipboard } from '@firestitch/clipboard';
 
 import { SettingInterfaceType } from '../../enums';
 import { Observable } from 'rxjs';
@@ -31,7 +29,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private _message: FsMessage,
-    private _clipboardService: ClipboardService,
+    private _clipboard: FsClipboard,
     private _prompt: FsPrompt,
     private _cdRef: ChangeDetectorRef,
   ) { }
@@ -56,9 +54,14 @@ export class SettingsComponent implements OnInit {
           return setting;
         });
 
-        this.groupedSettings = groupBy(settings, (item) => {
-          return item.group;
-        });
+        this.groupedSettings = settings.reduce((accum, item) => {
+          if(accum[item.group] === undefined) {
+            accum[item.group] = [];
+          }
+          accum[item.group].push(item);
+
+          return accum;
+        }, {});
         
         this.groups = Object.keys(this.groupedSettings);
         this._cdRef.markForCheck();
@@ -75,7 +78,7 @@ export class SettingsComponent implements OnInit {
       }
     });
 
-    this._clipboardService.copy(JSON.stringify(data));
+    this._clipboard.copy(JSON.stringify(data));
     this._message.success('Copied to clipboard');
   }
 
@@ -112,7 +115,7 @@ export class SettingsComponent implements OnInit {
 
   public saveGroup(group): void {
     const settings = this.groupedSettings[group];
-    const values = reduce(settings, (result, value, key) => {
+    const values = settings.reduce((result, value) => {
       return (result[value.name] = value.value, result);
     }, {});
 

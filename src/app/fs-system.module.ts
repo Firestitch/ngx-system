@@ -39,7 +39,6 @@ import { ApiLogsComponent } from './components/api-logs/api-logs.component';
 import { ApiLogComponent } from './components/api-log/api-log.component';
 import { InfoComponent } from './components/info/info.component';
 import { ProcessComponent } from './components/process/process.component';
-import { ClipboardModule } from 'ngx-clipboard';
 import { CronComponent } from './components/cron';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CronLogComponent } from './components/cron-log';
@@ -71,8 +70,6 @@ import { CronLogComponent } from './components/cron-log';
     FsMenuModule,
     FsPopoverModule,
     FsColorPickerModule,
-
-    ClipboardModule,
   ],
   exports: [
     DashboardComponent,
