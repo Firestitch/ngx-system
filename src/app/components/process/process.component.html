@@ -10,7 +10,6 @@
       </fs-label-field>
 
       <div fxLayout="row" fxLayoutGap="20px">
-
         <fs-label-field>
           <fs-label>
             Status
@@ -34,7 +33,7 @@
       </div>
 
       <div fxLayout="row" fxLayoutGap="20px">
-        <fs-label-field>
+        <fs-label-field *ngIf="process.createDate">
           <fs-label>
             Create Date
           </fs-label>
@@ -79,12 +78,29 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="true" color="primary">Done</button>
-    <button
-      *ngIf="process.state===ProcessState.Running && data.loadProcess"
-      mat-button
-      (click)="load()">
-      Reload
+    <button 
+        mat-button 
+        [mat-dialog-close]="true" 
+        color="primary">
+      Close
     </button>
+    <button
+        *ngIf="process.state === ProcessState.Running && data.loadProcess"
+        mat-button
+        (click)="load()">
+      Refresh
+    </button>
+    <button 
+        *ngIf="process.state !== ProcessState.Running && data.run" 
+        mat-button 
+        (click)="run()">
+      Run
+    </button>
+    <button
+        *ngIf="process.filename"
+        mat-button
+        (click)="download()">
+      Download
+    </button>    
   </mat-dialog-actions>
 </fs-dialog>

@@ -1,22 +1,26 @@
+import { Component, OnInit, Input, ViewChild, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+
+import { MatDialog } from '@angular/material/dialog';
+
+import { FsMessage } from '@firestitch/message';
+import { FsListComponent, FsListConfig } from '@firestitch/list';
+import { ItemType } from '@firestitch/filter';
+
+import { map, takeUntil } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
+
 import { ProcessComponent } from './../process/process.component';
 import { ProcessState } from '../../enums';
-import { FsMessage } from '@firestitch/message';
-import { ProcessAction } from './../../interfaces/process-action';
-import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
-
-import { ItemType } from '@firestitch/filter';
+import { ProcessAction } from './../../interfaces/process-action'; 
 import { ProcessStates } from '../../consts';
-import { FsListComponent, FsListConfig } from '@firestitch/list';
-import { map, takeUntil } from 'rxjs/operators';
 import { indexNameValue } from '../../helpers/index-name-value';
-import { MatDialog } from '@angular/material/dialog';
-import { Subject, Observable } from 'rxjs';
 
 
 @Component({
   selector: 'fs-system-processes',
   templateUrl: './processes.component.html',
-  styleUrls: ['./processes.component.scss']
+  styleUrls: ['./processes.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProcessesComponent implements OnInit, OnDestroy {
 
@@ -46,7 +50,6 @@ export class ProcessesComponent implements OnInit, OnDestroy {
   }
 
   private _configList() {
-
     this.config = {
       actions: [],
       rowActions: [],
@@ -63,7 +66,7 @@ export class ProcessesComponent implements OnInit, OnDestroy {
           values: ProcessStates
         },
       ],
-      fetch: query => {
+      fetch: (query) => {
         return this.loadProcesses(query)
           .pipe(
             map((response: any) => ({ data: response.data, paging: response.paging }))
@@ -72,21 +75,26 @@ export class ProcessesComponent implements OnInit, OnDestroy {
     };
 
     if (this.run) {
-      this.config.rowActions.push({
-        label: 'Run',
-        click: (data) => {
-          this._message.info('Running process...');
-          this.run(data)
-          .subscribe(() => {
-            this.list.reload();
-            this._message.success('Succesfully ran process');
-          });
+      this.config.rowActions.push(
+        {
+          label: 'Run',
+          show: (process) => {
+            return process.state !== ProcessState.Running;
+          },
+          click: (data) => {
+            this._message.info('Running process...');
+            this.run(data)
+              .subscribe(() => {
+                this.list.reload();
+                this._message.success('Succesfully ran process');
+              });
 
-          setTimeout(() => {
-            this.list.reload();
-          }, 500);
+            setTimeout(() => {
+              this.list.reload();
+            }, 500);
+          }
         }
-      });
+      );
     }
 
     if (this.kill) {
@@ -124,30 +132,32 @@ export class ProcessesComponent implements OnInit, OnDestroy {
     }
 
     this.actions.forEach(action => {
-      this.config.actions.push({
-        primary: false,
-        label: action.label,
-        menu: action.menu,
-        click: () => {
-          if (action.click) {
-            action.click();
-          }
+      this.config.actions.push(
+        {
+          primary: false,
+          label: action.label,
+          menu: action.menu,
+          click: () => {
+            if (action.click) {
+              action.click();
+            }
 
-          if (action.component) {
-              const dialogRef = this._dialog.open(action.component, {
-                width: '800px'
-              });
+            if (action.component) {
+                const dialogRef = this._dialog.open(action.component, {
+                  width: '800px'
+                });
 
-              dialogRef.afterClosed()
-              .pipe(
-                takeUntil(this._destroy$)
-              )
-              .subscribe(result => {
-                this.list.reload();
-              });
-          }
-        },
-      });
+                dialogRef.afterClosed()
+                .pipe(
+                  takeUntil(this._destroy$)
+                )
+                .subscribe(() => {
+                  this.list.reload();
+                });
+            }
+          },
+        }
+      );
     });
   }
 
@@ -155,6 +165,8 @@ export class ProcessesComponent implements OnInit, OnDestroy {
     this._dialog.open(ProcessComponent, {
       data: {
         process,
+        download: this.download,
+        run: this.run,
         loadProcess: this.loadProcess,
       },
       width: '85%'
