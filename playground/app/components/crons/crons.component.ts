@@ -4,6 +4,7 @@ import { FsExampleComponent } from '@firestitch/example';
 import { FsMessage } from '@firestitch/message';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { addSeconds } from 'date-fns';
 
 @Component({
   selector: 'crons',
@@ -21,10 +22,10 @@ export class CronsComponent {
     return of([
       {"processId": 123123123, "host": "asdas wer5234523423213412421.23434234.com","state":"idle","cron_setting":{"summary":"Every minute","weekdays":[],"days":[],"hours":[],"minutes":[],"timeout":1,"disabled":false},"name":"Message Queue","id":1,"createDate":"2019-11-30T17:27:01+00:00","message":"","process":"process_message_queue","is_valid":null,"duration":100,"configs":null,"process_id":null,"long_running":"0"},
       {"state":"failed","cron_setting":{"summary":"Every minute","weekdays":[],"days":[],"hours":[],"minutes":[],"timeout":1,"disabled":false},"name":"Processes","id":2,"createDate":"2019-11-30T17:27:02+00:00","message":"","process":"process_processes","is_valid":null,"duration":null,"configs":null,"process_id":null,"long_running":"0"},
-      {"state":"running","cron_setting":{"summary":"Every day at 10:00 am America\/Toronto","weekdays":[],"days":[],"hours":[5],"minutes":[0],"timeout":1,"disabled":false},"name":"Temp Cleanup","id":3,"createDate":"2019-11-30T05:00:02+00:00","message":"","process":"process_temp_cleanup","is_valid":null,"duration":0,"configs":null,"process_id":null,"long_running":"0"},
-      {"state":"disabled","cron_setting":{"summary":"Every minute","weekdays":[],"days":[],"hours":[],"minutes":[],"timeout":1,"disabled":true},"name":"Digest Emails","id":4,"createDate":"2019-05-10T15:33:15+00:00","message":"","process":"process_digest_emails","is_valid":null,"duration":7,"configs":null,"process_id":null,"long_running":"0"},
-      {"state":"queued","cron_setting":{"summary":"Every minute","weekdays":[],"days":[],"hours":[],"minutes":[],"timeout":1,"disabled":false},"name":"Digest Emails","id":4,"createDate":"2019-05-10T15:33:15+00:00","message":"","process":"process_digest_emails","is_valid":null,"duration":7,"configs":null,"process_id":null,"long_running":"0"},
-      {"state":"killing","cron_setting":{"summary":"The 1st of each month at 7:00 am America\/Toronto","weekdays":[],"days":[1],"hours":[2],"minutes":[0],"timeout":1,"disabled":false},"name":"Timezones","id":5,"createDate":"2019-11-01T02:00:05+00:00","message":"","process":"process_timezones","is_valid":null,"duration":3,"configs":null,"process_id":null,"long_running":"0"}]);
+      {"state":"running","cron_setting":{"summary":"Every day at 10:00 am America\/Toronto","weekdays":[],"days":[],"hours":[5],"minutes":[0],"timeout":1,"disabled":false},"name":"Temp Cleanup","id":3,"createDate": addSeconds(new Date(), 425),"message":"","process":"process_temp_cleanup","is_valid":null,"duration":0,"configs":null,"process_id":null,"long_running":"0"},
+      {"state":"disabled","cron_setting":{"summary":"Every minute","weekdays":[],"days":[],"hours":[],"minutes":[],"timeout":1,"disabled":true},"name":"Digest Emails","id":4,"createDate":"2019-05-10T15:33:15+00:00","message":"","process":"process_digest_emails","is_valid":null,"duration":500,"configs":null,"process_id":null,"long_running":"0"},
+      {"state":"queued","cron_setting":{"summary":"Every minute","weekdays":[],"days":[],"hours":[],"minutes":[],"timeout":1,"disabled":false},"name":"Digest Emails","id":4,"createDate":"2019-05-10T15:33:15+00:00","message":"","process":"process_digest_emails","is_valid":null,"duration":150,"configs":null,"process_id":null,"long_running":"0"},
+      {"state":"killing","cron_setting":{"summary":"The 1st of each month at 7:00 am America\/Toronto","weekdays":[],"days":[1],"hours":[2],"minutes":[0],"timeout":1,"disabled":false},"name":"Timezones","id":5,"createDate":"2019-11-01T02:00:05+00:00","message":"","process":"process_timezones","is_valid":null,"duration":45,"configs":null,"process_id":null,"long_running":"0"}]);
   }
 
   public bulk = (action, selected) => {

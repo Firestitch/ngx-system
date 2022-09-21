@@ -14,6 +14,8 @@ import { CronStates } from '../../consts';
 import { CronState } from '../../enums';
 import { SelectionActionType } from '@firestitch/selection';
 import { FsPrompt } from '@firestitch/prompt';
+import { parse } from '@firestitch/date';
+import { differenceInSeconds } from 'date-fns';
 
 
 @Component({
@@ -37,6 +39,7 @@ export class CronsComponent implements OnInit, OnDestroy {
 
   public config: FsListConfig = null;
   public cronStates = indexNameValue(CronStates);
+  public CronState = CronState;
 
   private _destroy$ = new Subject();
   
@@ -74,7 +77,15 @@ export class CronsComponent implements OnInit, OnDestroy {
         query.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         return this.loadCrons(query)
           .pipe(
-            map((response) => ({ data: response }))
+            map((crons) => ({ 
+              data: crons
+              .map((cron) => {
+                return {
+                  ...cron,
+                  runningDuration: differenceInSeconds(parse(cron.createDate), new Date())
+                };
+              })
+            }))
           );
       },    
     };

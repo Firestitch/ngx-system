@@ -13,7 +13,7 @@
     <ng-template fs-list-cell let-row="row">
       <ng-container *ngIf="row.host || row.processId; else status">
         <fs-popover 
-            [maxWidth]="false"
+            [maxWidth]="null"
             [template]="statusPopover" 
             size="small">
           <ng-container *ngTemplateOutlet="status"></ng-container>
@@ -26,6 +26,11 @@
       <ng-template #status>
         {{cronStates[row.state]}}
       </ng-template>
+      <ng-container *ngIf="row.state === CronState.Running">
+        <div class="small">
+          Duration: {{ row.runningDuration | fsDateDuration: { hours: true, minutes: true, seconds: true } }}
+        </div>
+      </ng-container>      
     </ng-template>
   </fs-list-column>
   <fs-list-column>
@@ -36,7 +41,9 @@
       </ng-container>
       <ng-template #lastRan>
         <fs-date-ago [date]="row.createDate"></fs-date-ago>
-        <div><small *ngIf="row.duration">Duration: {{ row.duration | fsDateDuration }}</small></div>
+        <div class="small" *ngIf="row.duration">
+          Duration: {{ row.duration | fsDateDuration: { hours: true, minutes: true, seconds: true } }}
+        </div>
       </ng-template>
     </ng-template>
   </fs-list-column>

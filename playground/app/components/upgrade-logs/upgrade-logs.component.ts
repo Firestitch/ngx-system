@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 
 @Component({
@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 })
 export class UpgradeLogsComponent {
 
-  public load = () => {
+  public load = (): Observable<any> => {
     return of({
       data: [
         { "name": "Assets Status", "create_date": "2019-11-29T15:13:22+00:00", "function": "upgrade_assets_status", "state": "completed" },
