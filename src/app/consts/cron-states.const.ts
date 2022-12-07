@@ -6,5 +6,6 @@ export const CronStates = [
   { name: 'Failed', value: CronState.Failed },
   { name: 'Queued', value: CronState.Queued },
   { name: 'Disabled', value: CronState.Disabled },
-  { name: 'Killing', value: CronState.Killing }
+  { name: 'Killing', value: CronState.Killing },
+  { name: 'Enabled', value: CronState.Enabled },
 ];

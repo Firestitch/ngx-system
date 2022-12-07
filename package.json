@@ -2,7 +2,7 @@
   "name": "@firestitch/system",
   "title": "System",
   "description": "@firestitch/system",
-  "version": "12.2.5",
+  "version": "12.2.7",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-system"
@@ -55,6 +55,7 @@
     "@firestitch/datepicker": "^12.1.0",
     "@firestitch/dialog": "^12.0.1",
     "@firestitch/drawer": "^12.0.0",
+    "@firestitch/duration": "^12.0.0",
     "@firestitch/example": "^12.0.0",
     "@firestitch/exif-js": "^2.3.0",
     "@firestitch/file": "^12.1.2",

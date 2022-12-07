@@ -1,6 +1,7 @@
 export enum CronLogState {
   Message = 'message',
   Disabled = 'disabled',
+  Enabled = 'enabled',
   Started = 'started',
   Running = 'running',
   Completed = 'completed',
