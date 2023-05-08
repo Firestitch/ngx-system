@@ -47,10 +47,11 @@
     "@firestitch/badge": "^12.0.0",
     "@firestitch/build": "^9.3.5",
     "@firestitch/chip": "^12.0.0",
-    "@firestitch/clipboard": "^12.0.0",
     "@firestitch/clear": "^12.0.0",
-    "@firestitch/common": "^12.0.0",
+    "@firestitch/clipboard": "^12.0.0",
     "@firestitch/colorpicker": "^12.0.0",
+    "@firestitch/common": "^12.0.0",
+    "@firestitch/component-tools": "^12.0.14",
     "@firestitch/date": "^12.0.0",
     "@firestitch/datepicker": "^12.1.0",
     "@firestitch/dialog": "^12.0.1",
@@ -68,8 +69,8 @@
     "@firestitch/mask": "^12.0.0",
     "@firestitch/menu": "^12.0.1",
     "@firestitch/message": "^12.0.0",
-    "@firestitch/prompt": "^12.0.1",
     "@firestitch/popover": "^12.0.1",
+    "@firestitch/prompt": "^12.0.1",
     "@firestitch/scroll": "^12.0.0",
     "@firestitch/scroll-picker": "^12.0.0",
     "@firestitch/selectbutton": "^12.0.0",
@@ -80,6 +81,7 @@
     "camelcase-keys": "^6.2.1",
     "change-case": "^4.1.1",
     "codelyzer": "^6.0.0",
+    "color": "^4.2.1",
     "cpx": "^1.5.0",
     "date-fns": "^2.14.0",
     "date-fns-tz": "^1.0.8",
@@ -98,9 +100,7 @@
     "tslint": "~6.1.0",
     "tsmodels": "^0.4.7",
     "typescript": "4.3.5",
-    "zone.js": "~0.11.4",
-    "color": "^4.2.1",
-    "@firestitch/component-tools": "^12.0.6"
+    "zone.js": "~0.11.4"
   },
   "engines": {
     "node": ">=6.0.0"
