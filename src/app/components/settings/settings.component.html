@@ -105,12 +105,12 @@
       </mat-form-field>
 
       <fs-file-picker
-        *ngIf="setting.interfaceType===SettingInterfaceType.File"
-        [allowRemove]="true"
-        [allowDownload]="true"
-        (select)="fileSelect.emit({ setting: setting, file: $event.file })"
-        (remove)="fileRemove.emit(setting)"
-        [url]="setting.value">
+          *ngIf="setting.interfaceType===SettingInterfaceType.File"
+          [allowRemove]="true"
+          [allowDownload]="true"
+          (select)="fileSelect.emit({ setting: setting, file: $event.file })"
+          (remove)="fileRemove.emit(setting)"
+          [url]="setting.value">
         <div fsFileLabel>{{setting.label}}</div>
         <div fsFileHint>{{setting.instruction}}</div>
       </fs-file-picker>
