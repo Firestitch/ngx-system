@@ -2,7 +2,7 @@
   "name": "@firestitch/system",
   "title": "System",
   "description": "@firestitch/system",
-  "version": "12.2.7",
+  "version": "12.2.8",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-system"
@@ -45,7 +45,7 @@
     "@firestitch/autocomplete": "^12.0.0",
     "@firestitch/autocomplete-chips": "^12.0.0",
     "@firestitch/badge": "^12.0.0",
-    "@firestitch/build": "^9.3.5",
+    "@firestitch/build": "^12.1.0",
     "@firestitch/chip": "^12.0.0",
     "@firestitch/clear": "^12.0.0",
     "@firestitch/clipboard": "^12.0.0",
