@@ -45,12 +45,18 @@ export class SettingsComponent implements OnInit {
           switch (setting.interfaceType) {
             case SettingInterfaceType.Date:
             case SettingInterfaceType.Time:
-              setting.value = parse(setting.value);
+              return {
+                ...setting,
+                value: parse(setting.value),
+              };
 
             case SettingInterfaceType.SelectMultiple:
-              setting.value = Array.isArray(setting.value) ? setting.value : [];
-              break;
+              return {
+                ...setting,
+                value: Array.isArray(setting.value) ? setting.value : [],
+              };
           }
+          
           return setting;
         });
 

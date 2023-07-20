@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit {
     this.menuActions = this.actions.filter(item => { return item.menu; });
 
     this.build = this._buildService.build;
-    this._buildService.build$
+    this._buildService.buildChange$
     .pipe(
       takeUntil(this._destroy$)
     )
