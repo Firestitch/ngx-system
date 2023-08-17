@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
 })
 export class SettingsComponent implements OnInit {
 
-  @Input() public loadSettings: () => Observable<any[]>;
+  @Input() public loadSettings: (query) => Observable<any[]>;
   @Input() public save: (data: any, group: string) => Observable<any>;
 
   @Output() public fileRemove = new EventEmitter();
@@ -35,30 +35,33 @@ export class SettingsComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
-    this.loadSettings()
+    this.loadSettings({
+      visible: true,
+      grouped: true,
+    })
       .subscribe((settings) => {
         settings = settings
-        .filter((setting) => {
-          return setting.interfaceType !== SettingInterfaceType.None;
-        })
-        .map((setting) => {
-          switch (setting.interfaceType) {
-            case SettingInterfaceType.Date:
-            case SettingInterfaceType.Time:
-              return {
-                ...setting,
-                value: parse(setting.value),
-              };
+          .filter((setting) => {
+            return setting.interfaceType !== SettingInterfaceType.None;
+          })
+          .map((setting) => {
+            switch (setting.interfaceType) {
+              case SettingInterfaceType.Date:
+              case SettingInterfaceType.Time:
+                return {
+                  ...setting,
+                  value: parse(setting.value),
+                };
 
-            case SettingInterfaceType.SelectMultiple:
-              return {
-                ...setting,
-                value: Array.isArray(setting.value) ? setting.value : [],
-              };
-          }
-          
-          return setting;
-        });
+              case SettingInterfaceType.SelectMultiple:
+                return {
+                  ...setting,
+                  value: Array.isArray(setting.value) ? setting.value : [],
+                };
+            }
+            
+            return setting;
+          });
 
         this.groupedSettings = settings.reduce((accum, item) => {
           if(accum[item.group] === undefined) {

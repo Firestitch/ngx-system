@@ -15,7 +15,7 @@ export class SettingsComponent {
 
   constructor(private message: FsMessage) {}
 
-  public load = () => {
+  public load = (query) => {
     return of([
       {"label":"App Name","group":"","values":null,"interfaceType":"I","instruction":"Human readable name","id":1,"name":"APP_NAME","value":"FS Boilerplate"},
       {"label":"App URL","group":"","values":null,"interfaceType":"I","instruction":"","id":2,"name":"APP_URL","value":"https:\/\/boilerplate.firestitch.com\/"},
