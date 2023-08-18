@@ -37,7 +37,6 @@ export class SettingsComponent implements OnInit {
   public ngOnInit(): void {
     this.loadSettings({
       visible: true,
-      grouped: true,
     })
       .subscribe((settings) => {
         settings = settings
