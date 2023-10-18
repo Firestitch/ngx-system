@@ -1,47 +1,45 @@
-import { ProcessDialogComponent } from './components/process-dialog/process-dialog.component';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule, Routes } from '@angular/router';
+import { ProcessDialogComponent } from './components/process-dialog/process-dialog.component';
 
+import { FsBuildModule } from '@firestitch/build';
 import { FsExampleModule } from '@firestitch/example';
+import { FsLabelModule } from '@firestitch/label';
 import { FsMessageModule } from '@firestitch/message';
 import { FsSystemModule } from '@firestitch/package';
-import { FsBuildModule } from '@firestitch/build';
-import { FsLabelModule } from '@firestitch/label';
-import { ToastrModule } from 'ngx-toastr';
 
-import { AppMaterialModule } from './material.module';
+import { FsDatePickerModule } from '@firestitch/datepicker';
+import { FsDialogModule } from '@firestitch/dialog';
+import { FsFileModule } from '@firestitch/file';
+import { FsFormModule } from '@firestitch/form';
+import { FsListModule } from '@firestitch/list';
+import { FsScrollModule } from '@firestitch/scroll';
+import { FsSelectionModule } from '@firestitch/selection';
+import { AppComponent } from './app.component';
 import {
   DashboardComponent,
   ExamplesComponent
 } from './components';
-import { AppComponent } from './app.component';
-import { KitchenSinkConfigureComponent } from './components/kitchen-sink-configure';
+import { ApiLogsComponent } from './components/api-logs';
 import { CronsComponent } from './components/crons';
-import { FsListModule } from '@firestitch/list';
-import { FsScrollModule } from '@firestitch/scroll';
-import { FsSelectionModule } from '@firestitch/selection';
-import { SettingsComponent } from './components/settings';
 import { FileManagerComponent } from './components/file-manager';
-import { FsFileModule } from '@firestitch/file';
+import { InfoComponent } from './components/info';
+import { KitchenSinkConfigureComponent } from './components/kitchen-sink-configure';
 import { ProcessesComponent } from './components/processes';
 import { ServerLogsComponent } from './components/server-logs';
+import { SettingsComponent } from './components/settings';
 import { UpgradeLogsComponent } from './components/upgrade-logs';
-import { ApiLogsComponent } from './components/api-logs';
-import { InfoComponent } from './components/info';
-import { FsDatePickerModule } from '@firestitch/datepicker';
-import { FsDialogModule } from '@firestitch/dialog';
-import { FsFormModule } from '@firestitch/form';
-import { FsPopoverModule } from '@firestitch/popover';
+import { AppMaterialModule } from './material.module';
 
 const routes: Routes = [
   { path: '', component: ExamplesComponent },
 ];
 
 @NgModule({
-  bootstrap: [ AppComponent ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     FsSystemModule,
@@ -52,9 +50,7 @@ const routes: Routes = [
     FsFormModule,
     FsDialogModule,
     FsExampleModule.forRoot(),
-    FsPopoverModule.forRoot(),
     FsMessageModule.forRoot(),
-    ToastrModule.forRoot({ preventDuplicates: true }),
     RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
     FsListModule.forRoot(),
     FsScrollModule.forRoot(),
@@ -64,7 +60,7 @@ const routes: Routes = [
     }),
     FsDatePickerModule.forRoot(),
     FsSelectionModule,
-       FsFileModule.forRoot({
+    FsFileModule.forRoot({
       allowDownload: true,
       allowRemove: true,
       dragoverMessage: true

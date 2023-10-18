@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { KitchenSinkConfigureComponent } from '../kitchen-sink-configure';
 import { FsExampleComponent } from '@firestitch/example';
 import { FsMessage } from '@firestitch/message';
 import { of } from 'rxjs';
@@ -31,8 +30,7 @@ export class DashboardComponent {
   ];
 
   constructor(private exampleComponent: FsExampleComponent,
-              private message: FsMessage) {
-    exampleComponent.setConfigureComponent(KitchenSinkConfigureComponent, { config: this.config });
+    private message: FsMessage) {
   }
 
   public load = () => {
@@ -51,9 +49,9 @@ export class DashboardComponent {
       upgrades: ['upgrade 1', 'upgrade 2', 'upgrade 3'],
       serverTime: '2019-11-30T17:00:34+00:00',
     })
-    .pipe(
-      delay(0)
-    );
+      .pipe(
+        delay(0)
+      );
   }
 
   public init = () => {
