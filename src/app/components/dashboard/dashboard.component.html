@@ -4,7 +4,7 @@
 
     <div class="actions">
         <h2>Actions</h2>
-        <div fxLayout="row" fxLayoutGap="5px" fxLayout.xs="column">
+        <div class="fs-row.gap-tiny.wrap">
           <button mat-raised-button (click)="upgradeClick()">Run Upgrades</button>
           <button mat-raised-button (click)="initClick()">Init System</button>
 
@@ -16,30 +16,20 @@
           </button>
 
           <ng-container *ngIf="menuActions.length">
-
             <fs-menu buttonClass="mat-raised-button menu-button">
               <ng-template
-                *ngFor="let action of menuActions"
-                fs-menu-item
-                (click)="actionClick(action)">
+                  *ngFor="let action of menuActions"
+                  fs-menu-item
+                  (click)="actionClick(action)">
                 {{action.label}}
               </ng-template>
             </fs-menu>
-
-
           </ng-container>
-
         </div>
       </div>
     </div>
 
-    <div
-      fxLayout="row wrap"
-      fxLayout.xs="column"
-      fxLayoutGap.xs="0px"
-      fxLayoutAlign="start start"
-      fxLayoutGap="50px">
-
+    <div class="fs-row.gap-large.wrap">
       <div>
         <h2>Server</h2>
 

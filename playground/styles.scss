@@ -1,4 +1,5 @@
 @use '~@angular/material' as mat;
+@use '~@firestitch/style/styles' as fs-style;
 @import '~@firestitch/component-tools/assets/playground.scss';
 @import '~@firestitch/message/styles';
 @import "~@firestitch/drawer/styles";
@@ -9,7 +10,7 @@
 
 @include fs-drawer(mat.$blue-palette);
 @include fs-file(mat.$blue-palette);
-
+@include fs-style.core();
 
 .small {
   font-size: 11px;

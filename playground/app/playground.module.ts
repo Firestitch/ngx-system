@@ -1,33 +1,35 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
-import { ProcessDialogComponent } from './components/process-dialog/process-dialog.component';
+
 
 import { FsBuildModule } from '@firestitch/build';
-import { FsExampleModule } from '@firestitch/example';
-import { FsLabelModule } from '@firestitch/label';
-import { FsMessageModule } from '@firestitch/message';
-import { FsSystemModule } from '@firestitch/package';
-
 import { FsDatePickerModule } from '@firestitch/datepicker';
 import { FsDialogModule } from '@firestitch/dialog';
+import { FsExampleModule } from '@firestitch/example';
 import { FsFileModule } from '@firestitch/file';
 import { FsFormModule } from '@firestitch/form';
+import { FsLabelModule } from '@firestitch/label';
 import { FsListModule } from '@firestitch/list';
+import { FsMessageModule } from '@firestitch/message';
+import { FsSystemModule } from '@firestitch/package';
 import { FsScrollModule } from '@firestitch/scroll';
 import { FsSelectionModule } from '@firestitch/selection';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { AppComponent } from './app.component';
 import {
   DashboardComponent,
-  ExamplesComponent
+  ExamplesComponent,
 } from './components';
 import { ApiLogsComponent } from './components/api-logs';
 import { CronsComponent } from './components/crons';
 import { FileManagerComponent } from './components/file-manager';
 import { InfoComponent } from './components/info';
 import { KitchenSinkConfigureComponent } from './components/kitchen-sink-configure';
+import { ProcessDialogComponent } from './components/process-dialog/process-dialog.component';
 import { ProcessesComponent } from './components/processes';
 import { ServerLogsComponent } from './components/server-logs';
 import { SettingsComponent } from './components/settings';
@@ -63,12 +65,12 @@ const routes: Routes = [
     FsFileModule.forRoot({
       allowDownload: true,
       allowRemove: true,
-      dragoverMessage: true
+      dragoverMessage: true,
     }),
   ],
   entryComponents: [
     KitchenSinkConfigureComponent,
-    ProcessDialogComponent
+    ProcessDialogComponent,
   ],
   declarations: [
     AppComponent,
@@ -83,7 +85,7 @@ const routes: Routes = [
     UpgradeLogsComponent,
     ApiLogsComponent,
     InfoComponent,
-    ProcessDialogComponent
+    ProcessDialogComponent,
   ],
 })
 export class PlaygroundModule {

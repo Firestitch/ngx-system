@@ -1,7 +1,7 @@
 <fs-dialog *fsSkeleton="process">
   <div mat-dialog-title>Process</div>
   <mat-dialog-content>
-    <div fxLayout="column">
+    <div class="column">
       <fs-label-field>
         <fs-label>
           Name
@@ -9,7 +9,7 @@
         {{process.prettyName}}
       </fs-label-field>
 
-      <div fxLayout="row" fxLayoutGap="20px">
+      <div class="fs-row.gap-large.wrap">
         <fs-label-field>
           <fs-label>
             Status
@@ -32,7 +32,7 @@
         </fs-label-field>
       </div>
 
-      <div fxLayout="row" fxLayoutGap="20px">
+      <div class="fs-row.gap-large.wrap">
         <fs-label-field *ngIf="process.createDate">
           <fs-label>
             Create Date
