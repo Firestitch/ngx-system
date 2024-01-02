@@ -26,7 +26,6 @@ import {
 } from './components';
 import { ApiLogsComponent } from './components/api-logs';
 import { CronsComponent } from './components/crons';
-import { FileManagerComponent } from './components/file-manager';
 import { InfoComponent } from './components/info';
 import { KitchenSinkConfigureComponent } from './components/kitchen-sink-configure';
 import { ProcessDialogComponent } from './components/process-dialog/process-dialog.component';
@@ -79,7 +78,6 @@ const routes: Routes = [
     DashboardComponent,
     SettingsComponent,
     KitchenSinkConfigureComponent,
-    FileManagerComponent,
     ProcessesComponent,
     ServerLogsComponent,
     UpgradeLogsComponent,
