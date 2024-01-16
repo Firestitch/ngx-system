@@ -1,6 +1,7 @@
 export { FsSystemQueryLogsModule } from './app/modules/query-logs/query-logs.module';
 export { FsSystemModule } from './app/modules/system/fs-system.module';
 
+export { QueryLogsComponent } from './app/modules/query-logs/components';
 export { ApiLogComponent } from './app/modules/system/components/api-log';
 export { ApiLogsComponent } from './app/modules/system/components/api-logs';
 export { CronComponent } from './app/modules/system/components/cron';

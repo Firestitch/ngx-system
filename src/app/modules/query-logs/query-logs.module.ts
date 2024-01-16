@@ -44,6 +44,9 @@ import { ExplainComponent, QueryLogComponent, QueryLogsComponent } from './compo
     QueryLogComponent,
     ExplainComponent,
   ],
+  exports: [
+    QueryLogsComponent,
+  ],
 })
 export class FsSystemQueryLogsModule {
 }

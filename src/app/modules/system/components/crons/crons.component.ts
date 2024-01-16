@@ -1,21 +1,23 @@
-import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+
 import { MatDialog } from '@angular/material/dialog';
 
-import { FsMessage } from '@firestitch/message';
+import { parse } from '@firestitch/date';
 import { ItemType } from '@firestitch/filter';
-import { FsListConfig, FsListComponent, FsListActionSelected } from '@firestitch/list';
+import { FsListActionSelected, FsListComponent, FsListConfig } from '@firestitch/list';
+import { FsMessage } from '@firestitch/message';
+import { FsPrompt } from '@firestitch/prompt';
+import { SelectionActionType } from '@firestitch/selection';
 
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
-import { indexNameValue } from '../../helpers/index-name-value';
-import { CronComponent } from '../cron/cron.component';
+import { differenceInSeconds } from 'date-fns';
+
 import { CronStates } from '../../consts';
 import { CronState } from '../../enums';
-import { SelectionActionType } from '@firestitch/selection';
-import { FsPrompt } from '@firestitch/prompt';
-import { parse } from '@firestitch/date';
-import { differenceInSeconds } from 'date-fns';
+import { indexNameValue } from '../../helpers/index-name-value';
+import { CronComponent } from '../cron/cron.component';
 
 
 @Component({
@@ -25,7 +27,7 @@ import { differenceInSeconds } from 'date-fns';
 })
 export class CronsComponent implements OnInit, OnDestroy {
 
-  @ViewChild(FsListComponent, { static: true }) list: FsListComponent;
+  @ViewChild(FsListComponent, { static: true }) public list: FsListComponent;
 
   @Input() public enable: (data: any) => Observable<any>;
   @Input() public disable: (data: any) => Observable<any>;
@@ -34,7 +36,7 @@ export class CronsComponent implements OnInit, OnDestroy {
   @Input() public run: (data: any) => Observable<any>;
   @Input() public loadCrons: (data: any) => Observable<any[]>;
   @Input() public loadCron: (data: any) => Observable<any>;
-  @Input() public loadCronLogs: (data: any) => Observable<{ data: any[], paging: any }>;
+  @Input() public loadCronLogs: (data: any) => Observable<{ data: any[]; paging: any }>;
   @Input() public bulk: (actionName: string, data: any[]) => Observable<any>;
 
   public config: FsListConfig = null;
@@ -42,7 +44,7 @@ export class CronsComponent implements OnInit, OnDestroy {
   public CronState = CronState;
 
   private _destroy$ = new Subject();
-  
+
   constructor(
     private _message: FsMessage,
     private _dialog: MatDialog,
@@ -60,34 +62,35 @@ export class CronsComponent implements OnInit, OnDestroy {
         {
           type: ItemType.Keyword,
           name: 'keyword',
-          label: 'Search'
-        }
+          label: 'Search',
+        },
       ],
       rowActions: this.getCronActions()
-      .map((rowAction) => {
-        return {
-          ...rowAction,
-          click: (cron) => {
-            rowAction.action(cron)
-            .subscribe();
-          },
-        }
-      }),
-      fetch: query => {
+        .map((rowAction) => {
+          return {
+            ...rowAction,
+            click: (cron) => {
+              rowAction.action(cron)
+                .subscribe();
+            },
+          };
+        }),
+      fetch: (query) => {
         query.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
         return this.loadCrons(query)
           .pipe(
-            map((crons) => ({ 
+            map((crons) => ({
               data: crons
-              .map((cron) => {
-                return {
-                  ...cron,
-                  runningDuration: differenceInSeconds(parse(cron.createDate), new Date())
-                };
-              })
-            }))
+                .map((cron) => {
+                  return {
+                    ...cron,
+                    runningDuration: differenceInSeconds(parse(cron.createDate), new Date()),
+                  };
+                }),
+            })),
           );
-      },    
+      },
     };
 
     if(this.bulk) {
@@ -97,22 +100,22 @@ export class CronsComponent implements OnInit, OnDestroy {
           {
             type: SelectionActionType.Action,
             name: 'disable',
-            label: 'Disable'
+            label: 'Disable',
           },
           {
             type: SelectionActionType.Action,
             name: 'enable',
-            label: 'Enable'
+            label: 'Enable',
           },
         ],
         actionSelected: (action: FsListActionSelected) => {
           return this.bulk(action.action.name, action.selected)
-          .pipe(
-            tap(() => {
-              this.list.reload();
-              this._message.success('Applied Changes');
-            }),
-          );
+            .pipe(
+              tap(() => {
+                this.list.reload();
+                this._message.success('Applied Changes');
+              }),
+            );
         },
       };
     }
@@ -120,27 +123,27 @@ export class CronsComponent implements OnInit, OnDestroy {
 
   public open(cron) {
     this._dialog.open(CronComponent, {
-      data: { 
+      data: {
         cron,
         loadCronLogs: this.loadCronLogs,
         loadCron: this.loadCron,
         cronActions: this.getCronActions(),
       },
-      width: '85%'
+      width: '85%',
     });
-  }  
+  }
 
   public getCronActions() {
     return [
       {
         action: (data) => {
           return this.queue(data)
-          .pipe(
-            tap(() => {
-              this._message.success('Queued cron');
-              this.list.reload();
-            }),
-          );
+            .pipe(
+              tap(() => {
+                this._message.success('Queued cron');
+                this.list.reload();
+              }),
+            );
         },
         label: 'Queue',
         show: (cron) => {
@@ -150,12 +153,12 @@ export class CronsComponent implements OnInit, OnDestroy {
       {
         action: (data) => {
           return this.run(data)
-          .pipe(
-            tap(() => {
-              this._message.success('Cron ran');
-              this.list.reload();
-            })
-          );
+            .pipe(
+              tap(() => {
+                this._message.success('Cron ran');
+                this.list.reload();
+              }),
+            );
         },
         label: 'Run',
         show: (cron) => {
@@ -165,12 +168,12 @@ export class CronsComponent implements OnInit, OnDestroy {
       {
         action: (data) => {
           return this.enable(data)
-          .pipe(
-            tap(() => {
-              this._message.success('Enabled cron');
-              this.list.reload();
-            }),
-          );
+            .pipe(
+              tap(() => {
+                this._message.success('Enabled cron');
+                this.list.reload();
+              }),
+            );
         },
         label: 'Enable',
         show: (cron) => {
@@ -180,12 +183,12 @@ export class CronsComponent implements OnInit, OnDestroy {
       {
         action: (data) => {
           return this.disable(data)
-          .pipe(
-            tap(() => {
-              this._message.success('Disabled cron');
-              this.list.reload();
-            }),
-          );
+            .pipe(
+              tap(() => {
+                this._message.success('Disabled cron');
+                this.list.reload();
+              }),
+            );
         },
         label: 'Disable',
         show: (cron) => {
@@ -205,9 +208,9 @@ export class CronsComponent implements OnInit, OnDestroy {
               tap(() => {
                 this._message.success('Killed cron');
                 this.list.reload();
-              }),              
+              }),
               takeUntil(this._destroy$),
-            );          
+            );
         },
         label: 'Kill',
         show: (cron) => {
@@ -227,16 +230,16 @@ export class CronsComponent implements OnInit, OnDestroy {
               tap(() => {
                 this._message.success('Reset cron');
                 this.list.reload();
-              }),              
+              }),
               takeUntil(this._destroy$),
-            ); 
+            );
         },
         label: 'Reset',
         show: (cron) => {
           return cron.state === CronState.Killing || cron.state === CronState.Running || cron.state === CronState.Failed || cron.state === CronState.Queued;
         },
       },
-    ];    
+    ];
   }
 
   public ngOnDestroy(): void {

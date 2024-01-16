@@ -12,6 +12,7 @@ import { QueryLogComponent } from '..';
 
 
 @Component({
+  selector: 'fs-system-query-logs',
   templateUrl: './query-logs.component.html',
   styleUrls: ['./query-logs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
