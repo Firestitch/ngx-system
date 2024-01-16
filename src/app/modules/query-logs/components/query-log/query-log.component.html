@@ -37,7 +37,7 @@
       </mat-tab>
       
       <mat-tab label="Explain">
-        <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: queryBlock }"></ng-container>
+        <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: queryBlock, selectId: queryBlock.selectId, costInfo: queryBlock.costInfo }"></ng-container>
       </mat-tab>
     </mat-tab-group>
 
@@ -53,21 +53,51 @@
   </mat-dialog-actions>
 </fs-dialog>
 
-<ng-template #nestedLoop let-queryBlock="queryBlock">
+<ng-template #nestedLoop let-queryBlock="queryBlock" let-selectId="selectId" let-costInfo="costInfo">
+  <ng-container *ngIf="selectId">
+    <h1>Select {{selectId}}</h1>
+  </ng-container>
+  
+  <div class="fs-row.gap-large">
+    <ng-container *ngIf="costInfo?.queryCost">
+      <fs-label-field>
+        <fs-label>Query Cost</fs-label>
+        {{costInfo.queryCost}}
+      </fs-label-field>
+    </ng-container>
+    <ng-container *ngIf="queryBlock.orderingOperation">
+      <fs-label-field>
+        <fs-label>Ordering Operation</fs-label>
+        <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: queryBlock.orderingOperation }"></ng-container>
+      </fs-label-field>
+    </ng-container>
+
+    <ng-container *ngIf="queryBlock.groupingOperation">
+      <fs-label-field>
+        <fs-label>Grouping Operation</fs-label>
+        <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: queryBlock.groupingOperation }"></ng-container>
+      </fs-label-field>
+    </ng-container>
+  </div>
+
   <ng-container *ngIf="queryBlock.orderingOperation">
-    <fs-label-field>
-      <fs-label>Ordering Operation</fs-label>
-      <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: queryBlock.orderingOperation }"></ng-container>
-    </fs-label-field>
     <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: queryBlock.orderingOperation }"></ng-container>
   </ng-container>
 
   <ng-container *ngIf="queryBlock.groupingOperation">
-    <fs-label-field>
-      <fs-label>Grouping Operation</fs-label>
-      <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: queryBlock.groupingOperation }"></ng-container>
-    </fs-label-field>
     <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: queryBlock.groupingOperation }"></ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="queryBlock.table">
+    <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: { nestedLoop: [ queryBlock ]} }"></ng-container>
+  
+    <ng-container *ngIf="queryBlock.table.attachedSubqueries">  
+      <fs-label>Attached Subqueries</fs-label>
+      <ng-container *ngFor="let subquery of queryBlock.table.attachedSubqueries">
+        <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock }"></ng-container> 
+        <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock, selectId: subquery.queryBlock.selectId, costInfo: subquery.queryBlock.costInfo }"></ng-container>
+      </ng-container>
+    </ng-container>    
   </ng-container>
 
   <ng-container *ngIf="queryBlock.nestedLoop">
@@ -81,6 +111,7 @@
            <th>Rows</th>
            <th>Filtered</th>
            <th>Extra</th>
+           <th>Cost</th>
          </tr>
        </thead>
        <tbody>
@@ -137,10 +168,28 @@
                      </fs-popover>
                    </span>
                  </ng-container>
-                 <ng-container *ngIf="item.table.usingIndex">
+                 <ng-container *ngIf="item.usingIndex">
                    <span>Using Index</span>
-                 </ng-container>              
+                 </ng-container>    
+                <ng-container *ngIf="item.usingFilesort">
+                  <span class="critical">Using File Sort</span>
+                </ng-container>
+                
+                <ng-container *ngIf="item.usingTemporaryTable">
+                  <span class="critical">Temporary Table</span>
+                </ng-container>
                </div>
+             </td>
+             <td>     
+              <fs-popover [template]="tableCostPopover" [data]="item.table?.costInfo">
+                {{item.table?.costInfo.prefixCost}}
+              </fs-popover>
+              <ng-template #tableCostPopover let-data="data">
+                <div>Eval Cost: {{data.evalCost}}</div>
+                <div>Read Cost: {{data.readCost}}</div>
+                <div>Prefix Cost: {{data.prefixCost}}</div>
+                <div>Data Read Per Join: {{data.dataReadPerJoin}}</div>
+              </ng-template>
              </td>
            </tr>
          </ng-container>
@@ -150,14 +199,22 @@
    </ng-container>  
   
   <ng-container *ngIf="queryBlock.selectListSubqueries">
-    <fs-label-field>
-      <fs-label>Select List Subqueries</fs-label>
-    </fs-label-field>
-
-    <ng-container *ngFor="let selectListSubquery of queryBlock.selectListSubqueries">
-      <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: { nestedLoop: [selectListSubquery.queryBlock] }}"></ng-container>
+    <br>
+    <fs-label>Select List Subqueries</fs-label>
+    <ng-container *ngFor="let subquery of queryBlock.selectListSubqueries">
+      <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock }"></ng-container> 
+      <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock, selectId: subquery.queryBlock.selectId, costInfo: subquery.queryBlock.costInfo }"></ng-container>
     </ng-container>
   </ng-container>
+<!-- 
+  <ng-container *ngIf="queryBlock.queryBlockattachedSubqueries">
+    <br>
+    <fs-label>Attached Subqueries</fs-label>
+    <ng-container *ngFor="let subquery of queryBlock.attachedSubqueries">
+      <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock }"></ng-container>
+      <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock }"></ng-container>
+    </ng-container>
+  </ng-container> -->
 </ng-template>
 
 <ng-template #keysPopover let-data="data">
