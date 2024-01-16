@@ -1,0 +1,168 @@
+<fs-dialog>
+  <h1 mat-dialog-title>Query Log</h1>
+  <mat-dialog-content>
+    <div class="fs-row.gap-large">
+      <fs-label-field>
+        <fs-label>Duration</fs-label>
+        {{queryLog.duration}}
+      </fs-label-field>
+
+      <fs-label-field>
+        <fs-label>Optimized</fs-label>
+        {{queryLog.optimized ? 'Yes' : 'No'}}
+      </fs-label-field>
+
+      <fs-label-field>
+        <fs-label>Query Cost</fs-label>
+        {{queryLog.queryCost}}
+      </fs-label-field>
+
+      <fs-label-field>
+        <fs-label>Raw Explain</fs-label>
+        <a (click)="openExplain()">View</a>
+      </fs-label-field>
+
+      <fs-label-field>
+        <fs-label>URL</fs-label>
+        {{queryLog.path | fsFormatTruncate: 50}}
+      </fs-label-field>
+    </div>
+
+    <mat-tab-group>
+      <mat-tab label="Query">
+        <fs-clipboard-button
+          [content]="queryLog.prettyQuery">
+        </fs-clipboard-button>
+        <div [innerHTML]="queryLog.prettyQuery" class="query"></div>
+      </mat-tab>
+      
+      <mat-tab label="Explain">
+        <ng-container *ngIf="queryBlock?.nestedLoop">
+          <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ data: queryBlock.nestedLoop }"></ng-container>
+        </ng-container>
+    
+        <ng-container *ngIf="orderingOperation?.nestedLoop">
+          <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ data: orderingOperation.nestedLoop }"></ng-container>
+        </ng-container>
+      </mat-tab>
+    </mat-tab-group>
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button
+        mat-button
+        type="button"
+        color="primary"
+        [mat-dialog-close]="undefined">
+      Done
+    </button>
+  </mat-dialog-actions>
+</fs-dialog>
+
+<ng-template #nestedLoop let-data="data">
+  <table class="fs-list-table style-line">
+    <thead>
+      <tr>
+        <th>Table</th>
+        <th>Type</th>
+        <th>Keys</th>
+        <th>Ref</th>
+        <th>Rows</th>
+        <th>Filtered</th>
+        <th>Extra</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let item of data; let index = index">
+        <tr>
+          <td>
+            {{item.table.tableName}}
+          </td>
+          <td>
+            <fs-popover [template]="accessTypePopover" [data]="item.table.accessType">
+              <span class="access-type" [ngClass]="item.table.accessType">{{item.table.accessType}}</span>
+            </fs-popover>            
+          </td>
+          <td>
+            <fs-popover          
+                [template]="keysPopover"
+                [maxWidth]="null"
+                [data]="{ possibleKeys: item.table.possibleKeys, key: item.table.key }">
+              {{item.table.key}}
+            </fs-popover>
+          </td>
+          <td>
+            <div class="fs-delimit">
+              <ng-container *ngFor="let ref of item.table.ref">
+                <span>{{ref}}</span>
+              </ng-container>
+            </div>
+          </td>
+          <td>
+             {{item.table.rowsExaminedPerScan}}
+          </td>
+          <td>
+            {{item.table.filtered}}
+          </td>
+          <td>
+            <div class="fs-delimit">
+              <ng-container *ngIf="item.table.indexCondition">
+                <span>
+                  <fs-popover 
+                      [template]="usingIndexCondition" 
+                      [maxWidth]="null"
+                      [data]="item.table.indexCondition">
+                    Using Index Condition
+                  </fs-popover>
+                </span>
+              </ng-container>
+              <ng-container *ngIf="item.table.attachedCondition">
+                <span>
+                  <fs-popover 
+                      [template]="usingWhere" 
+                      [maxWidth]="null"
+                      [data]="item.table.attachedCondition">
+                    Using Where
+                  </fs-popover>
+                </span>
+              </ng-container>
+              <ng-container *ngIf="item.table.usingIndex">
+                <span>Using Index</span>
+              </ng-container>
+              
+              <ng-container *ngIf="index === 0">
+                <ng-container *ngIf="orderingOperation?.usingFilesort">
+                  <span class="critical">Using File Sort</span>
+                </ng-container>
+                
+                <ng-container *ngIf="orderingOperation?.usingTemporaryTable">
+                  <span class="critical">Temporary Table</span>
+                </ng-container>
+              </ng-container>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</ng-template>
+
+<ng-template #keysPopover let-data="data">
+  <div class="fs-delimit">
+    <ng-container *ngFor="let possibleKey of data.possibleKeys">
+      <span [ngClass]="{ 'query-log-used-key': possibleKey === data.key }">{{possibleKey}}</span>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #usingWhere let-data="data">
+  {{data}}
+</ng-template>
+
+<ng-template #usingIndexCondition let-data="data">
+  {{data}}
+</ng-template>
+
+<ng-template #accessTypePopover let-data="data">
+  {{accessTypes[data]}}
+</ng-template>

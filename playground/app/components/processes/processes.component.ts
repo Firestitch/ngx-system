@@ -1,12 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { FsMessage } from '@firestitch/message';
+import { ProcessAction, ProcessState } from '@firestitch/package';
 
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { ProcessState } from 'src/app/enums';
-import { ProcessAction } from 'src/app/interfaces';
 
 import { ProcessDialogComponent } from './../process-dialog/process-dialog.component';
 

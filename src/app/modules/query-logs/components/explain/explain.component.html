@@ -1,0 +1,15 @@
+<fs-dialog>
+  <h1 mat-dialog-title>Explain</h1>
+  <mat-dialog-content>
+    <div class="explain-popover">{{explain | json}}</div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button
+        mat-button
+        type="button"
+        color="primary"
+        [mat-dialog-close]="undefined">
+      Done
+    </button>
+  </mat-dialog-actions>
+</fs-dialog>

@@ -1,0 +1,29 @@
+<fs-list [config]="listConfig">
+  <fs-list-column title="Optimized" name="optimized" [sortable]="true">
+    <ng-template fs-list-cell let-row="row">
+      <span [ngClass]="{ optimized: row.optimized, 'not-optimized': !row.optimized }">
+        {{row.optimized ? 'Yes' : 'No'}}
+      </span>
+    </ng-template>
+  </fs-list-column>
+  <fs-list-column title="Duration" name="duration" [sortable]="true">
+    <ng-template fs-list-cell let-row="row">
+      {{row.duration}}
+    </ng-template>
+  </fs-list-column>
+  <fs-list-column title="Cost" name="query_cost" [sortable]="true">
+    <ng-template fs-list-cell let-row="row">
+      {{row.queryCost}}
+    </ng-template>
+  </fs-list-column>
+  <fs-list-column title="Query">
+    <ng-template fs-list-cell let-row="row">
+      <a (click)="openQueryLog(row)">{{ row.query | fsFormatTruncate: 500 }}</a>
+    </ng-template>
+  </fs-list-column>
+  <fs-list-column title="Created" name="query_log_id" [sortable]="true" [direction]="'desc'" [sortableDefault]="true">
+    <ng-template fs-list-cell let-row="row">
+      <fs-date-ago [date]="row.createDate"></fs-date-ago>
+    </ng-template>
+  </fs-list-column>
+</fs-list>

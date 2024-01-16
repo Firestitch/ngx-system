@@ -96,7 +96,7 @@ import { KeyNameValuePipe } from './pipes/key-name-value.pipe';
   ],
 })
 export class FsSystemModule {
-  static forRoot(config: FsSystemConfig): ModuleWithProviders<FsSystemModule> {
+  public static forRoot(config: FsSystemConfig): ModuleWithProviders<FsSystemModule> {
     return {
       ngModule: FsSystemModule,
       providers: [

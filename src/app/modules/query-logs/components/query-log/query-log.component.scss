@@ -1,0 +1,35 @@
+::ng-deep {
+  .query-log-used-key {
+    font-weight: bold;
+  }
+
+  .explain-popover {
+    white-space: pre;
+  }
+}
+
+.critical {
+  color: red;
+}
+
+fs-clipboard-button {
+  float: right;
+}
+
+.query {
+  white-space: break-spaces;
+}
+
+.access-type {
+  color: green;
+
+  &.fulltext,
+  &.index,
+  &.range {
+    color: orange;
+  }
+
+  &.ALL {
+    color: red;
+  }
+}

@@ -1,0 +1,9 @@
+:host ::ng-deep {
+  .optimized {
+    color: green;
+  }
+  
+  .not-optimized {
+    color: red;
+  }
+}

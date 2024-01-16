@@ -1,25 +1,29 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { ItemType } from '@firestitch/filter';
-import { FsListConfig, FsListComponent } from '@firestitch/list';
-import { map } from 'rxjs/operators';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+
 import { MatDialog } from '@angular/material/dialog';
-import { ApiLogStates } from '../../consts';
-import { ApiLogComponent } from '../api-log/api-log.component';
-import { indexNameValue } from '../../helpers/index-name-value';
+
+import { ItemType } from '@firestitch/filter';
+import { FsListComponent, FsListConfig } from '@firestitch/list';
+
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { ApiLogStates } from '../../consts';
+import { indexNameValue } from '../../helpers/index-name-value';
+import { ApiLogComponent } from '../api-log/api-log.component';
 
 
 @Component({
   selector: 'fs-system-api-logs',
   templateUrl: './api-logs.component.html',
-  styleUrls: ['./api-logs.component.scss']
+  styleUrls: ['./api-logs.component.scss'],
 })
 export class ApiLogsComponent implements OnInit {
 
-  @ViewChild(FsListComponent, { static: true }) 
+  @ViewChild(FsListComponent, { static: true })
   public list: FsListComponent;
 
-  @Input() loadApiLogs: (data: any) => Observable<{ data: any[], paging: any }>;
+  @Input() public loadApiLogs: (data: any) => Observable<{ data: any[]; paging: any }>;
 
   public config: FsListConfig = null;
   public apiLogStates = indexNameValue(ApiLogStates);
@@ -28,7 +32,7 @@ export class ApiLogsComponent implements OnInit {
     private _dialog: MatDialog,
   ) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     this._configList();
   }
 
@@ -39,34 +43,35 @@ export class ApiLogsComponent implements OnInit {
         {
           type: ItemType.Keyword,
           name: 'keyword',
-          label: 'Search'
+          label: 'Search',
         },
         {
           type: ItemType.Select,
           name: 'state',
           label: 'Status',
-          values: ApiLogStates
+          values: ApiLogStates,
         },
         {
           name: 'createDate',
           type: ItemType.DateRange,
           label: ['From Date', 'To Date'],
-        }
+        },
       ],
-      fetch: query => {
+      fetch: (query) => {
         Object.assign(query, { });
+
         return this.loadApiLogs(query)
           .pipe(
-            map((response: any) => ({ data: response.data, paging: response.paging }))
+            map((response: any) => ({ data: response.data, paging: response.paging })),
           );
-      }
+      },
     };
   }
 
   public open(apiLog) {
     this._dialog.open(ApiLogComponent, {
-      data: { apiLog: apiLog },
-      width: '85%'
+      data: { apiLog },
+      width: '85%',
     });
   }
 }

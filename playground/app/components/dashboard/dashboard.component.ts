@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
-import { FsExampleComponent } from '@firestitch/example';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
 import { FsMessage } from '@firestitch/message';
+import { DashboardAction } from '@firestitch/package';
+
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { DashboardAction } from 'src/app/interfaces';
+
 
 @Component({
   selector: 'dashboard',
-  templateUrl: 'dashboard.component.html',
-  styleUrls: ['dashboard.component.scss']
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent {
 
@@ -17,20 +20,21 @@ export class DashboardComponent {
     {
       label: 'Do Something',
       click: () => {
-        this.message.success('Did Something');
-      }
+        this._message.success('Did Something');
+      },
     },
     {
       label: 'Do Something Menu',
       menu: true,
       click: () => {
-        this.message.success('Did Something');
-      }
-    }
+        this._message.success('Did Something');
+      },
+    },
   ];
 
-  constructor(private exampleComponent: FsExampleComponent,
-    private message: FsMessage) {
+  constructor(
+    private _message: FsMessage,
+  ) {
   }
 
   public load = () => {
@@ -50,15 +54,15 @@ export class DashboardComponent {
       serverTime: '2019-11-30T17:00:34+00:00',
     })
       .pipe(
-        delay(0)
+        delay(0),
       );
-  }
+  };
 
   public init = () => {
     return of(true);
-  }
+  };
 
   public upgrade = () => {
     return of(true);
-  }
+  };
 }
