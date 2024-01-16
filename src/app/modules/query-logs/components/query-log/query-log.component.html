@@ -78,6 +78,13 @@
         <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: queryBlock.groupingOperation }"></ng-container>
       </fs-label-field>
     </ng-container>
+
+    <ng-container *ngIf="queryBlock.duplicatesRemoval">
+      <fs-label-field>
+        <fs-label>Duplicates Removal</fs-label>
+        <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: queryBlock.duplicatesRemoval }"></ng-container>
+      </fs-label-field>
+    </ng-container>
   </div>
 
   <ng-container *ngIf="queryBlock.orderingOperation">
@@ -86,6 +93,10 @@
 
   <ng-container *ngIf="queryBlock.groupingOperation">
     <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: queryBlock.groupingOperation }"></ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="queryBlock.duplicatesRemoval">
+    <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: queryBlock.duplicatesRemoval }"></ng-container>
   </ng-container>
 
   <ng-container *ngIf="queryBlock.table">
