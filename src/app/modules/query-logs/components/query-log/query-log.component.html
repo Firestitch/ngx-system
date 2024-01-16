@@ -54,7 +54,21 @@
 </fs-dialog>
 
 <ng-template #nestedLoop let-queryBlock="queryBlock">
+  <ng-container *ngIf="queryBlock.orderingOperation">
+    <fs-label-field>
+      <fs-label>Ordering Operation</fs-label>
+      <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: queryBlock.orderingOperation }"></ng-container>
+    </fs-label-field>
+    <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: queryBlock.orderingOperation }"></ng-container>
+  </ng-container>
 
+  <ng-container *ngIf="queryBlock.groupingOperation">
+    <fs-label-field>
+      <fs-label>Grouping Operation</fs-label>
+      <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: queryBlock.groupingOperation }"></ng-container>
+    </fs-label-field>
+    <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: queryBlock.groupingOperation }"></ng-container>
+  </ng-container>
 
   <ng-container *ngIf="queryBlock.nestedLoop">
     <table class="fs-list-table style-line">
@@ -134,23 +148,7 @@
      </table>
      <br>
    </ng-container>  
-
-  <ng-container *ngIf="queryBlock.orderingOperation">
-    <fs-label-field>
-      <fs-label>Ordering Operation</fs-label>
-      <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: queryBlock.orderingOperation }"></ng-container>
-    </fs-label-field>
-    <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: queryBlock.orderingOperation }"></ng-container>
-  </ng-container>
-
-  <ng-container *ngIf="queryBlock.groupingOperation">
-    <fs-label-field>
-      <fs-label>Grouping Operation</fs-label>
-      <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: queryBlock.groupingOperation }"></ng-container>
-    </fs-label-field>
-    <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: queryBlock.groupingOperation }"></ng-container>
-  </ng-container>
-
+  
   <ng-container *ngIf="queryBlock.selectListSubqueries">
     <fs-label-field>
       <fs-label>Select List Subqueries</fs-label>
