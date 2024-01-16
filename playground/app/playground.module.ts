@@ -13,7 +13,7 @@ import { FsFormModule } from '@firestitch/form';
 import { FsLabelModule } from '@firestitch/label';
 import { FsListModule } from '@firestitch/list';
 import { FsMessageModule } from '@firestitch/message';
-import { FsSystemModule } from '@firestitch/package';
+import { FsSystemModule, FsSystemQueryLogsModule } from '@firestitch/package';
 import { FsScrollModule } from '@firestitch/scroll';
 import { FsSelectionModule } from '@firestitch/selection';
 
@@ -23,6 +23,7 @@ import { AppComponent } from './app.component';
 import {
   DashboardComponent,
   ExamplesComponent,
+  QueryLogsComponent,
 } from './components';
 import { ApiLogsComponent } from './components/api-logs';
 import { CronsComponent } from './components/crons';
@@ -44,6 +45,7 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     FsSystemModule,
+    FsSystemQueryLogsModule,
     BrowserAnimationsModule,
     AppMaterialModule,
     FormsModule,
@@ -67,10 +69,6 @@ const routes: Routes = [
       dragoverMessage: true,
     }),
   ],
-  entryComponents: [
-    KitchenSinkConfigureComponent,
-    ProcessDialogComponent,
-  ],
   declarations: [
     AppComponent,
     ExamplesComponent,
@@ -84,6 +82,7 @@ const routes: Routes = [
     ApiLogsComponent,
     InfoComponent,
     ProcessDialogComponent,
+    QueryLogsComponent,
   ],
 })
 export class PlaygroundModule {
