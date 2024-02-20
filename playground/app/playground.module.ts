@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 
 
-import { FsBuildModule } from '@firestitch/build';
 import { FsDatePickerModule } from '@firestitch/datepicker';
 import { FsDialogModule } from '@firestitch/dialog';
 import { FsExampleModule } from '@firestitch/example';
@@ -57,10 +56,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
     FsListModule.forRoot(),
     FsScrollModule.forRoot(),
-    FsBuildModule.forRoot({
-      origin: 'https://firestitch-dev.s3.us-west-2.amazonaws.com',
-      path: 'pub/build.json',
-    }),
     FsDatePickerModule.forRoot(),
     FsSelectionModule,
     FsFileModule.forRoot({
