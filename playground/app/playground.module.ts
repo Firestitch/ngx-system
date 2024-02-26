@@ -18,6 +18,7 @@ import { FsSelectionModule } from '@firestitch/selection';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { BuildConfig, FS_BUILD_CONFIG, UpdateAction } from '@firestitch/build';
 import { AppComponent } from './app.component';
 import {
   DashboardComponent,
@@ -27,7 +28,6 @@ import {
 import { ApiLogsComponent } from './components/api-logs';
 import { CronsComponent } from './components/crons';
 import { InfoComponent } from './components/info';
-import { KitchenSinkConfigureComponent } from './components/kitchen-sink-configure';
 import { ProcessDialogComponent } from './components/process-dialog/process-dialog.component';
 import { ProcessesComponent } from './components/processes';
 import { ServerLogsComponent } from './components/server-logs';
@@ -70,7 +70,6 @@ const routes: Routes = [
     CronsComponent,
     DashboardComponent,
     SettingsComponent,
-    KitchenSinkConfigureComponent,
     ProcessesComponent,
     ServerLogsComponent,
     UpgradeLogsComponent,
@@ -79,6 +78,16 @@ const routes: Routes = [
     ProcessDialogComponent,
     QueryLogsComponent,
   ],
+  providers: [
+    {
+      provide: FS_BUILD_CONFIG,
+      useFactory: (): BuildConfig => {
+        return {
+          updateAction: UpdateAction.PromptUpdate,
+        };
+      },
+    },
+  ]
 })
 export class PlaygroundModule {
 }

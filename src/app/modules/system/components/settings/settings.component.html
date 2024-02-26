@@ -33,9 +33,9 @@
       <mat-form-field 
           class="full-width form-field-multiline-subscript"
           *ngIf="setting.interfaceType===SettingInterfaceType.InputBox">
+        <mat-label>{{setting.label}}</mat-label>
         <input
           matInput
-          [placeholder]="setting.label"
           [(ngModel)]="setting.value"
           [name]="'setting' + setting.id">
           <mat-hint>{{setting.instruction}}</mat-hint>
@@ -44,9 +44,9 @@
       <mat-form-field 
           class="full-width form-field-multiline-subscript" 
           *ngIf="setting.interfaceType===SettingInterfaceType.Textarea">
+        <mat-label>{{setting.label}}</mat-label>
         <textarea
           matInput
-          [placeholder]="setting.label"
           [(ngModel)]="setting.value"
           [name]="'setting' + setting.id">
         </textarea>
@@ -56,8 +56,8 @@
       <mat-form-field 
           class="full-width form-field-multiline-subscript" 
           *ngIf="setting.interfaceType===SettingInterfaceType.Select || setting.interfaceType===SettingInterfaceType.SelectMultiple">
+        <mat-label>{{setting.label}}</mat-label>
         <mat-select
-            [placeholder]="setting.label"
             [(ngModel)]="setting.value"
             [multiple]="setting.interfaceType===SettingInterfaceType.SelectMultiple"
             [name]="'setting' + setting.id">
@@ -71,10 +71,10 @@
       <mat-form-field 
           class="full-width form-field-multiline-subscript" 
           *ngIf="setting.interfaceType===SettingInterfaceType.Date">
+        <mat-label>{{setting.label}}</mat-label>
         <input
           matInput
           fsDatePicker
-          [placeholder]="setting.label"
           [(ngModel)]="setting.value"
           [name]="'setting' + setting.id">
           <mat-hint>{{setting.instruction}}</mat-hint>
@@ -83,10 +83,10 @@
       <mat-form-field 
           class="full-width form-field-multiline-subscript" 
           *ngIf="setting.interfaceType===SettingInterfaceType.Color">
+        <mat-label>{{setting.label}}</mat-label>
         <input
           matInput
           fsColorPicker
-          [placeholder]="setting.label"
           [(ngModel)]="setting.value"
           [name]="'setting' + setting.id">
           <mat-hint>{{setting.instruction}}</mat-hint>
@@ -95,10 +95,10 @@
       <mat-form-field 
           class="full-width form-field-multiline-subscript" 
           *ngIf="setting.interfaceType===SettingInterfaceType.Time">
+        <mat-label>{{setting.label}}</mat-label>
         <input
           matInput
           fsTimePicker
-          [placeholder]="setting.label"
           [(ngModel)]="setting.value"
           [name]="'setting' + setting.id">
           <mat-hint>{{setting.instruction}}</mat-hint>
