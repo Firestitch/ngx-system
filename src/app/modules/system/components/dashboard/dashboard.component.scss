@@ -1,6 +1,20 @@
+:host ::ng-deep .menu-button {
+  box-shadow: none;
+}
+
+h2 {
+  margin-top: 0;
+}
 
 .actions {
-  margin-bottom: 1.25em;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  button, fs-menu {
+    margin-bottom: 10px;
+    margin-right: 5px;
+  }
 }
 
 table td {
@@ -31,19 +45,9 @@ table td {
 }
 
 
-@media (max-width: 600px) {
-
+@media (max-width: 1000px) {
   :host ::ng-deep .menu-button {
     width: 100%;
     border-radius: 4px;
   }
-
-}
-
-@media (min-width: 600px) {
-
-  :host ::ng-deep .menu-button {
-    box-shadow: none;
-  }
-
 }
