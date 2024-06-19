@@ -21,10 +21,11 @@
         <ng-template #statusPopover>
           <div *ngIf="row.host">Host: {{row.host}}</div>
           <div *ngIf="row.processId">Process ID: {{row.processId}}</div>
+          <div *ngIf="row.processState">Process State: {{CronProcessStates[row.processState]}}</div>
         </ng-template>
       </ng-container>
       <ng-template #status>
-        {{cronStates[row.state]}}
+        {{CronStates[row.state]}}
       </ng-template>
       <ng-container *ngIf="row.state === CronState.Running">
         <div class="small">

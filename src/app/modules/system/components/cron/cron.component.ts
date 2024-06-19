@@ -1,13 +1,14 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+
+import { ItemType } from '@firestitch/filter';
 import { FsListConfig } from '@firestitch/list';
 
+import { CronProcessStates, CronStates } from '../../consts';
 import { CronLogStates } from '../../consts/cron-log-states.const';
-import { CronStates } from '../../consts';
 import { indexNameValue } from '../../helpers/index-name-value';
 import { CronLogComponent } from '../cron-log';
-import { ItemType } from '@firestitch/filter';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class CronComponent implements OnInit {
   public cron;
   public tabIndex = 0;
   public CronStates = indexNameValue(CronStates);
+  public CronProcessStates = indexNameValue(CronProcessStates);
   public CronLogStates = indexNameValue(CronLogStates);
   public CronLogStateColors = {};
 
@@ -35,10 +37,11 @@ export class CronComponent implements OnInit {
   public ngOnInit(): void {
     this.load();
     this.CronLogStateColors = CronLogStates
-    .reduce((accum, cronLogState) => {
-      accum[cronLogState.value] = cronLogState.color;
-      return accum;
-    }, {});
+      .reduce((accum, cronLogState) => {
+        accum[cronLogState.value] = cronLogState.color;
+
+        return accum;
+      }, {});
   }
 
   public cronLogOpen(cronLog): void {
@@ -46,15 +49,15 @@ export class CronComponent implements OnInit {
       data: { 
         cronLog,
       },
-      width: '85%'
+      width: '85%',
     });    
   }
 
   public cronActionClick(cronAction) {
     cronAction.action(this.cron)
-    .subscribe(() => {
-      this.load();
-    });
+      .subscribe(() => {
+        this.load();
+      });
   }
 
   public selectedIndexChange(index) {
@@ -63,47 +66,47 @@ export class CronComponent implements OnInit {
     
   public load(): void {
     this._data.loadCron(this._data.cron)
-    .subscribe((cron) => {
-      this.cron = {
-        ...this._data.cron,
-        ...cron,
-      };
-
-      if(this._data.loadCronLogs) {
-        this.config = {
-          filters: [
-            {
-              type: ItemType.Select,
-              name: 'state',
-              label: 'Status',
-              values: [
-                { name: 'All', value: null },
-                ...CronLogStates,
-              ],
-            },
-            {
-              type: ItemType.DateRange,
-              name: 'date',
-              label: ['From Date', 'To Date'],
-            },
-          ],          
-          fetch: (query) => {
-            query = {
-              ...query,
-              cronId: this.cron.id,
-            };
-
-            return this._data.loadCronLogs(query);
-          },
+      .subscribe((cron) => {
+        this.cron = {
+          ...this._data.cron,
+          ...cron,
         };
-      }
 
-      this.cronActions = this._data.cronActions
-      .filter((cronLogAction) => {
-        return cronLogAction.show(this.cron);
+        if(this._data.loadCronLogs) {
+          this.config = {
+            filters: [
+              {
+                type: ItemType.Select,
+                name: 'state',
+                label: 'Status',
+                values: [
+                  { name: 'All', value: null },
+                  ...CronLogStates,
+                ],
+              },
+              {
+                type: ItemType.DateRange,
+                name: 'date',
+                label: ['From Date', 'To Date'],
+              },
+            ],          
+            fetch: (query) => {
+              query = {
+                ...query,
+                cronId: this.cron.id,
+              };
+
+              return this._data.loadCronLogs(query);
+            },
+          };
+        }
+
+        this.cronActions = this._data.cronActions
+          .filter((cronLogAction) => {
+            return cronLogAction.show(this.cron);
+          });
+
+        this._cdRef.markForCheck();
       });
-
-      this._cdRef.markForCheck();
-    });
   }
 }

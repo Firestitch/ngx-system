@@ -1,12 +1,14 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 import { CronLogStates } from '../../consts/cron-log-states.const';
 import { indexNameValue } from '../../helpers/index-name-value';
 
 
 @Component({
   templateUrl: './cron-log.component.html',
-  styleUrls: ['./cron-log.component.scss']
+  styleUrls: ['./cron-log.component.scss'],
 })
 export class CronLogComponent implements OnInit {
 
@@ -21,9 +23,10 @@ export class CronLogComponent implements OnInit {
   public ngOnInit(): void {
     this.cronLog = this._data.cronLog;
     this.CronLogStateColors = CronLogStates
-    .reduce((accum, cronLogState) => {
-      accum[cronLogState.value] = cronLogState.color;
-      return accum;
-    }, {});
+      .reduce((accum, cronLogState) => {
+        accum[cronLogState.value] = cronLogState.color;
+
+        return accum;
+      }, {});
   }
 }

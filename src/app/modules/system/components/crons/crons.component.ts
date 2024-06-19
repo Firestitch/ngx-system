@@ -14,7 +14,7 @@ import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { differenceInSeconds } from 'date-fns';
 
-import { CronStates } from '../../consts';
+import { CronProcessStates, CronStates } from '../../consts';
 import { CronState } from '../../enums';
 import { indexNameValue } from '../../helpers/index-name-value';
 import { CronComponent } from '../cron/cron.component';
@@ -40,7 +40,8 @@ export class CronsComponent implements OnInit, OnDestroy {
   @Input() public bulk: (actionName: string, data: any[]) => Observable<any>;
 
   public config: FsListConfig = null;
-  public cronStates = indexNameValue(CronStates);
+  public CronStates = indexNameValue(CronStates);
+  public CronProcessStates = indexNameValue(CronProcessStates);
   public CronState = CronState;
 
   private _destroy$ = new Subject();
@@ -53,72 +54,6 @@ export class CronsComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this._configList();
-  }
-
-  private _configList(): void {
-    this.config = {
-      paging: false,
-      filters: [
-        {
-          type: ItemType.Keyword,
-          name: 'keyword',
-          label: 'Search',
-        },
-      ],
-      rowActions: this.getCronActions()
-        .map((rowAction) => {
-          return {
-            ...rowAction,
-            click: (cron) => {
-              rowAction.action(cron)
-                .subscribe();
-            },
-          };
-        }),
-      fetch: (query) => {
-        query.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-        return this.loadCrons(query)
-          .pipe(
-            map((crons) => ({
-              data: crons
-                .map((cron) => {
-                  return {
-                    ...cron,
-                    runningDuration: differenceInSeconds(parse(cron.createDate), new Date()),
-                  };
-                }),
-            })),
-          );
-      },
-    };
-
-    if(this.bulk) {
-      this.config.selection = {
-        selectAll: false,
-        actions: [
-          {
-            type: SelectionActionType.Action,
-            name: 'disable',
-            label: 'Disable',
-          },
-          {
-            type: SelectionActionType.Action,
-            name: 'enable',
-            label: 'Enable',
-          },
-        ],
-        actionSelected: (action: FsListActionSelected) => {
-          return this.bulk(action.action.name, action.selected)
-            .pipe(
-              tap(() => {
-                this.list.reload();
-                this._message.success('Applied Changes');
-              }),
-            );
-        },
-      };
-    }
   }
 
   public open(cron) {
@@ -245,5 +180,75 @@ export class CronsComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();
+  }
+
+  private _configList(): void {
+    this.config = {
+      paging: false,
+      filters: [
+        {
+          type: ItemType.Keyword,
+          name: 'keyword',
+          label: 'Search',
+        },
+      ],
+      rowActions: this.getCronActions()
+        .map((rowAction) => {
+          return {
+            ...rowAction,
+            click: (cron) => {
+              rowAction.action(cron)
+                .subscribe();
+            },
+          };
+        }),
+      fetch: (query) => {
+        query = { 
+          ...query,
+          processStates: true,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        };
+
+        return this.loadCrons(query)
+          .pipe(
+            map((crons) => ({
+              data: crons
+                .map((cron) => {
+                  return {
+                    ...cron,
+                    runningDuration: differenceInSeconds(parse(cron.createDate), new Date()),
+                  };
+                }),
+            })),
+          );
+      },
+    };
+
+    if(this.bulk) {
+      this.config.selection = {
+        selectAll: false,
+        actions: [
+          {
+            type: SelectionActionType.Action,
+            name: 'disable',
+            label: 'Disable',
+          },
+          {
+            type: SelectionActionType.Action,
+            name: 'enable',
+            label: 'Enable',
+          },
+        ],
+        actionSelected: (action: FsListActionSelected) => {
+          return this.bulk(action.action.name, action.selected)
+            .pipe(
+              tap(() => {
+                this.list.reload();
+                this._message.success('Applied Changes');
+              }),
+            );
+        },
+      };
+    }
   }
 }

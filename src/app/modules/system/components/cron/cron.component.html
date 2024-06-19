@@ -21,6 +21,16 @@
             {{cron.cronSetting.summary}}
           </fs-label-field>
 
+          <fs-label-field *ngIf="cron.processId">
+            <fs-label>
+              Process
+            </fs-label>
+            {{cron.processId}}
+            <ng-container *ngIf="cron.processState">
+              {{CronProcessStates[cron.processState]}}
+            </ng-container>
+          </fs-label-field>
+
           <fs-label-field>
             <fs-label>
               Last Ran
