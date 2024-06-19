@@ -205,7 +205,6 @@ export class CronsComponent implements OnInit, OnDestroy {
       fetch: (query) => {
         query = { 
           ...query,
-          processStates: true,
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         };
 

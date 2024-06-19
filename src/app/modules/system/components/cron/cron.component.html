@@ -27,7 +27,9 @@
             </fs-label>
             {{cron.processId}}
             <ng-container *ngIf="cron.processState">
-              {{CronProcessStates[cron.processState]}}
+              <div class="small">
+                {{CronProcessStates[cron.processState]}}
+              </div>
             </ng-container>
           </fs-label-field>
 
