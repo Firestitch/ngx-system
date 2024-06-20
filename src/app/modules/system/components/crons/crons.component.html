@@ -48,4 +48,12 @@
       </ng-template>
     </ng-template>
   </fs-list-column>
+  <fs-list-column>
+    <ng-template fs-list-header>Next Run</ng-template>
+    <ng-template fs-list-cell let-row="row">
+      <ng-container *ngIf="row.state !== CronState.Disabled">
+        <app-next-run [cron]="row"></app-next-run>
+      </ng-container>
+    </ng-template>
+  </fs-list-column>
 </fs-list>

@@ -29,6 +29,7 @@ import { ApiLogComponent } from './components/api-log/api-log.component';
 import { ApiLogsComponent } from './components/api-logs/api-logs.component';
 import { CronComponent } from './components/cron';
 import { CronLogComponent } from './components/cron-log';
+import { CronNextRunComponent } from './components/cron-next-run';
 import { CronsComponent } from './components/crons/crons.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { InfoComponent } from './components/info/info.component';
@@ -81,6 +82,7 @@ import { KeyNameValuePipe } from './pipes/key-name-value.pipe';
   ],
   declarations: [
     DashboardComponent,
+    CronNextRunComponent,
     CronsComponent,
     SettingsComponent,
     KeyNameValuePipe,

@@ -1,0 +1,8 @@
+<ng-container *ngIf="duration > 60; else seconds">
+  {{duration | fsDateDuration: { hours: true, seconds: true, minutes: true, days: true} }}
+</ng-container>
+
+<ng-template #seconds>
+  {{duration}}s
+</ng-template>
+
