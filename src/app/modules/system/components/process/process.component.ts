@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestro
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { FsMessage } from '@firestitch/message';
+import { FsPrompt } from '@firestitch/prompt';
 
 import { Observable, Subject, timer } from 'rxjs';
 import { switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
@@ -30,6 +31,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data,
     private _message: FsMessage,
     private _cdRef: ChangeDetectorRef,
+    private _prompt: FsPrompt,
   ) {}
 
   public ngOnInit() {
@@ -55,7 +57,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
   }
   
   public runningRefresh() {
-    timer(0, 1000)
+    timer(1000)
       .pipe(
         takeWhile(() => this.process.state === ProcessState.Running),
         switchMap(() => this.load$()),
@@ -65,10 +67,14 @@ export class ProcessComponent implements OnInit, OnDestroy {
   }
 
   public kill() {
-    this.data.kill(this.data.process)
+    this._prompt.confirm({
+      title: 'Kill process',
+      template: 'Are you sure you would like to kill the process?',
+    })
       .pipe(
+        switchMap(() => this.data.kill(this.data.process)),
         switchMap(() => this.load$()),
-      )
+      )  
       .subscribe(() => {
         this._message.success('Killed process');
       });   
@@ -83,7 +89,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.runningRefresh();
-      });   
+      });
   }
 
   public download() {
