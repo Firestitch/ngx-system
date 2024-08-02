@@ -1,10 +1,20 @@
-:host ::ng-deep {
+.log {
+  white-space: pre-line;
+  font-family: monospace;
+  font-size: 95%;
+  line-height: 130%;
+}
 
-  .log {
-    .field-content {
-      white-space: pre-wrap;
-      font-family: monospace;
-      font-size: 14px;
+.status {
+  display: flex;
+  
+  &.running {
+    margin-right: 28px;
+
+    mat-progress-spinner {
+      position: absolute;
+      right: -0;
     }
   }
+
 }

@@ -2,19 +2,25 @@
   <div mat-dialog-title>Process</div>
   <mat-dialog-content>
     <div class="column">
-      <fs-label-field>
-        <fs-label>
-          Name
-        </fs-label>
-        {{process.prettyName}}
-      </fs-label-field>
-
       <div class="fs-row.gap-large.wrap">
+        <fs-label-field>
+          <fs-label>
+            Name
+          </fs-label>
+          {{process.prettyName}}
+        </fs-label-field>
+
         <fs-label-field>
           <fs-label>
             Status
           </fs-label>
-          {{ProcessStates[process.state]}}
+          <div class="status" [ngClass]="{ 'running': process.state === ProcessState.Running }">
+            {{ProcessStates[process.state]}} 
+            <ng-container *ngIf="process.state === ProcessState.Running">
+              <mat-progress-spinner [diameter]="20" [mode]="'indeterminate'"></mat-progress-spinner>
+            </ng-container>
+          </div>
+          
         </fs-label-field>
 
         <fs-label-field *ngIf="process.notify">
@@ -30,9 +36,7 @@
           </fs-label>
           {{process.pid}}
         </fs-label-field>
-      </div>
 
-      <div class="fs-row.gap-large.wrap">
         <fs-label-field *ngIf="process.createDate">
           <fs-label>
             Create Date
@@ -69,10 +73,13 @@
         {{process.message}}
       </fs-label-field>
 
-      <fs-label-field *ngIf="process.log" class="log">
+      <fs-label-field *ngIf="process.log">
         <fs-label>
           Log
-        </fs-label>{{process.log}}
+        </fs-label>
+        <div class="log">
+          {{process.log}}
+        </div>
       </fs-label-field>
 
     </div>
@@ -85,10 +92,10 @@
       Close
     </button>
     <button
-        *ngIf="process.state === ProcessState.Running && data.loadProcess"
+        *ngIf="process.state === ProcessState.Running && data.kill"
         mat-button
-        (click)="load()">
-      Refresh
+        (click)="kill()">
+      Kill
     </button>
     <button 
         *ngIf="process.state !== ProcessState.Running && data.run" 

@@ -1,10 +1,16 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { ProcessStates } from './../../consts/process-states.const';
-import { indexNameValue } from '../../helpers/index-name-value';
-import { ProcessState } from './../../enums/process-state.enum';
 import { FsMessage } from '@firestitch/message';
+
+import { Observable, Subject, timer } from 'rxjs';
+import { switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
+
+import { indexNameValue } from '../../helpers/index-name-value';
+
+import { ProcessStates } from './../../consts/process-states.const';
+import { ProcessState } from './../../enums/process-state.enum';
 
 
 @Component({
@@ -12,12 +18,14 @@ import { FsMessage } from '@firestitch/message';
   styleUrls: ['./process.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProcessComponent implements OnInit {
+export class ProcessComponent implements OnInit, OnDestroy {
 
   public process;
   public ProcessStates = indexNameValue(ProcessStates);
   public ProcessState = ProcessState;
 
+  private _destroy$ = new Subject();
+  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     private _message: FsMessage,
@@ -26,33 +34,65 @@ export class ProcessComponent implements OnInit {
 
   public ngOnInit() {
     if (this.data.loadProcess) {
-      this.load();
+      this.load$()
+        .subscribe(() => {
+          this.runningRefresh();
+        });
     } else {
-       this.process = this.data.process;
+      this.process = this.data.process;
     }
   }
 
-  public load() {
-    this.data.loadProcess(this.data.process)
-    .subscribe((process) => {
-      this.process = process;
-      this._cdRef.markForCheck();
-    });
+  public load$(): Observable<any> {
+    return this.data
+      .loadProcess(this.data.process)
+      .pipe(
+        tap((process) => {
+          this.process = process;
+          this._cdRef.markForCheck();
+        }),
+      );
   }
+  
+  public runningRefresh() {
+    timer(0, 1000)
+      .pipe(
+        takeWhile(() => this.process.state === ProcessState.Running),
+        switchMap(() => this.load$()),
+        takeUntil(this._destroy$),
+      )
+      .subscribe();
+  }
+
+  public kill() {
+    this.data.kill(this.data.process)
+      .pipe(
+        switchMap(() => this.load$()),
+      )
+      .subscribe(() => {
+        this._message.success('Killed process');
+      });   
+  }
+
 
   public run() {
     this._message.success('Running process');
     this.data.run(this.data.process)
-    .subscribe(() => {
-      this.load();
-    });
-
-  setTimeout(() => {
-    this.load();
-  }, 1000);    
+      .pipe(
+        switchMap(() => this.load$()),
+      )
+      .subscribe(() => {
+        this.runningRefresh();
+      });   
   }
 
   public download() {
     this.data.download(this.data.process);
   }
+
+  public ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
+
 }

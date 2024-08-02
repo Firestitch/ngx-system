@@ -8,6 +8,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -56,6 +57,7 @@ import { KeyNameValuePipe } from './pipes/key-name-value.pipe';
     MatInputModule,
     MatSelectModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
     MatTabsModule,
 
     FsDateModule,

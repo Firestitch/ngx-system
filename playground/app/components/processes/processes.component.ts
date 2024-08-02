@@ -52,7 +52,7 @@ export class ProcessesComponent {
   };
 
   public load = () => {
-    return of({ paging:{ limit:25,records:0,offset:0 },data:[
+    return of({ paging:{ limit:25, records:0, offset:0 },data:[
       {
         id: 1,
         prettyName: 'Process Name',
@@ -102,7 +102,10 @@ Jan 28 21:56:25 Lab12 php-cgi: PHP Warning:  Cannot load module 'pdo_sqlite' bec
   };
 
   public kill = (process) => {
-    return of(true);
+    return of({
+      ...process,
+      state: ProcessState.Killed,
+    });
   };
 
   public delete = (process) => {

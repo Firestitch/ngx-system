@@ -61,6 +61,7 @@ export class ProcessesComponent implements OnInit, OnDestroy {
         download: this.download,
         run: this.run,
         loadProcess: this.loadProcess,
+        kill: this.kill,
       },
       width: '85%',
     })
