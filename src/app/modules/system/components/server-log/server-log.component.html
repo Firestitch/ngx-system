@@ -1,7 +1,7 @@
 <fs-dialog *fsSkeleton="log">
   <div mat-dialog-title>Log</div>
   <mat-dialog-content>
-    <div class="fs-column">
+    <div class="fs-row.gap-lg.wrap.align-start">
       <fs-label-field>
         <fs-label>
           Error Type
@@ -16,7 +16,7 @@
         {{log.message}}
       </fs-label-field>
 
-      <fs-label-field>
+      <fs-label-field *ngIf="log.url">
         <fs-label>
           URL
         </fs-label>
@@ -29,28 +29,29 @@
         </fs-label>
         {{log.createDate|fsDateFormat: 'full-date-time'}}
       </fs-label-field>
-
+        
       <fs-label-field>
         <fs-label>
           File
         </fs-label>
         {{log.file}} @ {{log.line}}
       </fs-label-field>
-
-      <fs-label-field>
-        <fs-label>
-          Backtrace
-        </fs-label>
-        <pre>{{log.backtrace|json}}</pre>
-      </fs-label-field>
-
-      <fs-label-field>
-        <fs-label>
-          $_SERVER
-        </fs-label>
-        <pre>{{log.server|json}}</pre>
-      </fs-label-field>
     </div>
+    <fs-label-field>
+      <fs-label>
+        $_SERVER
+      </fs-label>
+      <pre>{{log.server|json}}</pre>
+    </fs-label-field>
+
+    <fs-label-field>
+      <fs-label>
+        Backtrace
+      </fs-label>
+      <pre>{{log.backtrace|json}}</pre>
+    </fs-label-field>
+
+
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button [mat-dialog-close]="true" color="primary">Done</button>

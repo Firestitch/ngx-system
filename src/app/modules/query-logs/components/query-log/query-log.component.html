@@ -1,7 +1,7 @@
 <fs-dialog>
   <h1 mat-dialog-title>Query Log</h1>
   <mat-dialog-content>
-    <div class="fs-row.gap-large">
+    <div class="fs-row.gap-lg.wrap.align-start">
       <fs-label-field>
         <fs-label>Duration</fs-label>
         {{queryLog.duration}}
@@ -58,7 +58,7 @@
     <h1>Select {{selectId}}</h1>
   </ng-container>
   
-  <div class="fs-row.gap-large">
+  <div class="fs-row.gap-lg.wrap.align-start">
     <ng-container *ngIf="costInfo?.queryCost">
       <fs-label-field>
         <fs-label>Query Cost</fs-label>
