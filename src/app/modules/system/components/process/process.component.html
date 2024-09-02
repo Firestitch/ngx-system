@@ -35,7 +35,7 @@
             Process ID
           </fs-label>
           {{process.pid || 'None'}}
-          <ng-container *ngIf="process.processId">
+          <ng-container *ngIf="process.pid">
             <div class="small">
               {{ProcessProcessStates[process.processState] || 'Unknown'}}
             </div>
