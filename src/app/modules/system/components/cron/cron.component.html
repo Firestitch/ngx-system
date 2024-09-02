@@ -21,14 +21,14 @@
             {{cron.cronSetting.summary}}
           </fs-label-field>
 
-          <fs-label-field *ngIf="cron.processId">
+          <fs-label-field>
             <fs-label>
-              Process
+              Process ID
             </fs-label>
-            {{cron.processId}}
-            <ng-container *ngIf="cron.processState">
+            {{cron.processId || 'None'}}
+            <ng-container *ngIf="cron.processId">
               <div class="small">
-                {{CronProcessStates[cron.processState]}}
+                {{CronProcessStates[cron.processState] || 'Unknown'}}
               </div>
             </ng-container>
           </fs-label-field>
@@ -44,6 +44,13 @@
               <fs-date-ago [date]="cron.createDate"></fs-date-ago>
               <div><small *ngIf="cron.duration">Duration: {{ cron.duration | fsDateDuration }}</small></div>
             </ng-template>
+          </fs-label-field>
+
+          <fs-label-field>
+            <fs-label>
+              Timeout hours
+            </fs-label>
+            {{cron.cronSetting?.timeout || 'N/A'}}
           </fs-label-field>
         </div>
 

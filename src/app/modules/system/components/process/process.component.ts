@@ -8,6 +8,7 @@ import { FsPrompt } from '@firestitch/prompt';
 import { Observable, Subject, timer } from 'rxjs';
 import { switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
+import { ProcessProcessStates } from '../../consts';
 import { indexNameValue } from '../../helpers/index-name-value';
 
 import { ProcessStates } from './../../consts/process-states.const';
@@ -23,12 +24,21 @@ export class ProcessComponent implements OnInit, OnDestroy {
 
   public process;
   public ProcessStates = indexNameValue(ProcessStates);
+  public ProcessProcessStates = indexNameValue(ProcessProcessStates);
   public ProcessState = ProcessState;
 
   private _destroy$ = new Subject();
   
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data,
+    @Inject(MAT_DIALOG_DATA) public data: {
+       run: (process: any) => Observable<any>,
+       queue: (process: any) => Observable<any>,
+       delete: (process: any) => Observable<any>,
+       kill: (process: any) => Observable<any>,
+       loadProcess: (process: any) => Observable<any>,
+       download: (process: any) => void,
+       process: any,
+    },
     private _message: FsMessage,
     private _cdRef: ChangeDetectorRef,
     private _prompt: FsPrompt,
@@ -80,7 +90,6 @@ export class ProcessComponent implements OnInit, OnDestroy {
       });   
   }
 
-
   public run() {
     this._message.success('Running process');
     this.data.run(this.data.process)
@@ -90,6 +99,15 @@ export class ProcessComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.runningRefresh();
       });
+  }
+
+  public queue() {
+    this._message.success('Running process');
+    this.data.queue(this.data.process)
+      .pipe(
+        switchMap(() => this.load$()),
+      )
+      .subscribe();
   }
 
   public download() {

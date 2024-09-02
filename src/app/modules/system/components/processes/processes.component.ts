@@ -33,6 +33,7 @@ export class ProcessesComponent implements OnInit, OnDestroy {
   @Input() public kill: (data: any) => Observable<any>;
   @Input() public delete: (data: any) => Observable<any>;
   @Input() public download: (data: any) => any;
+  @Input() public queue: (data: any) => any;
   @Input() public actions: ProcessAction[] = [];
 
   public config: FsListConfig = null;
@@ -61,6 +62,7 @@ export class ProcessesComponent implements OnInit, OnDestroy {
         download: this.download,
         run: this.run,
         loadProcess: this.loadProcess,
+        queue: this.queue,
         kill: this.kill,
       },
       width: '85%',
