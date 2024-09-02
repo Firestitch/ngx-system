@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit,
+} from '@angular/core';
 
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -10,6 +12,7 @@ import { switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { ProcessProcessStates } from '../../consts';
 import { indexNameValue } from '../../helpers/index-name-value';
+import { Process } from '../../interfaces';
 
 import { ProcessStates } from './../../consts/process-states.const';
 import { ProcessState } from './../../enums/process-state.enum';
@@ -22,7 +25,7 @@ import { ProcessState } from './../../enums/process-state.enum';
 })
 export class ProcessComponent implements OnInit, OnDestroy {
 
-  public process;
+  public process: Process;
   public ProcessStates = indexNameValue(ProcessStates);
   public ProcessProcessStates = indexNameValue(ProcessProcessStates);
   public ProcessState = ProcessState;
