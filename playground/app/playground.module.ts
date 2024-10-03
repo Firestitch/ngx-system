@@ -53,7 +53,7 @@ const routes: Routes = [
     FsDialogModule,
     FsExampleModule.forRoot(),
     FsMessageModule.forRoot(),
-    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot(routes, {}),
     FsListModule.forRoot(),
     FsScrollModule.forRoot(),
     FsDatePickerModule.forRoot(),
