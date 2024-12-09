@@ -1,9 +1,9 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
 import { ItemType } from '@firestitch/filter';
-import { FsListComponent, FsListConfig } from '@firestitch/list';
+import { FsListComponent, FsListConfig, PaginationStrategy } from '@firestitch/list';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -17,6 +17,7 @@ import { ApiLogComponent } from '../api-log/api-log.component';
   selector: 'fs-system-api-logs',
   templateUrl: './api-logs.component.html',
   styleUrls: ['./api-logs.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApiLogsComponent implements OnInit {
 
@@ -36,9 +37,18 @@ export class ApiLogsComponent implements OnInit {
     this._configList();
   }
 
-  private _configList() {
+  public open(apiLog) {
+    this._dialog.open(ApiLogComponent, {
+      data: { apiLog },
+      width: '85%',
+    });
+  }
 
+  private _configList() {
     this.config = {
+      paging: {
+        strategy: PaginationStrategy.Many,
+      },
       filters: [
         {
           type: ItemType.Keyword,
@@ -66,12 +76,5 @@ export class ApiLogsComponent implements OnInit {
           );
       },
     };
-  }
-
-  public open(apiLog) {
-    this._dialog.open(ApiLogComponent, {
-      data: { apiLog },
-      width: '85%',
-    });
   }
 }

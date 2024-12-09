@@ -1,12 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { FsPrompt } from '@firestitch/prompt';
+import { FsClipboard } from '@firestitch/clipboard';
 import { parse } from '@firestitch/date';
 import { FsMessage } from '@firestitch/message';
-import { FsClipboard } from '@firestitch/clipboard';
+import { FsPrompt } from '@firestitch/prompt';
+
+import { Observable } from 'rxjs';
 
 import { SettingInterfaceType } from '../../enums';
-import { Observable } from 'rxjs';
 
 
 @Component({
@@ -83,7 +84,7 @@ export class SettingsComponent implements OnInit {
         name: setting.name,
         value: setting.value,
         group: setting.group,
-      }
+      };
     });
 
     this._clipboard.copy(JSON.stringify(data));
@@ -93,32 +94,32 @@ export class SettingsComponent implements OnInit {
   public import(event: UIEvent, group): void {
     event.stopPropagation();
     this._prompt.input({
-        label: 'JSON Import',
-        title: 'Import Settings',
-        commitLabel: 'Import',
-        required: true,
-      }).subscribe((value: string) => {
-        if (value) {
-          try {
-            const settings = this.groupedSettings[group];
-            const data = JSON.parse(value);
+      label: 'JSON Import',
+      title: 'Import Settings',
+      commitLabel: 'Import',
+      required: true,
+    }).subscribe((value: string) => {
+      if (value) {
+        try {
+          const settings = this.groupedSettings[group];
+          const data = JSON.parse(value);
 
-            data.forEach((item) => {
-              const setting = settings.find((s) => {
-                return item.name === s.name;
-              });
-
-              if (setting) {
-                Object.assign(setting, item);
-              }
+          data.forEach((item) => {
+            const setting = settings.find((s) => {
+              return item.name === s.name;
             });
 
-            this._cdRef.markForCheck();
-          } catch (e) {
-            this._message.error(e);
-          }
+            if (setting) {
+              Object.assign(setting, item);
+            }
+          });
+
+          this._cdRef.markForCheck();
+        } catch (e) {
+          this._message.error(e);
         }
-      });
+      }
+    });
   }
 
   public saveGroup(group): void {
@@ -128,8 +129,8 @@ export class SettingsComponent implements OnInit {
     }, {});
 
     this.save(group, values)
-    .subscribe(() => {
-      this._message.success('Changes Saved');
-    });
+      .subscribe(() => {
+        this._message.success('Changes Saved');
+      });
   }
 }

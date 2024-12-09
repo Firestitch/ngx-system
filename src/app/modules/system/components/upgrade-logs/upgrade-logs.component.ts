@@ -1,27 +1,32 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
+
 import { ItemType } from '@firestitch/filter';
-import { FsListConfig, FsListComponent } from '@firestitch/list';
-import { map } from 'rxjs/operators';
+import { FsListComponent, FsListConfig } from '@firestitch/list';
+
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 
 @Component({
   selector: 'fs-system-upgrade-logs',
   templateUrl: './upgrade-logs.component.html',
-  styleUrls: ['./upgrade-logs.component.scss']
+  styleUrls: ['./upgrade-logs.component.scss'],  
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UpgradeLogsComponent implements OnInit {
 
-  @ViewChild(FsListComponent, { static: true }) list: FsListComponent;
+  @ViewChild(FsListComponent, { static: true })
+  public list: FsListComponent;
 
-  @Input() loadUpgradeLogs: (data: any) => Observable<{ data: any[], paging: any }>;
+  @Input() public loadUpgradeLogs: (data: any) => Observable<{ data: any[], paging: any }>;
 
   public config: FsListConfig = null;
   public logTypes = [];
 
-  ngOnInit() {
+  public ngOnInit() {
     this._configList();
   }
+
   private _configList() {
 
     this.config = {
@@ -30,15 +35,15 @@ export class UpgradeLogsComponent implements OnInit {
         {
           type: ItemType.Keyword,
           name: 'keyword',
-          label: 'Search'
-        }
+          label: 'Search',
+        },
       ],
-      fetch: query => {
+      fetch: (query) => {
         return this.loadUpgradeLogs(query)
-        .pipe(
-          map((response: any) => ({ data: response.data, paging: response.paging }))
-        );
-      }
+          .pipe(
+            map((response: any) => ({ data: response.data, paging: response.paging })),
+          );
+      },
     };
   }
 }

@@ -72,7 +72,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
   public runningRefresh() {
     timer(0, 2000)
       .pipe(
-        takeWhile(() => this.process.state === ProcessState.Running),
+        takeWhile(() => this.process.state === String( ProcessState.Running)),
         switchMap(() => this.load$()),
         takeUntil(this._destroy$),
       )

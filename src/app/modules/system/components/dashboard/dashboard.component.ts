@@ -1,10 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { FsMessage } from '@firestitch/message';
 import { BuildData, FsBuildService } from '@firestitch/build';
+import { FsMessage } from '@firestitch/message';
 
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { differenceInMinutes } from 'date-fns';
 
@@ -13,11 +13,17 @@ import { DashboardAction } from './../../interfaces/dashboard-action';
 
 @Component({
   selector: 'fs-system-dashboard',
-  templateUrl: 'dashboard.component.html',
-  styleUrls: [ 'dashboard.component.scss' ],
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
+
+  @Input() public init: () => any;
+  @Input() public upgrade: () => any;
+  @Input() public load: () => any;
+
+  @Input() public actions: DashboardAction[] = [];
 
   public dashboard;
   public buttonActions: DashboardAction[] = [];
@@ -25,43 +31,30 @@ export class DashboardComponent implements OnInit {
   public menuActions: DashboardAction[] = [];
 
   private _destroy$ = new Subject();
-
-  @Input() init: Function;
-  @Input() upgrade: Function;
-  @Input() load: Function;
-
-  @Input() actions: DashboardAction[] = [];
-
   constructor(
     private _message: FsMessage,
     private _cdRef: ChangeDetectorRef,
     private _buildService: FsBuildService,
   ) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     this._load();
-    this.buttonActions = this.actions.filter(item => { return !item.menu; });
-    this.menuActions = this.actions.filter(item => { return item.menu; });
+    this.buttonActions = this.actions.filter((item) => {
+      return !item.menu; 
+    });
+    this.menuActions = this.actions.filter((item) => {
+      return item.menu; 
+    });
 
     this.build = this._buildService.build;
     this._buildService.build$
-    .pipe(
-      takeUntil(this._destroy$)
-    )
-    .subscribe((build: BuildData) => {
-      this.build = build;
-      this._cdRef.markForCheck();
-    });
-  }
-
-  private _load() {
-    this.load()
-    .subscribe((dashboard) => {
-      this.dashboard = dashboard;
-      this.dashboard.cronRanAttention = !dashboard.cronRan ||
-         differenceInMinutes(new Date(), new Date(dashboard.cronRan)) > 15;
-      this._cdRef.markForCheck();
-    });
+      .pipe(
+        takeUntil(this._destroy$),
+      )
+      .subscribe((build: BuildData) => {
+        this.build = build;
+        this._cdRef.markForCheck();
+      });
   }
 
   public ngOnDestroy() {
@@ -75,16 +68,26 @@ export class DashboardComponent implements OnInit {
 
   public initClick() {
     this.init()
-    .subscribe(() => {
-      this._message.success('Successfully initialized the system');
-    });
+      .subscribe(() => {
+        this._message.success('Successfully initialized the system');
+      });
   }
 
   public upgradeClick() {
     this.upgrade()
-    .subscribe(() => {
-      this._load();
-      this._message.success('Successfully upgraded the system');
-    });
+      .subscribe(() => {
+        this._load();
+        this._message.success('Successfully upgraded the system');
+      });
+  }
+
+  private _load() {
+    this.load()
+      .subscribe((dashboard) => {
+        this.dashboard = dashboard;
+        this.dashboard.cronRanAttention = !dashboard.cronRan ||
+         differenceInMinutes(new Date(), new Date(dashboard.cronRan)) > 15;
+        this._cdRef.markForCheck();
+      });
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -9,6 +9,7 @@ import { indexNameValue } from '../../helpers/index-name-value';
 @Component({
   templateUrl: './cron-log.component.html',
   styleUrls: ['./cron-log.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CronLogComponent implements OnInit {
 

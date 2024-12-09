@@ -1,10 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
 @Component({
   templateUrl: './server-log.component.html',
-  styleUrls: ['./server-log.component.scss']
+  styleUrls: ['./server-log.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ServerLogComponent implements OnInit {
 
@@ -19,11 +21,15 @@ export class ServerLogComponent implements OnInit {
 
       try {
         this.log.backtrace = JSON.parse(this.log.backtrace);
-      } catch (e) {}
+      } catch (e) {
+        //
+      }
 
       try {
         this.log.server = JSON.parse(this.log.server);
-      } catch (e) {}
+      } catch (e) {
+        //
+      }
     }
   }
 }

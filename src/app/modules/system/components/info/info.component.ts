@@ -1,11 +1,12 @@
-import { Component, ChangeDetectionStrategy,  Input, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from '@angular/core';
+
 import { Observable } from 'rxjs';
 
 
 @Component({
   selector: 'fs-system-info',
-  templateUrl: 'info.component.html',
-  styleUrls: [ 'info.component.scss' ],
+  templateUrl: './info.component.html',
+  styleUrls: ['./info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfoComponent implements AfterViewInit {
@@ -15,22 +16,22 @@ export class InfoComponent implements AfterViewInit {
 
   @Input() public load: () => Observable<any>;
 
-  ngAfterViewInit() {
+  public ngAfterViewInit() {
     this._load();
   }
 
   private _load() {
     this.load()
-    .subscribe((info) => {
+      .subscribe((info) => {
 
-      info += '<style>body { background: transparent; }</style>';
+        info += '<style>body { background: transparent; }</style>';
 
-      const doc =  this.iframe.nativeElement.contentDocument || this.iframe.nativeElement.contentWindow;
-      doc.open();
-      doc.write(info);
-      doc.close();
-      const scrollHeight = (this.iframe.nativeElement.contentWindow.document.documentElement.scrollHeight + 100);
-      this.iframe.nativeElement.style.height = `${scrollHeight}px`;
-    });
+        const doc =  this.iframe.nativeElement.contentDocument || this.iframe.nativeElement.contentWindow;
+        doc.open();
+        doc.write(info);
+        doc.close();
+        const scrollHeight = (this.iframe.nativeElement.contentWindow.document.documentElement.scrollHeight + 100);
+        this.iframe.nativeElement.style.height = `${scrollHeight}px`;
+      });
   }
 }

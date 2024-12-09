@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -24,6 +24,7 @@ import { CronComponent } from '../cron/cron.component';
   selector: 'fs-system-crons',
   templateUrl: './crons.component.html',
   styleUrls: ['./crons.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CronsComponent implements OnInit, OnDestroy {
 
