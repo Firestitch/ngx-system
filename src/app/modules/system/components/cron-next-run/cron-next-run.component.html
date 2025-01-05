@@ -1,8 +1,6 @@
 <ng-container *ngIf="duration > 60; else seconds">
-  {{duration | fsDateDuration: { hours: true, seconds: true, minutes: true, days: true} }}
+  {{ duration | fsDateDuration: { hours: true, seconds: true, minutes: true, days: true, maxOutputs: 2 } }}
 </ng-container>
-
 <ng-template #seconds>
-  {{duration}}s
+  {{ duration }}s
 </ng-template>
-
