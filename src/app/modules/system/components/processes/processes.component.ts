@@ -150,7 +150,7 @@ export class ProcessesComponent implements OnInit, OnDestroy {
         },
       ],
       fetch: (query) => {
-        return this._processData.gets(query)
+        return this._processData.gets(query, { key: null })
           .pipe(
             map((response: any) => ({ data: response.data, paging: response.paging })),
           );
