@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Inject, OnDestroy, OnInit,
 } from '@angular/core';
 
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { Observable, Subject, timer } from 'rxjs';
 import { switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { ProcessProcessStates } from '../../consts';
+import { ProcessData } from '../../data/process.data';
 import { indexNameValue } from '../../helpers/index-name-value';
 import { Process } from '../../interfaces';
 
@@ -31,15 +32,10 @@ export class ProcessComponent implements OnInit, OnDestroy {
   public ProcessState = ProcessState;
 
   private _destroy$ = new Subject();
+  private _processData = inject(ProcessData);
   
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {
-       run: (process: any) => Observable<any>,
-       queue: (process: any) => Observable<any>,
-       delete: (process: any) => Observable<any>,
-       kill: (process: any) => Observable<any>,
-       loadProcess: (process: any) => Observable<any>,
-       download: (process: any) => void,
        process: any,
     },
     private _message: FsMessage,
@@ -48,19 +44,15 @@ export class ProcessComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit() {
-    if (this.data.loadProcess) {
-      this.load$()
-        .subscribe(() => {
-          this.runningRefresh();
-        });
-    } else {
-      this.process = this.data.process;
-    }
+    this.load$()
+      .subscribe(() => {
+        this.runningRefresh();
+      });
+
   }
 
   public load$(): Observable<any> {
-    return this.data
-      .loadProcess(this.data.process)
+    return this._processData.get(this.data.process.id)
       .pipe(
         tap((process) => {
           this.process = process;
@@ -85,7 +77,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
       template: 'Are you sure you would like to kill the process?',
     })
       .pipe(
-        switchMap(() => this.data.kill(this.data.process)),
+        switchMap(() => this._processData.kill(this.data.process)),
         switchMap(() => this.load$()),
       )  
       .subscribe(() => {
@@ -95,7 +87,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
 
   public run() {
     this._message.success('Running process');
-    this.data.run(this.data.process)
+    this._processData.run(this.data.process)
       .pipe(
         switchMap(() => this.load$()),
       )
@@ -106,7 +98,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
 
   public queue() {
     this._message.success('Running process');
-    this.data.queue(this.data.process)
+    this._processData.queue(this.data.process)
       .pipe(
         switchMap(() => this.load$()),
       )
@@ -114,7 +106,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
   }
 
   public download() {
-    this.data.download(this.data.process);
+    this._processData.download(this.data.process);
   }
 
   public ngOnDestroy(): void {

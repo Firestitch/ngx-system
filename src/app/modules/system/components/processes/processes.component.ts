@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, inject, Input, OnDestroy, OnInit, ViewChild,
+} from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -6,10 +8,11 @@ import { ItemType } from '@firestitch/filter';
 import { FsListComponent, FsListConfig } from '@firestitch/list';
 import { FsMessage } from '@firestitch/message';
 
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
 import { ProcessStates } from '../../consts';
+import { ProcessData } from '../../data/process.data';
 import { ProcessState } from '../../enums';
 import { indexNameValue } from '../../helpers/index-name-value';
 
@@ -25,15 +28,9 @@ import { ProcessComponent } from './../process/process.component';
 })
 export class ProcessesComponent implements OnInit, OnDestroy {
 
-  @ViewChild(FsListComponent) public list: FsListComponent;
+  @ViewChild(FsListComponent) 
+  public list: FsListComponent;
 
-  @Input() public loadProcesses: (data: any) => Observable<{ data: any[]; paging: any }>;
-  @Input() public loadProcess: (data: any) => Observable<any>;
-  @Input() public run: (data: any) => Observable<any>;
-  @Input() public kill: (data: any) => Observable<any>;
-  @Input() public delete: (data: any) => Observable<any>;
-  @Input() public download: (data: any) => any;
-  @Input() public queue: (data: any) => any;
   @Input() public actions: ProcessAction[] = [];
 
   public config: FsListConfig = null;
@@ -41,6 +38,7 @@ export class ProcessesComponent implements OnInit, OnDestroy {
   public ProcessState = ProcessState;
 
   private _destroy$ = new Subject();
+  private _processData = inject(ProcessData);
 
   constructor(
     private _dialog: MatDialog,
@@ -56,17 +54,13 @@ export class ProcessesComponent implements OnInit, OnDestroy {
   }
 
   public open(process) {
-    this._dialog.open(ProcessComponent, {
-      data: {
-        process,
-        download: this.download,
-        run: this.run,
-        loadProcess: this.loadProcess,
-        queue: this.queue,
-        kill: this.kill,
-      },
-      width: '85%',
-    })
+    this._dialog
+      .open(ProcessComponent, {
+        data: {
+          process,
+        },
+        width: '85%',
+      })
       .afterClosed()
       .pipe(
         takeUntil(this._destroy$),
@@ -81,10 +75,67 @@ export class ProcessesComponent implements OnInit, OnDestroy {
     this._destroy$.complete();
   }
 
+  public download(process) {
+    this._processData.download(process);
+  }
+
   private _configList() {
     this.config = {
       actions: [],
-      rowActions: [],
+      rowActions: [
+        {
+          label: 'Run',
+          show: (process) => {
+            return process.state !== ProcessState.Running;
+          },
+          click: (data) => {
+            this._message.info('Running process...');
+            this._processData.run(data)
+              .subscribe(() => {
+                this.reload();
+                this._message.success('Ran process');
+              });
+          },
+        },        
+        {
+          label: 'Queue',
+          show: (process) => {
+            return process.state !== ProcessState.Running && 
+              process.state !== ProcessState.Queued;
+          },
+          click: (data) => {
+            this._processData.queue(data)
+              .subscribe(() => {
+                this.reload();
+                this._message.success('Queued process');
+              });
+          },
+        },
+        {
+          label: 'Kill',
+          show: (data) => {
+            return !!data.pid;
+          },
+          click: (data) => {
+            this._message.info('Killing process...');
+            this._processData.kill(data)
+              .subscribe(() => {
+                this.reload();
+                this._message.success('Killed process');
+              });
+          },
+        },
+        {
+          label: 'Delete',
+          click: (data) => {
+            this._processData.delete(data)
+              .subscribe(() => {
+                this.reload();
+                this._message.success('Deleted process');
+              });
+          },
+        },
+      ],
       filters: [
         {
           type: ItemType.Keyword,
@@ -99,70 +150,12 @@ export class ProcessesComponent implements OnInit, OnDestroy {
         },
       ],
       fetch: (query) => {
-        return this.loadProcesses(query)
+        return this._processData.gets(query)
           .pipe(
             map((response: any) => ({ data: response.data, paging: response.paging })),
           );
       },
     };
-
-    if (this.run) {
-      this.config.rowActions
-        .push(
-          {
-            label: 'Run',
-            show: (process) => {
-              return process.state !== ProcessState.Running;
-            },
-            click: (data) => {
-              this._message.info('Running process...');
-              this.run(data)
-                .subscribe(() => {
-                  this.reload();
-                  this._message.success('Succesfully ran process');
-                });
-
-              setTimeout(() => {
-                this.reload();
-              }, 500);
-            },
-          },
-        );
-    }
-
-    if (this.kill) {
-      this.config.rowActions.push({
-        label: 'Kill',
-        show: (data) => {
-          return !!data.pid;
-        },
-        click: (data) => {
-          this._message.info('Killing process...');
-          this.kill(data)
-            .subscribe(() => {
-              this.reload();
-              this._message.success('Succesfully killed process');
-            });
-
-          setTimeout(() => {
-            this.reload();
-          }, 500);
-        },
-      });
-    }
-
-    if (this.delete) {
-      this.config.rowActions.push({
-        label: 'Delete',
-        click: (data) => {
-          this.delete(data)
-            .subscribe(() => {
-              this.reload();
-              this._message.success('Deleted process');
-            });
-        },
-      });
-    }
 
     this.actions.forEach((action) => {
       this.config.actions.push(
