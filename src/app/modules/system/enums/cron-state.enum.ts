@@ -5,5 +5,6 @@ export enum CronState {
   Queued = 'queued',
   Disabled = 'disabled',
   Enabled = 'enabled',
+  SystemDisabled = 'systemDisabled',
   Killing = 'killing',
 }

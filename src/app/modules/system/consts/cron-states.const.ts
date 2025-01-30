@@ -8,4 +8,5 @@ export const CronStates = [
   { name: 'Disabled', value: CronState.Disabled },
   { name: 'Killing', value: CronState.Killing },
   { name: 'Enabled', value: CronState.Enabled },
+  { name: 'System disabled', value: CronState.SystemDisabled },
 ];
