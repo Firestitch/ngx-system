@@ -61,24 +61,4 @@ export class CronsComponent {
         { 'id':1793290,'createDate':'2021-08-03T19:39:07+00:00','state':'failed','message':'asdasd','processId':7656 }] },
     );
   };
-
-  public enable = (data) => {
-    return of(true);
-  };
-
-  public disable = (data) => {
-    return of(true);
-  };
-
-  public queue = (data) => {
-    return of(true);
-  };
-
-  public run = (data) => {
-    return of(true);
-  };
-
-  public kill = (data) => {
-    return of(true);
-  };
 }

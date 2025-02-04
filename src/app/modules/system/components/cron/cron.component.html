@@ -1,7 +1,9 @@
 <fs-dialog *fsSkeleton="cron">
   <h1 mat-dialog-title>
     Cron
-    <div class="small">{{cron.name}}</div>
+    <div class="small">
+      {{ cron.name }}
+    </div>
   </h1>
   <mat-dialog-content>
     <mat-tab-group (selectedIndexChange)="selectedIndexChange($event)">
@@ -11,28 +13,25 @@
             <fs-label>
               Status
             </fs-label>
-            {{CronStates[cron.state]}}
+            {{ CronStates[cron.state] }}
           </fs-label-field>
-
           <fs-label-field *ngIf="cron.cronSetting">
             <fs-label>
               Run Frequency
             </fs-label>
-            {{cron.cronSetting.summary}}
+            {{ cron.cronSetting.summary }}
           </fs-label-field>
-
           <fs-label-field>
             <fs-label>
               Process ID
             </fs-label>
-            {{cron.processId || 'None'}}
+            {{ cron.processId || 'None' }}
             <ng-container *ngIf="cron.processId">
               <div class="small">
-                {{CronProcessStates[cron.processState] || 'Unknown'}}
+                {{ CronProcessStates[cron.processState] || 'Unknown' }}
               </div>
             </ng-container>
           </fs-label-field>
-
           <fs-label-field>
             <fs-label>
               Last Ran
@@ -42,77 +41,98 @@
             </ng-container>
             <ng-template #lastRan>
               <fs-date-ago [date]="cron.createDate"></fs-date-ago>
-              <div><small *ngIf="cron.duration">Duration: {{ cron.duration | fsDateDuration }}</small></div>
+              <div>
+                <small *ngIf="cron.duration">
+                  Duration: {{ cron.duration | fsDateDuration }}
+                </small>
+              </div>
             </ng-template>
           </fs-label-field>
-
           <fs-label-field>
             <fs-label>
               Timeout hours
             </fs-label>
-            {{cron.cronSetting?.timeout || 'N/A'}}
+            {{ cron.cronSetting?.timeout || 'N/A' }}
           </fs-label-field>
         </div>
-
         <fs-label-field *ngIf="cron.message">
           <fs-label>
             Last Message
           </fs-label>
-          <div class="message">{{cron.message}}</div>
+          <div class="message">
+            {{ cron.message }}
+          </div>
         </fs-label-field>
       </mat-tab>
-      <mat-tab label="Logs" *ngIf="config">
+      <mat-tab
+          label="Logs"
+          *ngIf="config">
         <ng-template matTabContent>
           <fs-list [config]="config">
-            <fs-list-column name="state" title="Status">
-              <ng-template fs-list-cell let-row="row">
-                <a 
+            <fs-list-column
+                name="state"
+                title="Status">
+              <ng-template
+                  fs-list-cell
+                  let-row="row">
+                <a
                     (click)="cronLogOpen(row)"
                     [ngStyle]="{ color: CronLogStateColors[row.state] }">
-                  {{CronLogStates[row.state] || row.state}}
+                  {{ CronLogStates[row.state] || row.state }}
                 </a>
               </ng-template>
             </fs-list-column>
-            
-            <fs-list-column title="Message" class="col-message">
-              <ng-template fs-list-cell let-row="row">
-                <div class="message">{{row.message}}</div>
+            <fs-list-column
+                title="Message"
+                class="col-message">
+              <ng-template
+                  fs-list-cell
+                  let-row="row">
+                <div class="message">
+                  {{ row.message }}
+                </div>
               </ng-template>
             </fs-list-column>
-            
-            <fs-list-column title="Duration" class="col-message">
-              <ng-template fs-list-cell let-row="row">
+            <fs-list-column
+                title="Duration"
+                class="col-message">
+              <ng-template
+                  fs-list-cell
+                  let-row="row">
                 <ng-container *ngIf="row.duration">
-                  {{row.duration | fsDateDuration: 'hour-minute-second'}}
+                  {{ row.duration | fsDateDuration: 'hour-minute-second' }}
                 </ng-container>
               </ng-template>
             </fs-list-column>
-
-            <fs-list-column name="create_date" title="Date" class="col-date">
-              <ng-template fs-list-cell let-row="row">
+            <fs-list-column
+                name="create_date"
+                title="Date"
+                class="col-date">
+              <ng-template
+                  fs-list-cell
+                  let-row="row">
                 <fs-date-ago [date]="row.createDate"></fs-date-ago>
               </ng-template>
             </fs-list-column>
-          </fs-list> 
+          </fs-list>
         </ng-template>
       </mat-tab>
     </mat-tab-group>
-
   </mat-dialog-content>
-  <mat-dialog-actions>   
-    <button 
-        mat-button 
-        [mat-dialog-close]="true" 
+  <mat-dialog-actions>
+    <button
+        mat-button
+        [mat-dialog-close]="true"
         color="primary">
       Done
     </button>
     <ng-container *ngIf="tabIndex === 0">
-      <button   
+      <button
           *ngFor="let cronAction of cronActions"
-          mat-button 
+          mat-button
           (click)="cronActionClick(cronAction)">
-        {{cronAction.label}}
-      </button>  
+        {{ cronAction.label }}
+      </button>
     </ng-container>
   </mat-dialog-actions>
 </fs-dialog>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 
@@ -7,6 +7,7 @@ import { FsListConfig } from '@firestitch/list';
 
 import { CronProcessStates, CronStates } from '../../consts';
 import { CronLogStates } from '../../consts/cron-log-states.const';
+import { CronData } from '../../data/cron.data';
 import { indexNameValue } from '../../helpers/index-name-value';
 import { CronLogComponent } from '../cron-log';
 
@@ -28,11 +29,10 @@ export class CronComponent implements OnInit {
   public config: FsListConfig;
   public cronActions;
   
-  constructor(
-    @Inject(MAT_DIALOG_DATA) private _data,
-    private _dialog: MatDialog,
-    private _cdRef: ChangeDetectorRef,
-  ) {}
+  private _cronData = inject(CronData);
+  private _dialog = inject(MatDialog);
+  private _cdRef = inject(ChangeDetectorRef);
+  private _data = inject(MAT_DIALOG_DATA);
 
   public ngOnInit(): void {
     this.load();
@@ -54,7 +54,8 @@ export class CronComponent implements OnInit {
   }
 
   public cronActionClick(cronAction) {
-    cronAction.action(this.cron)
+    cronAction
+      .action(this.cron)
       .subscribe(() => {
         this.load();
       });
@@ -63,9 +64,13 @@ export class CronComponent implements OnInit {
   public selectedIndexChange(index) {
     this.tabIndex = index;
   }
-    
+
   public load(): void {
-    this._data.loadCron(this._data.cron)
+    const query = {
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    };
+
+    this._cronData.get(this._data.cron.id, query)
       .subscribe((cron) => {
         this.cron = {
           ...this._data.cron,

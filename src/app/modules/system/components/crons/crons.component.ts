@@ -1,20 +1,23 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
+import { FsApi, RequestMethod, StreamEventData } from '@firestitch/api';
 import { parse } from '@firestitch/date';
 import { ItemType } from '@firestitch/filter';
 import { FsListActionSelected, FsListComponent, FsListConfig } from '@firestitch/list';
 import { FsMessage } from '@firestitch/message';
+import { FsProcess } from '@firestitch/process';
 import { FsPrompt } from '@firestitch/prompt';
 import { SelectionActionType } from '@firestitch/selection';
 
 import { Observable, Subject } from 'rxjs';
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { differenceInSeconds } from 'date-fns';
 
 import { CronProcessStates, CronStates } from '../../consts';
+import { CronData } from '../../data/cron.data';
 import { CronState } from '../../enums';
 import { indexNameValue } from '../../helpers/index-name-value';
 import { CronComponent } from '../cron/cron.component';
@@ -30,28 +33,18 @@ export class CronsComponent implements OnInit, OnDestroy {
 
   @ViewChild(FsListComponent, { static: true }) public list: FsListComponent;
 
-  @Input() public enable: (data: any) => Observable<any>;
-  @Input() public disable: (data: any) => Observable<any>;
-  @Input() public kill: (data: any) => Observable<any>;
-  @Input() public queue: (data: any) => Observable<any>;
-  @Input() public run: (data: any) => Observable<any>;
-  @Input() public loadCrons: (data: any) => Observable<any[]>;
-  @Input() public loadCron: (data: any) => Observable<any>;
-  @Input() public loadCronLogs: (data: any) => Observable<{ data: any[]; paging: any }>;
-  @Input() public bulk: (actionName: string, data: any[]) => Observable<any>;
-
   public config: FsListConfig = null;
   public CronStates = indexNameValue(CronStates);
   public CronProcessStates = indexNameValue(CronProcessStates);
   public CronState = CronState;
 
   private _destroy$ = new Subject();
-
-  constructor(
-    private _message: FsMessage,
-    private _dialog: MatDialog,
-    private _prompt: FsPrompt,
-  ) { }
+  private _cronData = inject(CronData);
+  private _message = inject(FsMessage);
+  private _dialog = inject(MatDialog);
+  private _prompt = inject(FsPrompt);
+  private _process = inject(FsProcess);
+  private _api = inject(FsApi);
 
   public ngOnInit(): void {
     this._configList();
@@ -61,8 +54,6 @@ export class CronsComponent implements OnInit, OnDestroy {
     this._dialog.open(CronComponent, {
       data: {
         cron,
-        loadCronLogs: this.loadCronLogs,
-        loadCron: this.loadCron,
         cronActions: this.getCronActions(),
       },
       width: '85%',
@@ -182,6 +173,90 @@ export class CronsComponent implements OnInit, OnDestroy {
     this._destroy$.next(null);
     this._destroy$.complete();
   }
+  
+  public enable(data) {
+    return this._cronData.enable(data);
+  }
+
+  public disable(data) {
+    return this._cronData.disable(data);
+  }
+
+  public kill (data) {
+    return this._cronData.kill(data);
+  }
+
+  public queue(data) {
+    return this._cronData.queue(data);
+  }
+
+  public run(cron): Observable<any> {
+    return new Observable((observer) => {  
+      const process = this._process
+        .run(`Run ${cron.name}`, this._api
+          .stream(
+            RequestMethod.Post, `system/crons/${cron.id}/run`)
+          .pipe(
+            filter((event) => event instanceof StreamEventData),
+            map((event) => {
+              return event?.data;
+            }),   
+            filter((data) => !!data),
+          ),
+        );
+
+      process.failed$
+        .pipe(
+          takeUntil(this._destroy$),
+        )
+        .subscribe((error) => {
+          observer.next(error);
+          observer.complete();
+        });
+
+      process.completed$  
+        .pipe(
+          takeUntil(this._destroy$),
+        )
+        .subscribe((data) => {
+          observer.next(data);
+          observer.complete();
+        });
+
+      process.cancelled$
+        .pipe(
+          takeUntil(this._destroy$),
+        )
+        .subscribe((data) => {
+          observer.next(data);
+          observer.complete();
+        });
+    });
+  }
+
+  public loadCrons = (query) => {
+    query.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    return this._cronData.gets(query, { key: 'crons' });
+  };
+
+  public loadCronLogs = (query) => {
+    return this._cronData.cronLogGets(query, { key: null })
+      .pipe(
+        map((data: any) => {
+          return { data: data.cronLogs, paging: data.paging };
+        }),
+      );
+  };
+
+  public bulk = (action, crons) => {
+    const processes = crons
+      .map((cron) => {
+        return cron.process;
+      });
+
+    return this._cronData.bulk(action, processes);
+  };
 
   private _configList(): void {
     this.config = {
@@ -251,4 +326,5 @@ export class CronsComponent implements OnInit, OnDestroy {
       };
     }
   }
+
 }
