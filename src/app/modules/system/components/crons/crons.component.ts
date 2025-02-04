@@ -82,7 +82,6 @@ export class CronsComponent implements OnInit, OnDestroy {
           return this.run(data)
             .pipe(
               tap(() => {
-                this._message.success('Cron ran');
                 this.list.reload();
               }),
             );
