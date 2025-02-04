@@ -68,53 +68,7 @@
           label="Logs"
           *ngIf="config">
         <ng-template matTabContent>
-          <fs-list [config]="config">
-            <fs-list-column
-                name="state"
-                title="Status">
-              <ng-template
-                  fs-list-cell
-                  let-row="row">
-                <a
-                    (click)="cronLogOpen(row)"
-                    [ngStyle]="{ color: CronLogStateColors[row.state] }">
-                  {{ CronLogStates[row.state] || row.state }}
-                </a>
-              </ng-template>
-            </fs-list-column>
-            <fs-list-column
-                title="Message"
-                class="col-message">
-              <ng-template
-                  fs-list-cell
-                  let-row="row">
-                <div class="message">
-                  {{ row.message }}
-                </div>
-              </ng-template>
-            </fs-list-column>
-            <fs-list-column
-                title="Duration"
-                class="col-message">
-              <ng-template
-                  fs-list-cell
-                  let-row="row">
-                <ng-container *ngIf="row.duration">
-                  {{ row.duration | fsDateDuration: 'hour-minute-second' }}
-                </ng-container>
-              </ng-template>
-            </fs-list-column>
-            <fs-list-column
-                name="create_date"
-                title="Date"
-                class="col-date">
-              <ng-template
-                  fs-list-cell
-                  let-row="row">
-                <fs-date-ago [date]="row.createDate"></fs-date-ago>
-              </ng-template>
-            </fs-list-column>
-          </fs-list>
+          <app-cron-logs [cron]="cron"></app-cron-logs>
         </ng-template>
       </mat-tab>
     </mat-tab-group>

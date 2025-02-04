@@ -11,8 +11,8 @@ import { FsProcess } from '@firestitch/process';
 import { FsPrompt } from '@firestitch/prompt';
 import { SelectionActionType } from '@firestitch/selection';
 
-import { Observable, Subject } from 'rxjs';
-import { filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { Observable, Subject, timer } from 'rxjs';
+import { filter, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 import { differenceInSeconds } from 'date-fns';
 
@@ -204,13 +204,21 @@ export class CronsComponent implements OnInit, OnDestroy {
             filter((data) => !!data),
           ),
         );
+        
+      timer(100, 5000)
+        .pipe(
+          takeUntil(this._destroy$),
+        )
+        .subscribe(() => {
+          observer.next(null);
+        });
 
       process.failed$
         .pipe(
           takeUntil(this._destroy$),
         )
-        .subscribe((error) => {
-          observer.next(error);
+        .subscribe(() => {
+          observer.next(null);
           observer.complete();
         });
 
@@ -218,8 +226,8 @@ export class CronsComponent implements OnInit, OnDestroy {
         .pipe(
           takeUntil(this._destroy$),
         )
-        .subscribe((data) => {
-          observer.next(data);
+        .subscribe(() => {
+          observer.next(null);
           observer.complete();
         });
 
@@ -227,8 +235,8 @@ export class CronsComponent implements OnInit, OnDestroy {
         .pipe(
           takeUntil(this._destroy$),
         )
-        .subscribe((data) => {
-          observer.next(data);
+        .subscribe(() => {
+          observer.next(null);
           observer.complete();
         });
     });
@@ -273,8 +281,14 @@ export class CronsComponent implements OnInit, OnDestroy {
           return {
             ...rowAction,
             click: (cron) => {
-              rowAction.action(cron)
-                .subscribe();
+              rowAction
+                .action(cron)
+                .pipe(
+                  take(1),
+                )
+                .subscribe(() => {
+                  this.list.reload();
+                });
             },
           };
         }),

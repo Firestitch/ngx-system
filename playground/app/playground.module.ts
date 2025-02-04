@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 
 
+import { BuildConfig, FS_BUILD_CONFIG, UpdateAction } from '@firestitch/build';
 import { FsDatePickerModule } from '@firestitch/datepicker';
 import { FsDialogModule } from '@firestitch/dialog';
 import { FsExampleModule } from '@firestitch/example';
@@ -18,7 +19,6 @@ import { FsSelectionModule } from '@firestitch/selection';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { BuildConfig, FS_BUILD_CONFIG, UpdateAction } from '@firestitch/build';
 import { AppComponent } from './app.component';
 import {
   DashboardComponent,
@@ -87,7 +87,7 @@ const routes: Routes = [
         };
       },
     },
-  ]
+  ],
 })
 export class PlaygroundModule {
 }
