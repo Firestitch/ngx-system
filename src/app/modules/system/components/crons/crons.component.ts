@@ -205,7 +205,7 @@ export class CronsComponent implements OnInit, OnDestroy {
           ),
         );
         
-      timer(100, 5000)
+      timer(1000, 5000)
         .pipe(
           takeUntil(this._destroy$),
         )
