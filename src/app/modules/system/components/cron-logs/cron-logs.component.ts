@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 
 import { FsDateModule } from '@firestitch/date';
 import { ItemType } from '@firestitch/filter';
-import { FsListConfig, FsListModule } from '@firestitch/list';
+import { FsListConfig, FsListModule, PaginationStrategy } from '@firestitch/list';
 
 import { map } from 'rxjs/operators';
 
@@ -62,6 +62,9 @@ export class CronLogsComponent implements OnInit {
 
   public load(): void {
     this.config = {
+      paging: {
+        strategy: PaginationStrategy.Many,
+      },
       filters: [
         {
           type: ItemType.Select,
