@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit,
+} from '@angular/core';
 
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-
-import { FsListConfig } from '@firestitch/list';
 
 import { CronProcessStates, CronStates } from '../../consts';
 import { CronData } from '../../data/cron.data';
@@ -21,7 +21,6 @@ export class CronComponent implements OnInit {
   public CronStates = indexNameValue(CronStates);
   public CronProcessStates = indexNameValue(CronProcessStates);
 
-  public config: FsListConfig;
   public cronActions;
   
   private _cronData = inject(CronData);

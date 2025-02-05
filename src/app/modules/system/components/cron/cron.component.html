@@ -64,9 +64,7 @@
           </div>
         </fs-label-field>
       </mat-tab>
-      <mat-tab
-          label="Logs"
-          *ngIf="config">
+      <mat-tab label="Logs">
         <ng-template matTabContent>
           <app-cron-logs [cron]="cron"></app-cron-logs>
         </ng-template>
