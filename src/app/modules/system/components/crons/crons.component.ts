@@ -162,7 +162,10 @@ export class CronsComponent implements OnInit, OnDestroy {
         },
         label: 'Reset',
         show: (cron) => {
-          return cron.state === CronState.Killing || cron.state === CronState.Running || cron.state === CronState.Failed || cron.state === CronState.Queued;
+          return cron.state === CronState.Killing || 
+          cron.state === CronState.Running || 
+          cron.state === CronState.Failed || 
+          cron.state === CronState.Queued;
         },
       },
     ];
@@ -245,15 +248,6 @@ export class CronsComponent implements OnInit, OnDestroy {
     query.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     return this._cronData.gets(query, { key: 'crons' });
-  };
-
-  public loadCronLogs = (query) => {
-    return this._cronData.cronLogGets(query, { key: null })
-      .pipe(
-        map((data: any) => {
-          return { data: data.cronLogs, paging: data.paging };
-        }),
-      );
   };
 
   public bulk = (action, crons) => {

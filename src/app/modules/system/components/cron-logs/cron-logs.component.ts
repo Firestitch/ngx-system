@@ -7,6 +7,8 @@ import { FsDateModule } from '@firestitch/date';
 import { ItemType } from '@firestitch/filter';
 import { FsListConfig, FsListModule } from '@firestitch/list';
 
+import { map } from 'rxjs/operators';
+
 import { CronLogStates } from '../../consts/cron-log-states.const';
 import { CronData } from '../../data/cron.data';
 import { indexNameValue } from '../../helpers/index-name-value';
@@ -82,7 +84,14 @@ export class CronLogsComponent implements OnInit {
           cronId: this.cron.id,
         };
 
-        return this._cronData.cronLogGets(query);
+        return this._cronData.cronLogGets(query, {
+          key: null,
+        })
+          .pipe(
+            map((data: any) => {
+              return { data: data.cronLogs, paging: data.paging };
+            }),
+          );
       },
     };
   }
