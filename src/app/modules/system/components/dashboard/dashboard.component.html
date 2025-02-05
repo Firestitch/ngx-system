@@ -1,122 +1,157 @@
 <div *fsSkeleton="dashboard">
   <div class="fs-row.gap-lg.wrap.align-start">
     <div>
-      <h2>Server</h2>
-
+      <h2>
+        Server
+      </h2>
       <fs-label-field>
-        <fs-label>Date/Time</fs-label>
-        {{dashboard.serverTime | fsDateFormat: 'date-time'}}
+        <fs-label>
+          Date/Time
+        </fs-label>
+        {{ dashboard.serverTime | fsDateFormat: 'date-time' }}
       </fs-label-field>
-
       <fs-label-field>
-        <fs-label>Timezone</fs-label>
-        {{dashboard.serverTimezone}}
+        <fs-label>
+          Timezone
+        </fs-label>
+        {{ dashboard.serverTimezone }}
       </fs-label-field>
-
       <fs-label-field>
-        <fs-label>Hostname</fs-label>
-        {{dashboard.serverHostname}}
+        <fs-label>
+          Hostname
+        </fs-label>
+        {{ dashboard.serverHostname }}
       </fs-label-field>
-
       <fs-label-field>
-        <fs-label>Directory</fs-label>
-        {{dashboard.appDirectory}}
+        <fs-label>
+          Directory
+        </fs-label>
+        {{ dashboard.appDirectory }}
       </fs-label-field>
     </div>
-
     <div>
-      <h2>System</h2>
+      <h2>
+        System
+      </h2>
       <fs-label-field>
-        <fs-label>Mode</fs-label>
-        {{dashboard.appMode}}
+        <fs-label>
+          Mode
+        </fs-label>
+        {{ dashboard.appMode }}
       </fs-label-field>
-
       <fs-label-field>
-        <fs-label>Notification Recipients</fs-label>
-        {{dashboard.notifyRecipients.join(', ')}}
+        <fs-label>
+          Notification Recipients
+        </fs-label>
+        {{ dashboard.notifyRecipients.join(', ') }}
       </fs-label-field>
     </div>
-
     <div>
-      <h2>Database</h2>
-
+      <h2>
+        Database
+      </h2>
       <fs-label-field>
-        <fs-label>Name</fs-label>
-        {{dashboard.databaseName}}
+        <fs-label>
+          Name
+        </fs-label>
+        {{ dashboard.databaseName }}
       </fs-label-field>
-
       <fs-label-field>
-        <fs-label>Date/Time</fs-label>
-        {{dashboard.databaseTime | fsDateFormat: 'date-time'}}
+        <fs-label>
+          Date/Time
+        </fs-label>
+        {{ dashboard.databaseTime | fsDateFormat: 'date-time' }}
       </fs-label-field>
-
       <fs-label-field>
-        <fs-label>Timezone</fs-label>
-        {{dashboard.databaseTimezone}}
+        <fs-label>
+          Timezone
+        </fs-label>
+        {{ dashboard.databaseTimezone }}
       </fs-label-field>
     </div>
-
     <div *ngIf="build || dashboard.upgrades.length">
       <ng-container *ngIf="build">
-        <h2>Build</h2>
+        <h2>
+          Build
+        </h2>
         <fs-label-field>
-          <fs-label>Version</fs-label>
-          {{build.version || 'Unknown'}}
+          <fs-label>
+            Version
+          </fs-label>
+          {{ build.version || 'Unknown' }}
         </fs-label-field>
-
         <fs-label-field>
-          <fs-label>Date</fs-label>
+          <fs-label>
+            Date
+          </fs-label>
           {{ (build.date | fsDateFormat: 'date-time') || 'Unknown' }}
         </fs-label-field>
       </ng-container>
-
       <fs-label-field *ngIf="dashboard.upgrades.length">
-        <fs-label>Pending Upgrades</fs-label>
-        <span class="attention" [ngClass]="{ 'needs-attention': !!dashboard.upgrades.length }">
-          {{dashboard.upgrades.length}}
+        <fs-label>
+          Pending Upgrades
+        </fs-label>
+        <span
+            class="attention"
+            [ngClass]="{ 'needs-attention': !!dashboard.upgrades.length }">
+          {{ dashboard.upgrades.length }}
           <mat-icon
               [matTooltip]="dashboard.upgrades.join('\n')"
-              matTooltipClass="tooltip-pending-upgrades"
-              >
+              matTooltipClass="tooltip-pending-upgrades">
             warning
           </mat-icon>
         </span>
       </fs-label-field>
     </div>
-
     <div>
-      <h2>Cron</h2>
-
+      <h2>
+        Cron
+      </h2>
       <fs-label-field>
-        <fs-label>Last Ran</fs-label>
-        <span class="attention" [ngClass]="{ 'needs-attention': dashboard.cronRanAttention }">
-          <span *ngIf="!dashboard.cronRan">Never</span>
-          <span *ngIf="dashboard.cronRan">{{dashboard.cronRan | fsDateFormat: 'date-time'}}</span>
-          <mat-icon>warning</mat-icon>
+        <fs-label>
+          Last Ran
+        </fs-label>
+        <span
+            class="attention"
+            [ngClass]="{ 'needs-attention': dashboard.cronRanAttention }">
+          <span *ngIf="!dashboard.cronRan">
+            Never
+          </span>
+          <span *ngIf="dashboard.cronRan">
+            {{ dashboard.cronRan | fsDateFormat: 'date-time' }}
+          </span>
+          <mat-icon>
+            warning
+          </mat-icon>
         </span>
       </fs-label-field>
     </div>
   </div>
-  
-
   <div>
     <div class="actions">
-      <button mat-raised-button (click)="upgradeClick()">Run Upgrades</button>
-      <button mat-raised-button (click)="initClick()">Init System</button>
       <button
-        *ngFor="let action of buttonActions"
-        mat-raised-button
-        (click)="actionClick(action)">
-        {{action.label}}
+          mat-stroked-button
+          (click)="upgradeClick()">
+        Run Upgrades
       </button>
-
+      <button
+          mat-stroked-button
+          (click)="initClick()">
+        Init System
+      </button>
+      <button
+          *ngFor="let action of buttonActions"
+          mat-stroked-button
+          (click)="actionClick(action)">
+        {{ action.label }}
+      </button>
       <ng-container *ngIf="menuActions.length">
-        <fs-menu buttonClass="mat-raised-button menu-button">
+        <fs-menu buttonClass="mat-stroked-button menu-button">
           <ng-template
               *ngFor="let action of menuActions"
               fs-menu-item
               (click)="actionClick(action)">
-            {{action.label}}
+            {{ action.label }}
           </ng-template>
         </fs-menu>
       </ng-container>
