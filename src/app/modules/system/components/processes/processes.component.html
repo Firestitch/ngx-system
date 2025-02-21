@@ -1,41 +1,71 @@
 <fs-list [config]="config">
   <fs-list-column>
-    <ng-template fs-list-header>Name</ng-template>
-    <ng-template fs-list-cell let-row="row">
-      <a (click)="open(row)">{{row.prettyName}}</a>
+    <ng-template fs-list-header>
+      Name
+    </ng-template>
+    <ng-template
+        fs-list-cell
+        let-row="row">
+      <a (click)="open(row)">
+        {{ row.name }}
+      </a>
     </ng-template>
   </fs-list-column>
-
   <fs-list-column>
-    <ng-template fs-list-header>Status</ng-template>
-    <ng-template fs-list-cell let-row="row">
-      {{ProcessStates[row.state]}}
+    <ng-template fs-list-header>
+      Status
+    </ng-template>
+    <ng-template
+        fs-list-cell
+        let-row="row">
+      {{ ProcessStates[row.state] }}
       <small>
-        <div *ngIf="row.state===ProcessState.Running && row.percent">Complete: {{ row.percent }}%</div>
-        <div *ngIf="row.state===ProcessState.Completed && row.filename">Download: <a href="javascript:;" (click)="download(row)">{{ row.filename }}</a></div>
-        <div *ngIf="row.pid">PID: {{ row.pid }}</div>
-        <div *ngIf="row.state===ProcessState.Running && row.notify">Notify: {{ row.notify }}</div>
+        <div *ngIf="row.state===ProcessState.Running && row.percent">
+          Complete: {{ row.percent }}%
+        </div>
+        <div *ngIf="row.state===ProcessState.Completed && row.filename">
+          <a
+              href="javascript:;"
+              (click)="download(row)">
+            {{ row.filename }}
+          </a>
+        </div>
+        <div *ngIf="row.pid">
+          PID: {{ row.pid }}
+        </div>
+        <div *ngIf="row.state===ProcessState.Running && row.notify">
+          Notify: {{ row.notify }}
+        </div>
       </small>
     </ng-template>
   </fs-list-column>
-
   <fs-list-column>
-    <ng-template fs-list-header>Duration</ng-template>
-    <ng-template fs-list-cell let-row="row">
+    <ng-template fs-list-header>
+      Duration
+    </ng-template>
+    <ng-template
+        fs-list-cell
+        let-row="row">
       {{ row.duration | fsDateDuration: {hours: true, minutes: true, seconds: true} }}
     </ng-template>
   </fs-list-column>
-
   <fs-list-column>
-    <ng-template fs-list-header>Message</ng-template>
-    <ng-template fs-list-cell let-row="row">
-      {{row.message}}
+    <ng-template fs-list-header>
+      Message
+    </ng-template>
+    <ng-template
+        fs-list-cell
+        let-row="row">
+      {{ row.message }}
     </ng-template>
   </fs-list-column>
-
   <fs-list-column>
-    <ng-template fs-list-header>Completed</ng-template>
-    <ng-template fs-list-cell let-row="row">
+    <ng-template fs-list-header>
+      Completed
+    </ng-template>
+    <ng-template
+        fs-list-cell
+        let-row="row">
       <fs-date-ago [date]="row.endDate"></fs-date-ago>
     </ng-template>
   </fs-list-column>
