@@ -10,6 +10,8 @@ import { FsPrompt } from '@firestitch/prompt';
 import { Observable, Subject, timer } from 'rxjs';
 import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 
+import { HttpEventType } from '@angular/common/http';
+
 import { ProcessProcessStates } from '../../consts';
 import { ProcessData } from '../../data/process.data';
 import { indexNameValue } from '../../helpers/index-name-value';
@@ -48,7 +50,6 @@ export class ProcessComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.runningRefresh();
       });
-
   }
 
   public load$(): Observable<any> {
@@ -87,9 +88,26 @@ export class ProcessComponent implements OnInit, OnDestroy {
 
   public run() {
     this._message.success('Running process');
-    this._processData.run(this.data.process)
+    this._processData
+      .run(this.data.process, {
+        reportProgress: true,
+      })
       .pipe(
-        switchMap(() => this.load$()),
+        tap((event) => {
+          switch (event.type) {
+            case HttpEventType.Sent: {
+              this.process.state = ProcessState.Running;
+              this._cdRef.markForCheck();
+              console.log('Sent', event);
+            } break;
+            case HttpEventType.ResponseHeader: {
+              console.log('Response Header', event);
+            } break;
+            default: {
+              console.log('Default', event);
+            }
+          }
+        }),
       )
       .subscribe();
   }
