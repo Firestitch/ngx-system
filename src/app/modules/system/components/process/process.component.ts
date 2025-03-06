@@ -8,7 +8,7 @@ import { FsMessage } from '@firestitch/message';
 import { FsPrompt } from '@firestitch/prompt';
 
 import { Observable, Subject, timer } from 'rxjs';
-import { switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { ProcessProcessStates } from '../../consts';
 import { ProcessData } from '../../data/process.data';
@@ -64,7 +64,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
   public runningRefresh() {
     timer(0, 2000)
       .pipe(
-        takeWhile(() => this.process.state === String( ProcessState.Running)),
+        filter(() => this.process.state === String(ProcessState.Running)),
         switchMap(() => this.load$()),
         takeUntil(this._destroy$),
       )
@@ -91,9 +91,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(() => this.load$()),
       )
-      .subscribe(() => {
-        this.runningRefresh();
-      });
+      .subscribe();
   }
 
   public queue() {
