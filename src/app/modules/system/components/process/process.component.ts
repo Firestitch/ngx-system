@@ -98,14 +98,7 @@ export class ProcessComponent implements OnInit, OnDestroy {
             case HttpEventType.Sent: {
               this.process.state = ProcessState.Running;
               this._cdRef.markForCheck();
-              console.log('Sent', event);
             } break;
-            case HttpEventType.ResponseHeader: {
-              console.log('Response Header', event);
-            } break;
-            default: {
-              console.log('Default', event);
-            }
           }
         }),
       )
