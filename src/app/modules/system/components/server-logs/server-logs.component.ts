@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@a
 
 import { MatDialog } from '@angular/material/dialog';
 
+import { FsApi } from '@firestitch/api';
 import { index } from '@firestitch/common';
 import { ItemType } from '@firestitch/filter';
 import { FsListAction, FsListComponent, FsListConfig, PaginationStrategy } from '@firestitch/list';
@@ -9,7 +10,9 @@ import { FsListAction, FsListComponent, FsListConfig, PaginationStrategy } from 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ServerLogComponent } from '../server-log/server-log.component';
+import { LogTypes } from '../../../../consts';
+
+import { ServerLogComponent } from './components';
 
 
 @Component({
@@ -20,7 +23,8 @@ import { ServerLogComponent } from '../server-log/server-log.component';
 })
 export class ServerLogsComponent implements OnInit {
 
-  @ViewChild('list', { static: true }) public list: FsListComponent;
+  @ViewChild(FsListComponent) 
+  public list: FsListComponent;
 
   @Input() public loadLogs: (data: any) => Observable<{ data: any[], paging: any }>;
 
@@ -30,22 +34,50 @@ export class ServerLogsComponent implements OnInit {
 
   constructor(
     private _dialog: MatDialog,
+    private _api: FsApi,
   ) { }
 
   public ngOnInit() {
     this._configList();
   }
 
+  public toggleAcknowledged(log) {
+    const acknowledge = log.acknowledged ? 'unacknowledge' : 'acknowledge';
+    this._api
+      .put(`system/logs/server/${log.id}/${acknowledge}`)
+      .subscribe((response) => {
+        this.list
+          .updateData([response],
+            (item: any) => {
+              return item.id === log.id;
+            });
+      });
+  }
+
   public open(log) {
-    this._dialog.open(ServerLogComponent, {
-      data: { log: log },
-      width: '85%',
-    });
+    this._dialog
+      .open(ServerLogComponent, {
+        data: { log: log },
+        width: '85%',
+      });
   }
 
   private _configList() {
     this.config = {
-      actions: this.actions,
+      actions: [
+        ...this.actions,
+        {
+          primary: false,
+          label: 'Acknowledge',
+          click: () =>  {
+            this._api
+              .put('system/logs/server/acknowledge')
+              .subscribe(() => {
+                this.list.reload();
+              });
+          },
+        },
+      ],
       paging:  {
         strategy: PaginationStrategy.Many,
       },
@@ -57,31 +89,12 @@ export class ServerLogsComponent implements OnInit {
         },
       ],
       fetch: (query) => {
-        return this.loadLogs(query)
+        return this._api
+          .get('system/logs/server', query, { key: null })
           .pipe(
-            map((response: any) => ({ data: response.data, paging: response.paging })),
+            map((response: any) => ({ data: response.logs, paging: response.paging })),
           );
       },
     };
   }
 }
-
-const LogTypes = [
-  { value: '1', name: 'Fatal Error' },        // E_ERROR
-  { value: '2', name: 'Warning' },            // E_WARNING
-  { value: '4', name: 'Parse Error' },        // E_PARSE
-  { value: '8', name: 'Notice' },             // E_NOTICE
-  { value: '16', name: 'Core Error' },        // E_CORE_ERROR
-  { value: '32', name: 'Core Warning' },      // E_CORE_WARNING
-  { value: '64', name: 'Compile Error' },     // E_COMPILE_ERROR
-  { value: '128', name: 'Compile Warning' },  // E_COMPILE_WARNING
-  { value: '256', name: 'User Error' },       // E_USER_ERROR
-  { value: '512', name: 'User Warning' },     // E_USER_WARNING
-  { value: '1024', name: 'User Notice' },     // E_USER_NOTICE
-  { value: '2048', name: 'Strict Notice' },   // E_STRICT
-  { value: '4096', name: 'Recoverable Error' }, // E_RECOVERABLE_ERROR
-  { value: '8192', name: 'Deprecated' },      // E_DEPRECATED
-  { value: '16384', name: 'User Deprecated' }, // E_USER_DEPRECATED
-  { value: 'exception', name: 'Exception' },
-];
-

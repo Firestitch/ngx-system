@@ -1,4 +1,17 @@
 <fs-list [config]="config">
+  <fs-list-column width="1%">
+    <ng-template
+        fs-list-cell
+        let-row="row">
+      <a (click)="toggleAcknowledged(row)">
+        <fs-badge
+          [size]="10"
+          [tooltip]="row.acknowledged ? 'Acknowledged' : 'Unacknowledged'"
+          [color]="row.acknowledged ? '#E3E3E3' : '#F30000'">
+        </fs-badge>
+      </a>
+    </ng-template>
+  </fs-list-column>
   <fs-list-column>
     <ng-template fs-list-header>
       Message
@@ -13,7 +26,7 @@
       </a>
     </ng-template>
   </fs-list-column>
-  <fs-list-column>
+  <fs-list-column class="col-date">
     <ng-template fs-list-header>
       Type
     </ng-template>
@@ -23,7 +36,7 @@
       {{ LogTypes[row.type] }}
     </ng-template>
   </fs-list-column>
-  <fs-list-column>
+  <fs-list-column class="col-date">
     <ng-template fs-list-header>
       Date
     </ng-template>

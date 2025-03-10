@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { FsBadgeModule } from '@firestitch/badge';
 import { FsColorPickerModule } from '@firestitch/colorpicker';
 import { FsDateModule } from '@firestitch/date';
 import { FsDatePickerModule } from '@firestitch/datepicker';
@@ -25,7 +26,6 @@ import { FsMenuModule } from '@firestitch/menu';
 import { FsPopoverModule } from '@firestitch/popover';
 import { FsSkeletonModule } from '@firestitch/skeleton';
 
-
 import { ApiLogComponent } from './components/api-log/api-log.component';
 import { ApiLogsComponent } from './components/api-logs/api-logs.component';
 import { CronComponent } from './components/cron';
@@ -37,7 +37,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { InfoComponent } from './components/info/info.component';
 import { ProcessComponent } from './components/process/process.component';
 import { ProcessesComponent } from './components/processes/processes.component';
-import { ServerLogComponent } from './components/server-log/server-log.component';
 import { ServerLogsComponent } from './components/server-logs/server-logs.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { UpgradeLogsComponent } from './components/upgrade-logs/upgrade-logs.component';
@@ -70,9 +69,9 @@ import { KeyNameValuePipe } from './pipes/key-name-value.pipe';
     FsDialogModule,
     FsDatePickerModule,
     FsMenuModule,
+    FsBadgeModule,
     FsPopoverModule,
     FsColorPickerModule,
-    
     CronLogsComponent,
   ],
   exports: [
@@ -92,7 +91,6 @@ import { KeyNameValuePipe } from './pipes/key-name-value.pipe';
     SettingsComponent,
     KeyNameValuePipe,
     ProcessesComponent,
-    ServerLogComponent,
     ServerLogsComponent,
     UpgradeLogsComponent,
     ApiLogsComponent,

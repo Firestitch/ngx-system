@@ -11,7 +11,6 @@ export { DashboardComponent } from './app/modules/system/components/dashboard';
 export { InfoComponent } from './app/modules/system/components/info';
 export { ProcessComponent } from './app/modules/system/components/process';
 export { ProcessesComponent } from './app/modules/system/components/processes';
-export { ServerLogComponent } from './app/modules/system/components/server-log';
 export { ServerLogsComponent } from './app/modules/system/components/server-logs';
 export { SettingsComponent } from './app/modules/system/components/settings';
 export { UpgradeLogsComponent } from './app/modules/system/components/upgrade-logs';
