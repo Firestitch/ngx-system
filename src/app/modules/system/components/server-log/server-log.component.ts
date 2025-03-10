@@ -28,7 +28,7 @@ export class ServerLogComponent implements OnInit {
       try {
         this.log.server = JSON.parse(this.log.server);
       } catch (e) {
-        //
+        // 
       }
     }
   }

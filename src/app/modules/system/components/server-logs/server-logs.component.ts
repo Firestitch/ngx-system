@@ -2,8 +2,9 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@a
 
 import { MatDialog } from '@angular/material/dialog';
 
+import { index } from '@firestitch/common';
 import { ItemType } from '@firestitch/filter';
-import { FsListComponent, FsListConfig, PaginationStrategy } from '@firestitch/list';
+import { FsListAction, FsListComponent, FsListConfig, PaginationStrategy } from '@firestitch/list';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -24,7 +25,8 @@ export class ServerLogsComponent implements OnInit {
   @Input() public loadLogs: (data: any) => Observable<{ data: any[], paging: any }>;
 
   public config: FsListConfig = null;
-  public logTypes = [];
+  public actions: FsListAction[] = [];
+  public LogTypes = index(LogTypes, 'value', 'name');
 
   constructor(
     private _dialog: MatDialog,
@@ -43,6 +45,7 @@ export class ServerLogsComponent implements OnInit {
 
   private _configList() {
     this.config = {
+      actions: this.actions,
       paging:  {
         strategy: PaginationStrategy.Many,
       },
@@ -62,3 +65,23 @@ export class ServerLogsComponent implements OnInit {
     };
   }
 }
+
+const LogTypes = [
+  { value: '1', name: 'Fatal Error' },        // E_ERROR
+  { value: '2', name: 'Warning' },            // E_WARNING
+  { value: '4', name: 'Parse Error' },        // E_PARSE
+  { value: '8', name: 'Notice' },             // E_NOTICE
+  { value: '16', name: 'Core Error' },        // E_CORE_ERROR
+  { value: '32', name: 'Core Warning' },      // E_CORE_WARNING
+  { value: '64', name: 'Compile Error' },     // E_COMPILE_ERROR
+  { value: '128', name: 'Compile Warning' },  // E_COMPILE_WARNING
+  { value: '256', name: 'User Error' },       // E_USER_ERROR
+  { value: '512', name: 'User Warning' },     // E_USER_WARNING
+  { value: '1024', name: 'User Notice' },     // E_USER_NOTICE
+  { value: '2048', name: 'Strict Notice' },   // E_STRICT
+  { value: '4096', name: 'Recoverable Error' }, // E_RECOVERABLE_ERROR
+  { value: '8192', name: 'Deprecated' },      // E_DEPRECATED
+  { value: '16384', name: 'User Deprecated' }, // E_USER_DEPRECATED
+  { value: 'exception', name: 'Exception' },
+];
+
