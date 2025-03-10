@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -28,6 +28,8 @@ export class ServerLogsComponent implements OnInit {
 
   @Input() public loadLogs: (data: any) => Observable<{ data: any[], paging: any }>;
 
+  @Output() public acknowledgedAll: EventEmitter<void> = new EventEmitter();
+
   public config: FsListConfig = null;
   public actions: FsListAction[] = [];
   public LogTypes = index(LogTypes, 'value', 'name');
@@ -47,7 +49,7 @@ export class ServerLogsComponent implements OnInit {
       .put(`system/logs/server/${log.id}/${acknowledge}`)
       .subscribe((response) => {
         this.list
-          .updateData([response],
+          .updateData(response.log,
             (item: any) => {
               return item.id === log.id;
             });
@@ -68,12 +70,13 @@ export class ServerLogsComponent implements OnInit {
         ...this.actions,
         {
           primary: false,
-          label: 'Acknowledge',
+          label: 'Acknowledge all',
           click: () =>  {
             this._api
               .put('system/logs/server/acknowledge')
               .subscribe(() => {
                 this.list.reload();
+                this.acknowledgedAll.emit();
               });
           },
         },
