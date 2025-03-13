@@ -1,66 +1,98 @@
 <fs-list [config]="config">
   <fs-list-column>
-    <ng-template fs-list-header>Name</ng-template>
-    <ng-template fs-list-cell let-row="row">
-      <a (click)="open(row)">{{row.name}}</a>
+    <ng-template fs-list-header>
+      Name
+    </ng-template>
+    <ng-template
+        fs-list-cell
+        let-row="row">
+      <a (click)="open(row)">
+        {{ row.name }}
+      </a>
       <div *ngIf="row.cronSetting">
-        <small>{{row.cronSetting.summary}}</small>
+        <small>
+          {{ row.cronSetting.summary }}
+        </small>
       </div>
     </ng-template>
   </fs-list-column>
   <fs-list-column align="center">
-    <ng-template fs-list-header>Status</ng-template>
-    <ng-template fs-list-cell let-row="row">
+    <ng-template fs-list-header>
+      Status
+    </ng-template>
+    <ng-template
+        fs-list-cell
+        let-row="row">
       <ng-container *ngIf="row.host || row.processId; else status">
-        <fs-popover 
+        <fs-popover
             [maxWidth]="null"
-            [template]="statusPopover" 
+            [template]="statusPopover"
             [indication]="true"
             size="small">
           <ng-container *ngTemplateOutlet="status"></ng-container>
         </fs-popover>
         <ng-template #statusPopover>
-          <div *ngIf="row.host">Host: {{row.host}}</div>
-          <div *ngIf="row.processId">Process ID: {{row.processId}}</div>
-          <div *ngIf="row.processState">Process State: {{CronProcessStates[row.processState]}}</div>
+          <div *ngIf="row.host">
+            Host: {{ row.host }}
+          </div>
+          <div *ngIf="row.processId">
+            Process ID: {{ row.processId }}
+          </div>
+          <div *ngIf="row.processState">
+            Process State: {{ CronProcessStates[row.processState] }}
+          </div>
         </ng-template>
       </ng-container>
       <ng-template #status>
-        {{CronStates[row.state]}}
+        {{ CronStates[row.state] }}
       </ng-template>
       <ng-container *ngIf="row.state === CronState.Running">
         <div class="small">
           Duration: {{ row.runningDuration | fsDateDuration: { hours: true, minutes: true, seconds: true } }}
         </div>
-      </ng-container>      
+      </ng-container>
     </ng-template>
   </fs-list-column>
   <fs-list-column>
-    <ng-template fs-list-header>Last Ran</ng-template>
-    <ng-template fs-list-cell let-row="row">
+    <ng-template fs-list-header>
+      Last Ran
+    </ng-template>
+    <ng-template
+        fs-list-cell
+        let-row="row">
       <ng-container *ngIf="row.duration===null; else lastRan">
         Never
       </ng-container>
       <ng-template #lastRan>
         <fs-date-ago [date]="row.createDate"></fs-date-ago>
-        <div class="small" *ngIf="row.duration">
+        <div
+            class="small"
+            *ngIf="row.duration">
           Duration: {{ row.duration | fsDateDuration: { hours: true, minutes: true, seconds: true } }}
         </div>
       </ng-template>
     </ng-template>
   </fs-list-column>
   <fs-list-column>
-    <ng-template fs-list-header>Next Run</ng-template>
-    <ng-template fs-list-cell let-row="row">
+    <ng-template fs-list-header>
+      Next Run
+    </ng-template>
+    <ng-template
+        fs-list-cell
+        let-row="row">
       <ng-container *ngIf="row.state !== CronState.Disabled">
         <app-next-run [cron]="row"></app-next-run>
       </ng-container>
     </ng-template>
   </fs-list-column>
   <fs-list-column>
-    <ng-template fs-list-header>Timeout Hours</ng-template>
-    <ng-template fs-list-cell let-row="row">
-      {{row.cronSetting.timeout}}
+    <ng-template fs-list-header>
+      Timeout
+    </ng-template>
+    <ng-template
+        fs-list-cell
+        let-row="row">
+      {{ row.cronSetting.timeout }}h
     </ng-template>
   </fs-list-column>
 </fs-list>
