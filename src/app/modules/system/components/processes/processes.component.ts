@@ -82,21 +82,7 @@ export class ProcessesComponent implements OnInit, OnDestroy {
   private _configList() {
     this.config = {
       actions: [],
-      rowActions: [
-        {
-          label: 'Run',
-          show: (process) => {
-            return process.state !== ProcessState.Running;
-          },
-          click: (data) => {
-            this._message.info('Running process...');
-            this._processData.run(data)
-              .subscribe(() => {
-                this.reload();
-                this._message.success('Ran process');
-              });
-          },
-        },        
+      rowActions: [      
         {
           label: 'Queue',
           show: (process) => {

@@ -4,13 +4,14 @@ import {
 
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+import { FsApi, RequestMethod, StreamEventData, StreamEventType } from '@firestitch/api';
 import { FsMessage } from '@firestitch/message';
+import { FsProcess } from '@firestitch/process';
 import { FsPrompt } from '@firestitch/prompt';
 
 import { Observable, Subject, timer } from 'rxjs';
-import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
-import { HttpEventType } from '@angular/common/http';
 
 import { ProcessProcessStates } from '../../consts';
 import { ProcessData } from '../../data/process.data';
@@ -43,6 +44,8 @@ export class ProcessComponent implements OnInit, OnDestroy {
     private _message: FsMessage,
     private _cdRef: ChangeDetectorRef,
     private _prompt: FsPrompt,
+    private _process: FsProcess,
+    private _api: FsApi,
   ) {}
 
   public ngOnInit() {
@@ -87,22 +90,28 @@ export class ProcessComponent implements OnInit, OnDestroy {
   }
 
   public run() {
+    this.process.state = ProcessState.Running;
+    this._cdRef.markForCheck();
+
     this._message.success('Running process');
-    this._processData
-      .run(this.data.process, {
-        reportProgress: true,
-      })
-      .pipe(
-        tap((event) => {
-          switch (event.type) {
-            case HttpEventType.Sent: {
+    this._process
+      .run(`Run ${this.process.name}`, this._api
+        .stream(
+          RequestMethod.Post, `processes/${this.process.id}/run`)
+        .pipe(
+          tap((event) => {
+            if(event instanceof StreamEventData && event.type === StreamEventType.Sent) {
               this.process.state = ProcessState.Running;
               this._cdRef.markForCheck();
-            } break;
-          }
-        }),
-      )
-      .subscribe();
+            }
+          }),
+          filter((event) => event instanceof StreamEventData),
+          map((event) => {
+            return event?.data;
+          }),   
+          filter((data) => !!data),
+        ),
+      );
   }
 
   public queue() {
