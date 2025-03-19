@@ -90,10 +90,6 @@ export class ProcessComponent implements OnInit, OnDestroy {
   }
 
   public run() {
-    this.process.state = ProcessState.Running;
-    this._cdRef.markForCheck();
-
-    this._message.success('Running process');
     this._process
       .run(`Run ${this.process.name}`, this._api
         .stream(

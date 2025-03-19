@@ -4,17 +4,20 @@ import {
 
 import { MatDialog } from '@angular/material/dialog';
 
+import { FsApi, RequestMethod, StreamEventData, StreamEventType } from '@firestitch/api';
 import { ItemType } from '@firestitch/filter';
 import { FsListComponent, FsListConfig } from '@firestitch/list';
 import { FsMessage } from '@firestitch/message';
+import { FsProcess } from '@firestitch/process';
 
 import { Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil, tap } from 'rxjs/operators';
 
 import { ProcessStates } from '../../consts';
 import { ProcessData } from '../../data/process.data';
 import { ProcessState } from '../../enums';
 import { indexNameValue } from '../../helpers/index-name-value';
+
 
 import { ProcessAction } from './../../interfaces/process-action';
 import { ProcessComponent } from './../process/process.component';
@@ -43,6 +46,8 @@ export class ProcessesComponent implements OnInit, OnDestroy {
   constructor(
     private _dialog: MatDialog,
     private _message: FsMessage,
+    private _process: FsProcess,
+    private _api: FsApi,
   ) { }
 
   public ngOnInit() {
@@ -95,6 +100,39 @@ export class ProcessesComponent implements OnInit, OnDestroy {
                 this.reload();
                 this._message.success('Queued process');
               });
+          },
+        },
+        {
+          label: 'Run',
+          show: (data) => {
+            return data.state !== ProcessState.Running;
+          },
+          click: (process) => {
+            this._process
+              .run(`Run ${process.name}`, this._api
+                .stream(
+                  RequestMethod.Post, `processes/${process.id}/run`)
+                .pipe(
+                  tap((event) => {
+                    if(event instanceof StreamEventData && event.type === StreamEventType.Sent) {
+                      process = {
+                        ...process,
+                        state: ProcessState.Running,
+                      };
+
+                      this.list
+                        .updateData(process, (row) => {
+                          return process.id === row.id;
+                        });
+                    }
+                  }),
+                  filter((event) => event instanceof StreamEventData),
+                  map((event) => {
+                    return event?.data;
+                  }),   
+                  filter((data) => !!data),
+                ),
+              );
           },
         },
         {
