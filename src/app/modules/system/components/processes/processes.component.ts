@@ -11,7 +11,7 @@ import { FsMessage } from '@firestitch/message';
 import { FsProcess } from '@firestitch/process';
 
 import { Subject } from 'rxjs';
-import { filter, map, takeUntil, tap } from 'rxjs/operators';
+import { filter, finalize, map, takeUntil, tap } from 'rxjs/operators';
 
 import { ProcessStates } from '../../consts';
 import { ProcessData } from '../../data/process.data';
@@ -114,7 +114,9 @@ export class ProcessesComponent implements OnInit, OnDestroy {
                   RequestMethod.Post, `processes/${process.id}/run`)
                 .pipe(
                   tap((event) => {
-                    if(event instanceof StreamEventData && event.type === StreamEventType.Sent) {
+                    if(
+                      event instanceof StreamEventData && event.type === StreamEventType.Sent
+                    ) {
                       process = {
                         ...process,
                         state: ProcessState.Running,
@@ -129,8 +131,11 @@ export class ProcessesComponent implements OnInit, OnDestroy {
                   filter((event) => event instanceof StreamEventData),
                   map((event) => {
                     return event?.data;
-                  }),   
+                  }),
                   filter((data) => !!data),
+                  finalize(() => {
+                    this.list.reload();
+                  }),
                 ),
               );
           },
