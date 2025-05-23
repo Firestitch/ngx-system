@@ -9,11 +9,9 @@
       <a (click)="open(row)">
         {{ row.name }}
       </a>
-      <div *ngIf="row.cronSetting">
-        <small>
-          {{ row.cronSetting.summary }}
-        </small>
-      </div>
+      <small>
+        {{ row.cronSetting?.description }}
+      </small>
     </ng-template>
   </fs-list-column>
   <fs-list-column align="center">
@@ -51,6 +49,16 @@
           Duration: {{ row.runningDuration | fsDateDuration: { hours: true, minutes: true, seconds: true } }}
         </div>
       </ng-container>
+    </ng-template>
+  </fs-list-column>
+  <fs-list-column>
+    <ng-template fs-list-header>
+      Frequency
+    </ng-template>
+    <ng-template
+        fs-list-cell
+        let-row="row">
+      {{ row.cronSetting?.summary }}
     </ng-template>
   </fs-list-column>
   <fs-list-column>
