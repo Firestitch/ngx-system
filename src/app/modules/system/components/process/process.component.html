@@ -16,108 +16,126 @@
             Status
           </fs-label>
           <div
-              class="status"
-              [ngClass]="{ 'running': process.state === ProcessState.Running }">
+            class="status"
+            [ngClass]="{ 'running': process.state === ProcessState.Running }">
             {{ ProcessStates[process.state] }}
-            <ng-container *ngIf="process.state === ProcessState.Running">
+            @if (process.state === ProcessState.Running) {
               <mat-progress-spinner
                 [diameter]="20"
                 [mode]="'indeterminate'">
               </mat-progress-spinner>
-            </ng-container>
+            }
           </div>
         </fs-label-field>
-        <fs-label-field *ngIf="process.notify">
-          <fs-label>
-            Notification Email
-          </fs-label>
-          {{ process.notify }}
-        </fs-label-field>
+        @if (process.notify) {
+          <fs-label-field>
+            <fs-label>
+              Notification Email
+            </fs-label>
+            {{ process.notify }}
+          </fs-label-field>
+        }
         <fs-label-field>
           <fs-label>
             Process ID
           </fs-label>
           {{ process.pid || 'None' }}
-          <ng-container *ngIf="process.pid">
+          @if (process.pid) {
             <div class="small">
               {{ ProcessProcessStates[process.processState] || 'Unknown' }}
             </div>
-          </ng-container>
+          }
         </fs-label-field>
-        <fs-label-field *ngIf="process.createDate">
-          <fs-label>
-            Create Date
-          </fs-label>
-          {{ process.createDate | fsDateFormat: 'date-time' }}
-        </fs-label-field>
-        <fs-label-field *ngIf="process.startDate">
-          <fs-label>
-            Start Date
-          </fs-label>
-          {{ process.startDate | fsDateFormat: 'date-time' }}
-        </fs-label-field>
-        <fs-label-field *ngIf="process.endDate">
-          <fs-label>
-            Complete Date
-          </fs-label>
-          {{ process.endDate | fsDateFormat: 'date-time' }}
-        </fs-label-field>
-        <fs-label-field *ngIf="process.duration">
-          <fs-label>
-            Duration
-          </fs-label>
-          {{ process.duration | fsDateDuration: {hours: true, minutes: true, seconds: true} }}
-        </fs-label-field>
+        @if (process.createDate) {
+          <fs-label-field>
+            <fs-label>
+              Create Date
+            </fs-label>
+            {{ process.createDate | fsDateFormat: 'date-time' }}
+          </fs-label-field>
+        }
+        @if (process.startDate) {
+          <fs-label-field>
+            <fs-label>
+              Start Date
+            </fs-label>
+            {{ process.startDate | fsDateFormat: 'date-time' }}
+          </fs-label-field>
+        }
+        @if (process.endDate) {
+          <fs-label-field>
+            <fs-label>
+              Complete Date
+            </fs-label>
+            {{ process.endDate | fsDateFormat: 'date-time' }}
+          </fs-label-field>
+        }
+        @if (process.duration) {
+          <fs-label-field>
+            <fs-label>
+              Duration
+            </fs-label>
+            {{ process.duration | fsDateDuration: {hours: true, minutes: true, seconds: true} }}
+          </fs-label-field>
+        }
       </div>
-      <fs-label-field *ngIf="process.message">
-        <fs-label>
-          Message
-        </fs-label>
-        {{ process.message }}
-      </fs-label-field>
-      <fs-label-field *ngIf="process.log">
-        <fs-label>
-          Log
-        </fs-label>
-        <div class="log">
-          {{ process.log }}
-        </div>
-      </fs-label-field>
+      @if (process.message) {
+        <fs-label-field>
+          <fs-label>
+            Message
+          </fs-label>
+          {{ process.message }}
+        </fs-label-field>
+      }
+      @if (process.log) {
+        <fs-label-field>
+          <fs-label>
+            Log
+          </fs-label>
+          <div class="log">
+            {{ process.log }}
+          </div>
+        </fs-label-field>
+      }
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button
-        mat-button
-        [mat-dialog-close]="true"
-        color="primary">
+      mat-button
+      [mat-dialog-close]="true"
+      color="primary">
       Close
     </button>
-    <button
-        *ngIf="process.state === ProcessState.Running"
+    @if (process.state === ProcessState.Running) {
+      <button
         mat-button
         (click)="kill()">
-      Kill
-    </button>
-    <button
-        *ngIf="process.state !== ProcessState.Running"
+        Kill
+      </button>
+    }
+    @if (process.state !== ProcessState.Running) {
+      <button
         mat-button
         (click)="run()">
-      Run
-    </button>
-    <button
-        *ngIf="(
-          process.state !== ProcessState.Running && 
-          process.state !== ProcessState.Queued
-        )"
+        Run
+      </button>
+    }
+    @if ((
+      process.state !== ProcessState.Running &&
+      process.state !== ProcessState.Queued
+      )) {
+      <button
         mat-button
         (click)="queue()">
-      Queue
-    </button>
-    <button
-        *ngIf="process.filename"
+        Queue
+      </button>
+    }
+    @if (process.filename) {
+      <button
         mat-button
         (click)="download()">
-      Download
-    </button>
+        Download
+      </button>
+    }
   </mat-dialog-actions>
 </fs-dialog>

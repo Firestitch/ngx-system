@@ -18,12 +18,14 @@
         {{apiLogStates[apiLog.state]}}
       </fs-label-field>
 
-      <fs-label-field *ngIf="apiLog.code">
-        <fs-label>
-          Code
-        </fs-label>
-        {{apiLog.code}}
-      </fs-label-field>
+      @if (apiLog.code) {
+        <fs-label-field>
+          <fs-label>
+            Code
+          </fs-label>
+          {{apiLog.code}}
+        </fs-label-field>
+      }
 
       <fs-label-field>
         <fs-label>
@@ -32,65 +34,79 @@
         {{apiLog.createDate|fsDateFormat: 'full-date-time'}}
       </fs-label-field>
 
-      <fs-label-field *ngIf="apiLog.direction">
-        <fs-label>
-          Direction
-        </fs-label>
-        {{apiLog.direction}}
-      </fs-label-field>
-
-      <fs-label-field *ngIf="apiLog.length">
-        <fs-label>
-          Duration
-        </fs-label>
-        {{ apiLog.length | fsDateDuration }}
-      </fs-label-field>
-
-      <ng-container *ngIf="apiLog.method">
-        <fs-label-field *ngIf="apiLog.method">
+      @if (apiLog.direction) {
+        <fs-label-field>
           <fs-label>
-            Method
+            Direction
           </fs-label>
-          {{apiLog.method}}
+          {{apiLog.direction}}
         </fs-label-field>
-      </ng-container>
-    
-      <fs-label-field *ngIf="apiLog.url">
-        <fs-label>
-          URL
-        </fs-label>
-        {{apiLog.url}}
-      </fs-label-field>
+      }
+
+      @if (apiLog.length) {
+        <fs-label-field>
+          <fs-label>
+            Duration
+          </fs-label>
+          {{ apiLog.length | fsDateDuration }}
+        </fs-label-field>
+      }
+
+      @if (apiLog.method) {
+        @if (apiLog.method) {
+          <fs-label-field>
+            <fs-label>
+              Method
+            </fs-label>
+            {{apiLog.method}}
+          </fs-label-field>
+        }
+      }
+
+      @if (apiLog.url) {
+        <fs-label-field>
+          <fs-label>
+            URL
+          </fs-label>
+          {{apiLog.url}}
+        </fs-label-field>
+      }
     </div>
 
-    <fs-label-field *ngIf="apiLog.message">
-      <fs-label>
-        Message
-      </fs-label>
-      {{apiLog.message}}
-    </fs-label-field>
+    @if (apiLog.message) {
+      <fs-label-field>
+        <fs-label>
+          Message
+        </fs-label>
+        {{apiLog.message}}
+      </fs-label-field>
+    }
 
     <div>
-      <fs-label-field *ngIf="apiLog.request">
-        <fs-label>
-          Request
-        </fs-label>
-        <pre>{{apiLog.request|json}}</pre>
-      </fs-label-field>
+      @if (apiLog.request) {
+        <fs-label-field>
+          <fs-label>
+            Request
+          </fs-label>
+          <pre>{{apiLog.request|json}}</pre>
+        </fs-label-field>
+      }
 
-      <fs-label-field *ngIf="apiLog.response">
-        <fs-label>
-          Response
-        </fs-label>
-        <pre>{{apiLog.response|json}}</pre>
-      </fs-label-field>
+      @if (apiLog.response) {
+        <fs-label-field>
+          <fs-label>
+            Response
+          </fs-label>
+          <pre>{{apiLog.response|json}}</pre>
+        </fs-label-field>
+      }
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button 
-        mat-button 
-        [mat-dialog-close]="true" 
-        color="primary">
+    <button
+      mat-button
+      [mat-dialog-close]="true"
+      color="primary">
       Done
     </button>
   </mat-dialog-actions>

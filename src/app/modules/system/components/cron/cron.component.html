@@ -15,38 +15,41 @@
             </fs-label>
             {{ CronStates[cron.state] }}
           </fs-label-field>
-          <fs-label-field *ngIf="cron.cronSetting">
-            <fs-label>
-              Run Frequency
-            </fs-label>
-            {{ cron.cronSetting.summary }}
-          </fs-label-field>
+          @if (cron.cronSetting) {
+            <fs-label-field>
+              <fs-label>
+                Run Frequency
+              </fs-label>
+              {{ cron.cronSetting.summary }}
+            </fs-label-field>
+          }
           <fs-label-field>
             <fs-label>
               Process ID
             </fs-label>
             {{ cron.processId || 'None' }}
-            <ng-container *ngIf="cron.processId">
+            @if (cron.processId) {
               <div class="small">
                 {{ CronProcessStates[cron.processState] || 'Unknown' }}
               </div>
-            </ng-container>
+            }
           </fs-label-field>
           <fs-label-field>
             <fs-label>
               Last Ran
             </fs-label>
-            <ng-container *ngIf="cron.duration===null; else lastRan">
+            @if (cron.duration===null) {
               Never
-            </ng-container>
-            <ng-template #lastRan>
+            } @else {
               <fs-date-ago [date]="cron.createDate"></fs-date-ago>
               <div>
-                <small *ngIf="cron.duration">
-                  Duration: {{ cron.duration | fsDateDuration }}
-                </small>
+                @if (cron.duration) {
+                  <small>
+                    Duration: {{ cron.duration | fsDateDuration }}
+                  </small>
+                }
               </div>
-            </ng-template>
+            }
           </fs-label-field>
           <fs-label-field>
             <fs-label>
@@ -55,14 +58,16 @@
             {{ cron.cronSetting?.timeout || 'N/A' }}
           </fs-label-field>
         </div>
-        <fs-label-field *ngIf="cron.message">
-          <fs-label>
-            Last Message
-          </fs-label>
-          <div class="message">
-            {{ cron.message }}
-          </div>
-        </fs-label-field>
+        @if (cron.message) {
+          <fs-label-field>
+            <fs-label>
+              Last Message
+            </fs-label>
+            <div class="message">
+              {{ cron.message }}
+            </div>
+          </fs-label-field>
+        }
       </mat-tab>
       <mat-tab label="Logs">
         <ng-template matTabContent>
@@ -73,18 +78,19 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <button
-        mat-button
-        [mat-dialog-close]="true"
-        color="primary">
+      mat-button
+      [mat-dialog-close]="true"
+      color="primary">
       Done
     </button>
-    <ng-container *ngIf="tabIndex === 0">
-      <button
-          *ngFor="let cronAction of cronActions"
+    @if (tabIndex === 0) {
+      @for (cronAction of cronActions; track cronAction) {
+        <button
           mat-button
           (click)="cronActionClick(cronAction)">
-        {{ cronAction.label }}
-      </button>
-    </ng-container>
+          {{ cronAction.label }}
+        </button>
+      }
+    }
   </mat-dialog-actions>
 </fs-dialog>

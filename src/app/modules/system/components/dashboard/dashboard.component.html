@@ -69,40 +69,44 @@
         {{ dashboard.databaseTimezone }}
       </fs-label-field>
     </div>
-    <div *ngIf="build || dashboard.upgrades.length">
-      <ng-container *ngIf="build">
-        <h2>
-          Build
-        </h2>
-        <fs-label-field>
-          <fs-label>
-            Version
-          </fs-label>
-          {{ build.version || 'Unknown' }}
-        </fs-label-field>
-        <fs-label-field>
-          <fs-label>
-            Date
-          </fs-label>
-          {{ (build.date | fsDateFormat: 'date-time') || 'Unknown' }}
-        </fs-label-field>
-      </ng-container>
-      <fs-label-field *ngIf="dashboard.upgrades.length">
-        <fs-label>
-          Pending Upgrades
-        </fs-label>
-        <span
-            class="attention"
-            [ngClass]="{ 'needs-attention': !!dashboard.upgrades.length }">
-          {{ dashboard.upgrades.length }}
-          <mat-icon
-              [matTooltip]="dashboard.upgrades.join('\n')"
-              matTooltipClass="tooltip-pending-upgrades">
-            warning
-          </mat-icon>
-        </span>
-      </fs-label-field>
-    </div>
+    @if (build || dashboard.upgrades.length) {
+      <div>
+        @if (build) {
+          <h2>
+            Build
+          </h2>
+          <fs-label-field>
+            <fs-label>
+              Version
+            </fs-label>
+            {{ build.version || 'Unknown' }}
+          </fs-label-field>
+          <fs-label-field>
+            <fs-label>
+              Date
+            </fs-label>
+            {{ (build.date | fsDateFormat: 'date-time') || 'Unknown' }}
+          </fs-label-field>
+        }
+        @if (dashboard.upgrades.length) {
+          <fs-label-field>
+            <fs-label>
+              Pending Upgrades
+            </fs-label>
+            <span
+              class="attention"
+              [ngClass]="{ 'needs-attention': !!dashboard.upgrades.length }">
+              {{ dashboard.upgrades.length }}
+              <mat-icon
+                [matTooltip]="dashboard.upgrades.join('\n')"
+                matTooltipClass="tooltip-pending-upgrades">
+                warning
+              </mat-icon>
+            </span>
+          </fs-label-field>
+        }
+      </div>
+    }
     <div>
       <h2>
         Cron
@@ -112,14 +116,18 @@
           Last Ran
         </fs-label>
         <span
-            class="attention"
-            [ngClass]="{ 'needs-attention': dashboard.cronRanAttention }">
-          <span *ngIf="!dashboard.cronRan">
-            Never
-          </span>
-          <span *ngIf="dashboard.cronRan">
-            {{ dashboard.cronRan | fsDateFormat: 'date-time' }}
-          </span>
+          class="attention"
+          [ngClass]="{ 'needs-attention': dashboard.cronRanAttention }">
+          @if (!dashboard.cronRan) {
+            <span>
+              Never
+            </span>
+          }
+          @if (dashboard.cronRan) {
+            <span>
+              {{ dashboard.cronRan | fsDateFormat: 'date-time' }}
+            </span>
+          }
           <mat-icon>
             warning
           </mat-icon>
@@ -130,31 +138,33 @@
   <div>
     <div class="actions">
       <button
-          mat-stroked-button
-          (click)="upgradeClick()">
+        mat-stroked-button
+        (click)="upgradeClick()">
         Run Upgrades
       </button>
       <button
-          mat-stroked-button
-          (click)="initClick()">
+        mat-stroked-button
+        (click)="initClick()">
         Init System
       </button>
-      <button
-          *ngFor="let action of buttonActions"
+      @for (action of buttonActions; track action) {
+        <button
           mat-stroked-button
           (click)="actionClick(action)">
-        {{ action.label }}
-      </button>
-      <ng-container *ngIf="menuActions.length">
+          {{ action.label }}
+        </button>
+      }
+      @if (menuActions.length) {
         <fs-menu buttonClass="mat-stroked-button menu-button">
-          <ng-template
-              *ngFor="let action of menuActions"
+          @for (action of menuActions; track action) {
+            <ng-template
               fs-menu-item
               (click)="actionClick(action)">
-            {{ action.label }}
-          </ng-template>
+              {{ action.label }}
+            </ng-template>
+          }
         </fs-menu>
-      </ng-container>
+      }
     </div>
   </div>
 </div>

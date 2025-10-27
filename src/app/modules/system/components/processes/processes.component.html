@@ -4,8 +4,8 @@
       Name
     </ng-template>
     <ng-template
-        fs-list-cell
-        let-row="row">
+      fs-list-cell
+      let-row="row">
       <a (click)="open(row)">
         {{ row.name }}
       </a>
@@ -16,26 +16,34 @@
       Status
     </ng-template>
     <ng-template
-        fs-list-cell
-        let-row="row">
+      fs-list-cell
+      let-row="row">
       {{ ProcessStates[row.state] }}
       <small>
-        <div *ngIf="row.state===ProcessState.Running && row.percent">
-          Complete: {{ row.percent }}%
-        </div>
-        <div *ngIf="row.state===ProcessState.Completed && row.filename">
-          <a
+        @if (row.state===ProcessState.Running && row.percent) {
+          <div>
+            Complete: {{ row.percent }}%
+          </div>
+        }
+        @if (row.state===ProcessState.Completed && row.filename) {
+          <div>
+            <a
               href="javascript:;"
               (click)="download(row)">
-            {{ row.filename }}
-          </a>
-        </div>
-        <div *ngIf="row.pid">
-          PID: {{ row.pid }}
-        </div>
-        <div *ngIf="row.state===ProcessState.Running && row.notify">
-          Notify: {{ row.notify }}
-        </div>
+              {{ row.filename }}
+            </a>
+          </div>
+        }
+        @if (row.pid) {
+          <div>
+            PID: {{ row.pid }}
+          </div>
+        }
+        @if (row.state===ProcessState.Running && row.notify) {
+          <div>
+            Notify: {{ row.notify }}
+          </div>
+        }
       </small>
     </ng-template>
   </fs-list-column>
@@ -44,8 +52,8 @@
       Duration
     </ng-template>
     <ng-template
-        fs-list-cell
-        let-row="row">
+      fs-list-cell
+      let-row="row">
       {{ row.duration | fsDateDuration: {hours: true, minutes: true, seconds: true} }}
     </ng-template>
   </fs-list-column>
@@ -54,8 +62,8 @@
       Message
     </ng-template>
     <ng-template
-        fs-list-cell
-        let-row="row">
+      fs-list-cell
+      let-row="row">
       {{ row.message }}
     </ng-template>
   </fs-list-column>
@@ -64,8 +72,8 @@
       Completed
     </ng-template>
     <ng-template
-        fs-list-cell
-        let-row="row">
+      fs-list-cell
+      let-row="row">
       <fs-date-ago [date]="row.endDate"></fs-date-ago>
     </ng-template>
   </fs-list-column>

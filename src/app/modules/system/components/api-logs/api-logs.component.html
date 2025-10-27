@@ -1,32 +1,40 @@
 <fs-list [config]="config">
-    <fs-list-column>
-      <ng-template fs-list-header>Name</ng-template>
-      <ng-template fs-list-cell let-row="row">
-        <a href="javascript:;" (click)="open(row)">
-          {{row.type || 'Unknown'}}
-          <mat-icon class="direction" *ngIf="row.direction=='outgoing'">arrow_upward</mat-icon>
-          <mat-icon class="direction" *ngIf="row.direction=='incoming'">arrow_downward</mat-icon>
-        </a>
-      </ng-template>
-    </fs-list-column>
-    <fs-list-column>
-      <ng-template fs-list-header>Status</ng-template>
-      <ng-template fs-list-cell let-row="row">
-        {{apiLogStates[row.state]}}
-        <span *ngIf="row.code" class="code" [ngClass]="{'success': row.code==200,'error': row.code!=200 }">[{{row.code}}]</span>
-      </ng-template>
-    </fs-list-column>
-    <fs-list-column>
-        <ng-template fs-list-header>Message</ng-template>
-        <ng-template fs-list-cell let-row="row">
-          {{row.message}}
-        </ng-template>
-      </fs-list-column>
-    <fs-list-column>
-      <ng-template fs-list-header>Date</ng-template>
-      <ng-template fs-list-cell let-row="row">
-        <fs-date-ago [date]="row.createDate"></fs-date-ago>
-        <div><small *ngIf="row.length">Duration: {{ row.length | fsDateDuration }}</small></div>
-      </ng-template>
-    </fs-list-column>
-  </fs-list>
+  <fs-list-column>
+    <ng-template fs-list-header>Name</ng-template>
+    <ng-template fs-list-cell let-row="row">
+      <a href="javascript:;" (click)="open(row)">
+        {{row.type || 'Unknown'}}
+        @if (row.direction=='outgoing') {
+          <mat-icon class="direction">arrow_upward</mat-icon>
+        }
+        @if (row.direction=='incoming') {
+          <mat-icon class="direction">arrow_downward</mat-icon>
+        }
+      </a>
+    </ng-template>
+  </fs-list-column>
+  <fs-list-column>
+    <ng-template fs-list-header>Status</ng-template>
+    <ng-template fs-list-cell let-row="row">
+      {{apiLogStates[row.state]}}
+      @if (row.code) {
+        <span class="code" [ngClass]="{'success': row.code==200,'error': row.code!=200 }">[{{row.code}}]</span>
+      }
+    </ng-template>
+  </fs-list-column>
+  <fs-list-column>
+    <ng-template fs-list-header>Message</ng-template>
+    <ng-template fs-list-cell let-row="row">
+      {{row.message}}
+    </ng-template>
+  </fs-list-column>
+  <fs-list-column>
+    <ng-template fs-list-header>Date</ng-template>
+    <ng-template fs-list-cell let-row="row">
+      <fs-date-ago [date]="row.createDate"></fs-date-ago>
+      <div>@if (row.length) {
+        <small>Duration: {{ row.length | fsDateDuration }}</small>
+      }</div>
+    </ng-template>
+  </fs-list-column>
+</fs-list>

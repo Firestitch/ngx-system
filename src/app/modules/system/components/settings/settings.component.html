@@ -1,156 +1,173 @@
 <mat-accordion>
-  <mat-expansion-panel
+  @for (group of groups; track group) {
+    <mat-expansion-panel
       hideToggle
-      *ngFor="let group of groups">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <div class="title-row">
-          <div class="title">
-            {{ group || 'General' }}
-          </div>
-          <div class="actions">
-            <button
+      >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <div class="title-row">
+            <div class="title">
+              {{ group || 'General' }}
+            </div>
+            <div class="actions">
+              <button
                 type="button"
                 [matTooltip]="'Export ' + (group || 'General') + ' Settings'"
                 mat-icon-button
                 (click)="export($event, groupedSettings[group])">
-              <mat-icon>
-                cloud_download
-              </mat-icon>
-            </button>
-            <button
+                <mat-icon>
+                  cloud_download
+                </mat-icon>
+              </button>
+              <button
                 type="button"
                 [matTooltip]="'Import ' + (group || 'General') + ' Settings'"
                 mat-icon-button
                 (click)="import($event, group)">
-              <mat-icon>
-                cloud_upload
-              </mat-icon>
-            </button>
+                <mat-icon>
+                  cloud_upload
+                </mat-icon>
+              </button>
+            </div>
           </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      @for (setting of groupedSettings[group]; track setting) {
+        <div
+          hideToggle
+          class="setting"
+          [ngClass]="{ 'has-instruction': !! setting.instruction }">
+          @if (setting.interfaceType===SettingInterfaceType.InputBox) {
+            <mat-form-field
+              class="full-width form-field-multiline-subscript"
+              >
+              <mat-label>
+                {{ setting.label }}
+              </mat-label>
+              <input
+                matInput
+                [(ngModel)]="setting.value"
+                [name]="'setting' + setting.id">
+              <mat-hint>
+                {{ setting.instruction }}
+              </mat-hint>
+            </mat-form-field>
+          }
+          @if (setting.interfaceType===SettingInterfaceType.Textarea) {
+            <mat-form-field
+              class="full-width form-field-multiline-subscript"
+              >
+              <mat-label>
+                {{ setting.label }}
+              </mat-label>
+              <textarea
+                matInput
+                [(ngModel)]="setting.value"
+                [name]="'setting' + setting.id">
+              </textarea>
+              <mat-hint>
+                {{ setting.instruction }}
+              </mat-hint>
+            </mat-form-field>
+          }
+          @if (setting.interfaceType===SettingInterfaceType.Select || setting.interfaceType===SettingInterfaceType.SelectMultiple) {
+            <mat-form-field
+              class="full-width form-field-multiline-subscript"
+              >
+              <mat-label>
+                {{ setting.label }}
+              </mat-label>
+              <mat-select
+                [(ngModel)]="setting.value"
+                [multiple]="setting.interfaceType===SettingInterfaceType.SelectMultiple"
+                [name]="'setting' + setting.id">
+                @for (item of setting.values | keyNameValue; track item) {
+                  <mat-option
+                    [value]="item.value">
+                    {{ item.name }}
+                  </mat-option>
+                }
+              </mat-select>
+              <mat-hint>
+                {{ setting.instruction }}
+              </mat-hint>
+            </mat-form-field>
+          }
+          @if (setting.interfaceType===SettingInterfaceType.Date) {
+            <mat-form-field
+              class="full-width form-field-multiline-subscript"
+              >
+              <mat-label>
+                {{ setting.label }}
+              </mat-label>
+              <input
+                matInput
+                fsDatePicker
+                [(ngModel)]="setting.value"
+                [name]="'setting' + setting.id">
+              <mat-hint>
+                {{ setting.instruction }}
+              </mat-hint>
+            </mat-form-field>
+          }
+          @if (setting.interfaceType===SettingInterfaceType.Color) {
+            <mat-form-field
+              class="full-width form-field-multiline-subscript"
+              >
+              <mat-label>
+                {{ setting.label }}
+              </mat-label>
+              <input
+                matInput
+                fsColorPicker
+                [(ngModel)]="setting.value"
+                [name]="'setting' + setting.id">
+              <mat-hint>
+                {{ setting.instruction }}
+              </mat-hint>
+            </mat-form-field>
+          }
+          @if (setting.interfaceType===SettingInterfaceType.Time) {
+            <mat-form-field
+              class="full-width form-field-multiline-subscript"
+              >
+              <mat-label>
+                {{ setting.label }}
+              </mat-label>
+              <input
+                matInput
+                fsTimePicker
+                [(ngModel)]="setting.value"
+                [name]="'setting' + setting.id">
+              <mat-hint>
+                {{ setting.instruction }}
+              </mat-hint>
+            </mat-form-field>
+          }
+          @if (setting.interfaceType===SettingInterfaceType.File) {
+            <fs-file-picker
+              [allowRemove]="true"
+              [allowDownload]="true"
+              (select)="fileSelect.emit({ setting: setting, file: $event.file })"
+              (remove)="fileRemove.emit(setting)"
+              [url]="setting.value">
+              <div fsFileLabel>
+                {{ setting.label }}
+              </div>
+              <div fsFileHint>
+                {{ setting.instruction }}
+              </div>
+            </fs-file-picker>
+          }
         </div>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <div
-        hideToggle
-        *ngFor="let setting of groupedSettings[group]"
-        class="setting"
-        [ngClass]="{ 'has-instruction': !! setting.instruction }">
-      <mat-form-field
-          class="full-width form-field-multiline-subscript"
-          *ngIf="setting.interfaceType===SettingInterfaceType.InputBox">
-        <mat-label>
-          {{ setting.label }}
-        </mat-label>
-        <input
-          matInput
-          [(ngModel)]="setting.value"
-          [name]="'setting' + setting.id">
-        <mat-hint>
-          {{ setting.instruction }}
-        </mat-hint>
-      </mat-form-field>
-      <mat-form-field
-          class="full-width form-field-multiline-subscript"
-          *ngIf="setting.interfaceType===SettingInterfaceType.Textarea">
-        <mat-label>
-          {{ setting.label }}
-        </mat-label>
-        <textarea
-          matInput
-          [(ngModel)]="setting.value"
-          [name]="'setting' + setting.id">
-        </textarea>
-        <mat-hint>
-          {{ setting.instruction }}
-        </mat-hint>
-      </mat-form-field>
-      <mat-form-field
-          class="full-width form-field-multiline-subscript"
-          *ngIf="setting.interfaceType===SettingInterfaceType.Select || setting.interfaceType===SettingInterfaceType.SelectMultiple">
-        <mat-label>
-          {{ setting.label }}
-        </mat-label>
-        <mat-select
-            [(ngModel)]="setting.value"
-            [multiple]="setting.interfaceType===SettingInterfaceType.SelectMultiple"
-            [name]="'setting' + setting.id">
-          <mat-option
-              *ngFor="let item of setting.values | keyNameValue"
-              [value]="item.value">
-            {{ item.name }}
-          </mat-option>
-        </mat-select>
-        <mat-hint>
-          {{ setting.instruction }}
-        </mat-hint>
-      </mat-form-field>
-      <mat-form-field
-          class="full-width form-field-multiline-subscript"
-          *ngIf="setting.interfaceType===SettingInterfaceType.Date">
-        <mat-label>
-          {{ setting.label }}
-        </mat-label>
-        <input
-          matInput
-          fsDatePicker
-          [(ngModel)]="setting.value"
-          [name]="'setting' + setting.id">
-        <mat-hint>
-          {{ setting.instruction }}
-        </mat-hint>
-      </mat-form-field>
-      <mat-form-field
-          class="full-width form-field-multiline-subscript"
-          *ngIf="setting.interfaceType===SettingInterfaceType.Color">
-        <mat-label>
-          {{ setting.label }}
-        </mat-label>
-        <input
-          matInput
-          fsColorPicker
-          [(ngModel)]="setting.value"
-          [name]="'setting' + setting.id">
-        <mat-hint>
-          {{ setting.instruction }}
-        </mat-hint>
-      </mat-form-field>
-      <mat-form-field
-          class="full-width form-field-multiline-subscript"
-          *ngIf="setting.interfaceType===SettingInterfaceType.Time">
-        <mat-label>
-          {{ setting.label }}
-        </mat-label>
-        <input
-          matInput
-          fsTimePicker
-          [(ngModel)]="setting.value"
-          [name]="'setting' + setting.id">
-        <mat-hint>
-          {{ setting.instruction }}
-        </mat-hint>
-      </mat-form-field>
-      <fs-file-picker
-          *ngIf="setting.interfaceType===SettingInterfaceType.File"
-          [allowRemove]="true"
-          [allowDownload]="true"
-          (select)="fileSelect.emit({ setting: setting, file: $event.file })"
-          (remove)="fileRemove.emit(setting)"
-          [url]="setting.value">
-        <div fsFileLabel>
-          {{ setting.label }}
-        </div>
-        <div fsFileHint>
-          {{ setting.instruction }}
-        </div>
-      </fs-file-picker>
-    </div>
-    <button
+      }
+      <button
         mat-stroked-button
         color="primary"
         type="button"
         (click)="saveGroup(group)">
-      Save
-    </button>
-  </mat-expansion-panel>
+        Save
+      </button>
+    </mat-expansion-panel>
+  }
 </mat-accordion>

@@ -35,7 +35,7 @@
         </fs-clipboard-button>
         <div [innerHTML]="queryLog.prettyQuery" class="query"></div>
       </mat-tab>
-      
+
       <mat-tab label="Explain">
         <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: queryBlock, selectId: queryBlock.selectId, costInfo: queryBlock.costInfo }"></ng-container>
       </mat-tab>
@@ -44,154 +44,152 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <button
-        mat-button
-        type="button"
-        color="primary"
-        [mat-dialog-close]="undefined">
+      mat-button
+      type="button"
+      color="primary"
+      [mat-dialog-close]="undefined">
       Done
     </button>
   </mat-dialog-actions>
 </fs-dialog>
 
 <ng-template #nestedLoop let-queryBlock="queryBlock" let-selectId="selectId" let-costInfo="costInfo">
-  <ng-container *ngIf="selectId">
+  @if (selectId) {
     <h1>Select {{selectId}}</h1>
-  </ng-container>
-  
+  }
+
   <div class="fs-row.gap-lg.wrap.align-start">
-    <ng-container *ngIf="costInfo?.queryCost">
+    @if (costInfo?.queryCost) {
       <fs-label-field>
         <fs-label>Query Cost</fs-label>
         {{costInfo.queryCost}}
       </fs-label-field>
-    </ng-container>
-    <ng-container *ngIf="queryBlock.orderingOperation">
+    }
+    @if (queryBlock.orderingOperation) {
       <fs-label-field>
         <fs-label>Ordering Operation</fs-label>
         <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: queryBlock.orderingOperation }"></ng-container>
       </fs-label-field>
-    </ng-container>
+    }
 
-    <ng-container *ngIf="queryBlock.groupingOperation">
+    @if (queryBlock.groupingOperation) {
       <fs-label-field>
         <fs-label>Grouping Operation</fs-label>
         <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: queryBlock.groupingOperation }"></ng-container>
       </fs-label-field>
-    </ng-container>
+    }
 
-    <ng-container *ngIf="queryBlock.duplicatesRemoval">
+    @if (queryBlock.duplicatesRemoval) {
       <fs-label-field>
         <fs-label>Duplicates Removal</fs-label>
         <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: queryBlock.duplicatesRemoval }"></ng-container>
       </fs-label-field>
-    </ng-container>
+    }
   </div>
 
-  <ng-container *ngIf="queryBlock.orderingOperation">
+  @if (queryBlock.orderingOperation) {
     <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: queryBlock.orderingOperation }"></ng-container>
-  </ng-container>
+  }
 
-  <ng-container *ngIf="queryBlock.groupingOperation">
+  @if (queryBlock.groupingOperation) {
     <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: queryBlock.groupingOperation }"></ng-container>
-  </ng-container>
+  }
 
-  <ng-container *ngIf="queryBlock.duplicatesRemoval">
+  @if (queryBlock.duplicatesRemoval) {
     <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: queryBlock.duplicatesRemoval }"></ng-container>
-  </ng-container>
+  }
 
-  <ng-container *ngIf="queryBlock.table">
+  @if (queryBlock.table) {
     <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: { nestedLoop: [ queryBlock ]} }"></ng-container>
-  
-    <ng-container *ngIf="queryBlock.table.attachedSubqueries">  
+    @if (queryBlock.table.attachedSubqueries) {
       <fs-label>Attached Subqueries</fs-label>
-      <ng-container *ngFor="let subquery of queryBlock.table.attachedSubqueries">
-        <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock }"></ng-container> 
+      @for (subquery of queryBlock.table.attachedSubqueries; track subquery) {
+        <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock }"></ng-container>
         <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock, selectId: subquery.queryBlock.selectId, costInfo: subquery.queryBlock.costInfo }"></ng-container>
-      </ng-container>
-    </ng-container>    
-  </ng-container>
+      }
+    }
+  }
 
-  <ng-container *ngIf="queryBlock.nestedLoop">
+  @if (queryBlock.nestedLoop) {
     <table class="fs-list-table style-line">
-       <thead>
-         <tr>
-           <th>Table</th>
-           <th>Type</th>
-           <th>Keys</th>
-           <th>Ref</th>
-           <th>Rows</th>
-           <th>Filtered</th>
-           <th>Extra</th>
-           <th>Cost</th>
-         </tr>
-       </thead>
-       <tbody>
-         <ng-container *ngFor="let item of queryBlock.nestedLoop; let index = index">
-           <tr>
-             <td>
-               {{item.table.tableName}}
-             </td>
-             <td>
-               <fs-popover [template]="accessTypePopover" [data]="item.table.accessType">
-                 <span class="access-type" [ngClass]="item.table.accessType">{{item.table.accessType}}</span>
-               </fs-popover>            
-             </td>
-             <td>
-               <fs-popover          
-                   [template]="keysPopover"
-                   [maxWidth]="null"
-                   [data]="{ possibleKeys: item.table.possibleKeys, key: item.table.key }">
-                 {{item.table.key}}
-               </fs-popover>
-             </td>
-             <td>
-               <div class="fs-delimit">
-                 <ng-container *ngFor="let ref of item.table.ref">
-                   <span>{{ref}}</span>
-                 </ng-container>
-               </div>
-             </td>
-             <td>
-               {{item.table.rowsExaminedPerScan}}
-             </td>
-             <td>
-               {{item.table.filtered}}
-             </td>
-             <td>
-               <div class="fs-delimit">
-                 <ng-container *ngIf="item.table.indexCondition">
-                   <span>
-                     <fs-popover 
-                         [template]="usingIndexCondition" 
-                         [maxWidth]="null"
-                         [data]="item.table.indexCondition">
-                       Using Index Condition
-                     </fs-popover>
-                   </span>
-                 </ng-container>
-                 <ng-container *ngIf="item.table.attachedCondition">
-                   <span>
-                     <fs-popover 
-                         [template]="usingWhere" 
-                         [maxWidth]="null"
-                         [data]="item.table.attachedCondition">
-                       Using Where
-                     </fs-popover>
-                   </span>
-                 </ng-container>
-                 <ng-container *ngIf="item.usingIndex">
-                   <span>Using Index</span>
-                 </ng-container>    
-                <ng-container *ngIf="item.usingFilesort">
+      <thead>
+        <tr>
+          <th>Table</th>
+          <th>Type</th>
+          <th>Keys</th>
+          <th>Ref</th>
+          <th>Rows</th>
+          <th>Filtered</th>
+          <th>Extra</th>
+          <th>Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of queryBlock.nestedLoop; track item; let index = $index) {
+          <tr>
+            <td>
+              {{item.table.tableName}}
+            </td>
+            <td>
+              <fs-popover [template]="accessTypePopover" [data]="item.table.accessType">
+                <span class="access-type" [ngClass]="item.table.accessType">{{item.table.accessType}}</span>
+              </fs-popover>
+            </td>
+            <td>
+              <fs-popover
+                [template]="keysPopover"
+                [maxWidth]="null"
+                [data]="{ possibleKeys: item.table.possibleKeys, key: item.table.key }">
+                {{item.table.key}}
+              </fs-popover>
+            </td>
+            <td>
+              <div class="fs-delimit">
+                @for (ref of item.table.ref; track ref) {
+                  <span>{{ref}}</span>
+                }
+              </div>
+            </td>
+            <td>
+              {{item.table.rowsExaminedPerScan}}
+            </td>
+            <td>
+              {{item.table.filtered}}
+            </td>
+            <td>
+              <div class="fs-delimit">
+                @if (item.table.indexCondition) {
+                  <span>
+                    <fs-popover
+                      [template]="usingIndexCondition"
+                      [maxWidth]="null"
+                      [data]="item.table.indexCondition">
+                      Using Index Condition
+                    </fs-popover>
+                  </span>
+                }
+                @if (item.table.attachedCondition) {
+                  <span>
+                    <fs-popover
+                      [template]="usingWhere"
+                      [maxWidth]="null"
+                      [data]="item.table.attachedCondition">
+                      Using Where
+                    </fs-popover>
+                  </span>
+                }
+                @if (item.usingIndex) {
+                  <span>Using Index</span>
+                }
+                @if (item.usingFilesort) {
                   <span class="critical">Using File Sort</span>
-                </ng-container>
-                
-                <ng-container *ngIf="item.usingTemporaryTable">
+                }
+                @if (item.usingTemporaryTable) {
                   <span class="critical">Temporary Table</span>
-                </ng-container>
-               </div>
-             </td>
-             <td>     
+                }
+              </div>
+            </td>
+            <td>
               <fs-popover [template]="tableCostPopover" [data]="item.table?.costInfo">
                 {{item.table?.costInfo.prefixCost}}
               </fs-popover>
@@ -201,62 +199,62 @@
                 <div>Prefix Cost: {{data.prefixCost}}</div>
                 <div>Data Read Per Join: {{data.dataReadPerJoin}}</div>
               </ng-template>
-             </td>
-           </tr>
-         </ng-container>
-       </tbody>
-     </table>
-     <br>
-   </ng-container>  
-  
-  <ng-container *ngIf="queryBlock.selectListSubqueries">
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
     <br>
-    <fs-label>Select List Subqueries</fs-label>
-    <ng-container *ngFor="let subquery of queryBlock.selectListSubqueries">
-      <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock }"></ng-container> 
-      <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock, selectId: subquery.queryBlock.selectId, costInfo: subquery.queryBlock.costInfo }"></ng-container>
-    </ng-container>
-  </ng-container>
-<!-- 
-  <ng-container *ngIf="queryBlock.queryBlockattachedSubqueries">
-    <br>
-    <fs-label>Attached Subqueries</fs-label>
-    <ng-container *ngFor="let subquery of queryBlock.attachedSubqueries">
-      <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock }"></ng-container>
-      <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock }"></ng-container>
-    </ng-container>
-  </ng-container> -->
-</ng-template>
+    }
 
-<ng-template #keysPopover let-data="data">
-  <div class="fs-delimit">
-    <ng-container *ngFor="let possibleKey of data.possibleKeys">
-      <span [ngClass]="{ 'query-log-used-key': possibleKey === data.key }">{{possibleKey}}</span>
-    </ng-container>
-  </div>
-</ng-template>
+    @if (queryBlock.selectListSubqueries) {
+      <br>
+        <fs-label>Select List Subqueries</fs-label>
+        @for (subquery of queryBlock.selectListSubqueries; track subquery) {
+          <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock }"></ng-container>
+          <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock, selectId: subquery.queryBlock.selectId, costInfo: subquery.queryBlock.costInfo }"></ng-container>
+        }
+      }
+      <!--
+      <ng-container *ngIf="queryBlock.queryBlockattachedSubqueries">
+        <br>
+          <fs-label>Attached Subqueries</fs-label>
+          <ng-container *ngFor="let subquery of queryBlock.attachedSubqueries">
+            <ng-container [ngTemplateOutlet]="queryBlockCritical" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock }"></ng-container>
+            <ng-container [ngTemplateOutlet]="nestedLoop" [ngTemplateOutletContext]="{ queryBlock: subquery.queryBlock }"></ng-container>
+          </ng-container>
+        </ng-container> -->
+      </ng-template>
 
-<ng-template #usingWhere let-data="data">
-  {{data}}
-</ng-template>
+      <ng-template #keysPopover let-data="data">
+        <div class="fs-delimit">
+          @for (possibleKey of data.possibleKeys; track possibleKey) {
+            <span [ngClass]="{ 'query-log-used-key': possibleKey === data.key }">{{possibleKey}}</span>
+          }
+        </div>
+      </ng-template>
 
-<ng-template #usingIndexCondition let-data="data">
-  {{data}}
-</ng-template>
+      <ng-template #usingWhere let-data="data">
+        {{data}}
+      </ng-template>
 
-<ng-template #accessTypePopover let-data="data">
-  {{accessTypes[data]}}
-</ng-template>
+      <ng-template #usingIndexCondition let-data="data">
+        {{data}}
+      </ng-template>
+
+      <ng-template #accessTypePopover let-data="data">
+        {{accessTypes[data]}}
+      </ng-template>
 
 
-<ng-template #queryBlockCritical let-queryBlock="queryBlock">
-  <div class="fs-delimit">
-    <ng-container *ngIf="queryBlock.usingFilesort">
-      <span class="critical">Using File Sort</span>
-    </ng-container>
-    
-    <ng-container *ngIf="queryBlock.usingTemporaryTable">
-      <span class="critical">Temporary Table</span>
-    </ng-container>
-  </div>
-</ng-template>
+      <ng-template #queryBlockCritical let-queryBlock="queryBlock">
+        <div class="fs-delimit">
+          @if (queryBlock.usingFilesort) {
+            <span class="critical">Using File Sort</span>
+          }
+
+          @if (queryBlock.usingTemporaryTable) {
+            <span class="critical">Temporary Table</span>
+          }
+        </div>
+      </ng-template>
