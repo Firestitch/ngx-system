@@ -1,5 +1,5 @@
 import { CommonModule, JsonPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
@@ -34,10 +34,10 @@ import { FsSkeletonModule } from '@firestitch/skeleton';
   ],
 })
 export class ServerLogComponent implements OnInit {
+  data = inject(MAT_DIALOG_DATA);
+
 
   public log;
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data) {}
 
   public ngOnInit() {
 

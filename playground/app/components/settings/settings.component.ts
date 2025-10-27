@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FsMessage } from '@firestitch/message';
 import { of } from 'rxjs';
 import { SettingsComponent as SettingsComponent_1 } from '../../../../src/app/modules/system/components/settings/settings.component';
@@ -11,10 +11,10 @@ import { SettingsComponent as SettingsComponent_1 } from '../../../../src/app/mo
     imports: [SettingsComponent_1]
 })
 export class SettingsComponent {
+  private message = inject(FsMessage);
+
 
   public config = {};
-
-  constructor(private message: FsMessage) {}
 
   public load = (query) => {
     return of([

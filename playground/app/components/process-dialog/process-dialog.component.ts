@@ -1,5 +1,5 @@
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { FsFormModule } from '@firestitch/form';
@@ -17,10 +17,10 @@ import { MatButton } from '@angular/material/button';
     imports: [FormsModule, FsFormModule, FsDialogModule, MatDialogTitle, CdkScrollable, MatDialogContent, MatLabel, MatFormField, MatInput, MatDialogActions, MatButton, MatDialogClose]
 })
 export class ProcessDialogComponent {
-  public setting;
+  data = inject(MAT_DIALOG_DATA);
+  private dialogRef = inject<MatDialogRef<ProcessDialogComponent>>(MatDialogRef);
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              private dialogRef: MatDialogRef<ProcessDialogComponent>) {}
+  public setting;
 
   save = (): Observable<any> =>  {
     this.dialogRef.close();

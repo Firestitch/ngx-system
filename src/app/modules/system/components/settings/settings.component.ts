@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 
 import { FsClipboard } from '@firestitch/clipboard';
 import { parse } from '@firestitch/date';
@@ -54,6 +54,11 @@ import { KeyNameValuePipe } from '../../pipes/key-name-value.pipe';
     ],
 })
 export class SettingsComponent implements OnInit {
+  private _message = inject(FsMessage);
+  private _clipboard = inject(FsClipboard);
+  private _prompt = inject(FsPrompt);
+  private _cdRef = inject(ChangeDetectorRef);
+
 
   @Input() public loadSettings: (query) => Observable<any[]>;
   @Input() public save: (data: any, group: string) => Observable<any>;
@@ -64,13 +69,6 @@ export class SettingsComponent implements OnInit {
   public groupedSettings = [];
   public groups = [];
   public SettingInterfaceType = SettingInterfaceType;
-
-  constructor(
-    private _message: FsMessage,
-    private _clipboard: FsClipboard,
-    private _prompt: FsPrompt,
-    private _cdRef: ChangeDetectorRef,
-  ) { }
 
   public ngOnInit(): void {
     this.loadSettings({

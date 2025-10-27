@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { FsMessage } from '@firestitch/message';
 import { DashboardAction } from '@firestitch/package';
@@ -17,6 +17,8 @@ import { DashboardComponent as DashboardComponent_1 } from '../../../../src/app/
     imports: [DashboardComponent_1],
 })
 export class DashboardComponent {
+  private _message = inject(FsMessage);
+
 
   public config = {};
   public actions: DashboardAction[] = [
@@ -34,11 +36,6 @@ export class DashboardComponent {
       },
     },
   ];
-
-  constructor(
-    private _message: FsMessage,
-  ) {
-  }
 
   public load = () => {
     return of({

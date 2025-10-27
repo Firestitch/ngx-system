@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { FsMessage } from '@firestitch/message';
 import { ProcessAction } from '@firestitch/package';
@@ -17,6 +17,8 @@ import { ProcessesComponent as ProcessesComponent_1 } from '../../../../src/app/
     imports: [ProcessesComponent_1],
 })
 export class ProcessesComponent {
+  private _message = inject(FsMessage);
+
 
   public actions: ProcessAction[] = [
     {
@@ -37,7 +39,5 @@ export class ProcessesComponent {
       },
     },
   ];
-
-  constructor(private _message: FsMessage) {}
 
 }

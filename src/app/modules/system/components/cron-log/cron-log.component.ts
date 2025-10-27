@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
@@ -33,14 +33,12 @@ import { MatButton } from '@angular/material/button';
     ],
 })
 export class CronLogComponent implements OnInit {
+  private _data = inject(MAT_DIALOG_DATA);
+
 
   public cronLog;
   public CronLogStates = indexNameValue(CronLogStates);
   public CronLogStateColors = {};
-  
-  constructor(
-    @Inject(MAT_DIALOG_DATA) private _data,
-  ) {}
 
   public ngOnInit(): void {
     this.cronLog = this._data.cronLog;

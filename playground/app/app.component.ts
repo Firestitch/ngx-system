@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { FsBuildService } from '@firestitch/build';
 import { RouterOutlet } from '@angular/router';
@@ -11,8 +11,5 @@ import { RouterOutlet } from '@angular/router';
     imports: [RouterOutlet]
 })
 export class AppComponent {
-
-  public constructor(
-    private _buildService: FsBuildService,
-  ) { }
+  private _buildService = inject(FsBuildService);
 }

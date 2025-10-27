@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 
 import { BuildData, FsBuildService } from '@firestitch/build';
 import { FsMessage } from '@firestitch/message';
@@ -37,6 +37,10 @@ import { FsDateModule } from '@firestitch/date';
     ],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+  private _message = inject(FsMessage);
+  private _cdRef = inject(ChangeDetectorRef);
+  private _buildService = inject(FsBuildService);
+
 
   @Input() public init: () => any;
   @Input() public upgrade: () => any;
@@ -50,11 +54,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public menuActions: DashboardAction[] = [];
 
   private _destroy$ = new Subject();
-  constructor(
-    private _message: FsMessage,
-    private _cdRef: ChangeDetectorRef,
-    private _buildService: FsBuildService,
-  ) { }
 
   public ngOnInit() {
     this._load();

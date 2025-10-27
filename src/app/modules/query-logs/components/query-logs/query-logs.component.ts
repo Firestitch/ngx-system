@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -28,6 +28,8 @@ import { FsCommonModule } from '@firestitch/common';
     ],
 })
 export class QueryLogsComponent implements OnInit {
+  private _dialog = inject(MatDialog);
+
 
   @ViewChild(FsListComponent)
   public list: FsListComponent;
@@ -36,10 +38,6 @@ export class QueryLogsComponent implements OnInit {
   @Input() public purgeQueryLogs: () => Observable<any>;
 
   public listConfig: FsListConfig;
-
-  constructor(
-    private _dialog: MatDialog,
-  ) { }
 
   public openQueryLog(queryLog): void {
     this._dialog.open(QueryLogComponent, {

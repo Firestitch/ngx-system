@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { FsApi } from '@firestitch/api';
 
@@ -9,7 +9,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class CronData {
-  constructor(private _fsApi: FsApi) { }
+  private _fsApi = inject(FsApi);
+
 
   public create(data = { id: null }) {
     return data;

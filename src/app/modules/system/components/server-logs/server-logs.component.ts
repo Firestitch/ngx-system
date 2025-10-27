@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -30,6 +30,9 @@ import { FsDateModule } from '@firestitch/date';
     ],
 })
 export class ServerLogsComponent implements OnInit {
+  private _dialog = inject(MatDialog);
+  private _api = inject(FsApi);
+
 
   @ViewChild(FsListComponent) 
   public list: FsListComponent;
@@ -41,11 +44,6 @@ export class ServerLogsComponent implements OnInit {
   public config: FsListConfig = null;
   public actions: FsListAction[] = [];
   public LogTypes = index(LogTypes, 'value', 'name');
-
-  constructor(
-    private _dialog: MatDialog,
-    private _api: FsApi,
-  ) { }
 
   public ngOnInit() {
     this._configList();

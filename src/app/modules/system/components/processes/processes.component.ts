@@ -33,6 +33,11 @@ import { FsDateModule } from '@firestitch/date';
     imports: [FsListModule, FsDateModule],
 })
 export class ProcessesComponent implements OnInit, OnDestroy {
+  private _dialog = inject(MatDialog);
+  private _message = inject(FsMessage);
+  private _process = inject(FsProcess);
+  private _api = inject(FsApi);
+
 
   @ViewChild(FsListComponent) 
   public list: FsListComponent;
@@ -45,13 +50,6 @@ export class ProcessesComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
   private _processData = inject(ProcessData);
-
-  constructor(
-    private _dialog: MatDialog,
-    private _message: FsMessage,
-    private _process: FsProcess,
-    private _api: FsApi,
-  ) { }
 
   public ngOnInit() {
     this._configList();

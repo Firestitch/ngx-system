@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { FsMessage } from '@firestitch/message';
 
@@ -16,11 +16,10 @@ import { CronsComponent as CronsComponent_1 } from '../../../../src/app/modules/
     imports: [CronsComponent_1],
 })
 export class CronsComponent {
+  private message = inject(FsMessage);
+
 
   public config = {};
-
-  constructor(private message: FsMessage) {
-  }
 
   public loadCrons = () => {
     return of([

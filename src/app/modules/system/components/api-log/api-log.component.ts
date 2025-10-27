@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { ApiLogStates } from '../../consts';
 import { indexNameValue } from '../../helpers/index-name-value';
@@ -18,12 +18,12 @@ import { FsDateModule } from '@firestitch/date';
     imports: [FsSkeletonModule, FsDialogModule, MatDialogTitle, CdkScrollable, MatDialogContent, FsLabelModule, MatDialogActions, MatButton, MatDialogClose, JsonPipe, FsDateModule]
 })
 export class ApiLogComponent implements OnInit {
+  private _dialogRef = inject<MatDialogRef<ApiLogComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+
 
   public apiLog;
   public apiLogStates;
-
-  constructor(private _dialogRef: MatDialogRef<ApiLogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data) {}
 
   public ngOnInit() {
 

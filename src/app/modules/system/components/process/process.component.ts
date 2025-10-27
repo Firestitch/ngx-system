@@ -1,6 +1,4 @@
-import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Inject, OnDestroy, OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
@@ -51,6 +49,13 @@ import { FsDateModule } from '@firestitch/date';
     ],
 })
 export class ProcessComponent implements OnInit, OnDestroy {
+  data = inject(MAT_DIALOG_DATA);
+  private _message = inject(FsMessage);
+  private _cdRef = inject(ChangeDetectorRef);
+  private _prompt = inject(FsPrompt);
+  private _process = inject(FsProcess);
+  private _api = inject(FsApi);
+
 
   public process: Process;
   public ProcessStates = indexNameValue(ProcessStates);
@@ -59,17 +64,6 @@ export class ProcessComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
   private _processData = inject(ProcessData);
-  
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: {
-       process: any,
-    },
-    private _message: FsMessage,
-    private _cdRef: ChangeDetectorRef,
-    private _prompt: FsPrompt,
-    private _process: FsProcess,
-    private _api: FsApi,
-  ) {}
 
   public ngOnInit() {
     this.load$()

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -30,6 +30,8 @@ import { FsDateModule } from '@firestitch/date';
     ],
 })
 export class ApiLogsComponent implements OnInit {
+  private _dialog = inject(MatDialog);
+
 
   @ViewChild(FsListComponent, { static: true })
   public list: FsListComponent;
@@ -38,10 +40,6 @@ export class ApiLogsComponent implements OnInit {
 
   public config: FsListConfig = null;
   public apiLogStates = indexNameValue(ApiLogStates);
-
-  constructor(
-    private _dialog: MatDialog,
-  ) { }
 
   public ngOnInit() {
     this._configList();

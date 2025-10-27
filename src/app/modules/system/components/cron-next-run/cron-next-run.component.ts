@@ -1,6 +1,4 @@
-import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 
 
 import { Subject, timer } from 'rxjs';
@@ -19,17 +17,14 @@ import { FsDateModule } from '@firestitch/date';
     imports: [FsDateModule],
 })
 export class CronNextRunComponent implements OnInit, OnDestroy {
+  private _cdRef = inject(ChangeDetectorRef);
+
 
   @Input() public cron;
 
   public duration;
 
   private _destroy$ = new Subject();
-  
-
-  constructor(
-    private _cdRef: ChangeDetectorRef,
-  ) {}
 
 
   public ngOnInit() {

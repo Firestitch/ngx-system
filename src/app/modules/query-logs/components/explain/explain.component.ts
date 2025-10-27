@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { FsDialogModule } from '@firestitch/dialog';
@@ -26,12 +26,14 @@ import { JsonPipe } from '@angular/common';
     ],
 })
 export class ExplainComponent {
+  private _data = inject(MAT_DIALOG_DATA);
+
 
   public explain;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) private _data: any,
-  ) {
+  constructor() {
+    const _data = this._data;
+
     this.explain = _data.explain;
   }
 }

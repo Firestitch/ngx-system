@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialog, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
@@ -41,6 +41,9 @@ import { FsCommonModule } from '@firestitch/common';
     ],
 })
 export class QueryLogComponent {
+  private _data = inject(MAT_DIALOG_DATA);
+  private _dialog = inject(MatDialog);
+
 
   public queryLog;
   public accessTypes = {
@@ -57,10 +60,9 @@ export class QueryLogComponent {
     ALL: 'MySQL scans the entire table to satisfy the query',
   };
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) private _data: any,
-    private _dialog: MatDialog,
-  ) {
+  constructor() {
+    const _data = this._data;
+
     this.queryLog = _data.queryLog;
   }
 
