@@ -1,15 +1,44 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
 
 import { ExplainComponent } from '../explain';
+import { FsDialogModule } from '@firestitch/dialog';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { FsLabelModule } from '@firestitch/label';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { FsClipboardModule } from '@firestitch/clipboard';
+import { NgTemplateOutlet, NgClass } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { FsFormModule } from '@firestitch/form';
+import { FsPopoverModule } from '@firestitch/popover';
+import { FsCommonModule } from '@firestitch/common';
 
 
 @Component({
-  templateUrl: './query-log.component.html',
-  styleUrls: ['./query-log.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './query-log.component.html',
+    styleUrls: ['./query-log.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FsDialogModule,
+        MatDialogTitle,
+        CdkScrollable,
+        MatDialogContent,
+        FsLabelModule,
+        MatTabGroup,
+        MatTab,
+        FsClipboardModule,
+        NgTemplateOutlet,
+        MatDialogActions,
+        MatButton,
+        FsFormModule,
+        MatDialogClose,
+        FsPopoverModule,
+        NgClass,
+        FsCommonModule,
+    ],
 })
 export class QueryLogComponent {
 

@@ -8,13 +8,50 @@ import { FsPrompt } from '@firestitch/prompt';
 import { Observable } from 'rxjs';
 
 import { SettingInterfaceType } from '../../enums';
+import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { NgClass } from '@angular/common';
+import { MatFormField, MatLabel, MatHint } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { FsDatePickerModule } from '@firestitch/datepicker';
+import { FsColorPickerModule } from '@firestitch/colorpicker';
+import { FsFileModule } from '@firestitch/file';
+import { KeyNameValuePipe } from '../../pipes/key-name-value.pipe';
 
 
 @Component({
-  selector: 'fs-system-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-system-settings',
+    templateUrl: './settings.component.html',
+    styleUrls: ['./settings.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        MatAccordion,
+        MatExpansionPanel,
+        MatExpansionPanelHeader,
+        MatExpansionPanelTitle,
+        MatIconButton,
+        MatTooltip,
+        MatIcon,
+        NgClass,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        FormsModule,
+        MatHint,
+        MatSelect,
+        MatOption,
+        FsDatePickerModule,
+        FsColorPickerModule,
+        FsFileModule,
+        MatButton,
+        KeyNameValuePipe,
+    ],
 })
 export class SettingsComponent implements OnInit {
 

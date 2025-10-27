@@ -1,17 +1,20 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
 
 import { ItemType } from '@firestitch/filter';
-import { FsListComponent, FsListConfig } from '@firestitch/list';
+import { FsListComponent, FsListConfig, FsListModule } from '@firestitch/list';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { FsDateModule } from '@firestitch/date';
 
 
 @Component({
-  selector: 'fs-system-upgrade-logs',
-  templateUrl: './upgrade-logs.component.html',
-  styleUrls: ['./upgrade-logs.component.scss'],  
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-system-upgrade-logs',
+    templateUrl: './upgrade-logs.component.html',
+    styleUrls: ['./upgrade-logs.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [FsListModule, FsDateModule],
 })
 export class UpgradeLogsComponent implements OnInit {
 

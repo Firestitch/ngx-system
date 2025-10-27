@@ -9,13 +9,32 @@ import { takeUntil } from 'rxjs/operators';
 import { differenceInMinutes } from 'date-fns';
 
 import { DashboardAction } from './../../interfaces/dashboard-action';
+import { FsSkeletonModule } from '@firestitch/skeleton';
+import { FsLabelModule } from '@firestitch/label';
+import { NgClass } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatButton } from '@angular/material/button';
+import { FsMenuModule } from '@firestitch/menu';
+import { FsDateModule } from '@firestitch/date';
 
 
 @Component({
-  selector: 'fs-system-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-system-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FsSkeletonModule,
+        FsLabelModule,
+        NgClass,
+        MatIcon,
+        MatTooltip,
+        MatButton,
+        FsMenuModule,
+        FsDateModule,
+    ],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 

@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { FsApi, RequestMethod, StreamEventData, StreamEventType } from '@firestitch/api';
 import { ItemType } from '@firestitch/filter';
-import { FsListComponent, FsListConfig } from '@firestitch/list';
+import { FsListComponent, FsListConfig, FsListModule } from '@firestitch/list';
 import { FsMessage } from '@firestitch/message';
 import { FsProcess } from '@firestitch/process';
 
@@ -21,13 +21,16 @@ import { indexNameValue } from '../../helpers/index-name-value';
 
 import { ProcessAction } from './../../interfaces/process-action';
 import { ProcessComponent } from './../process/process.component';
+import { FsDateModule } from '@firestitch/date';
 
 
 @Component({
-  selector: 'fs-system-processes',
-  templateUrl: './processes.component.html',
-  styleUrls: ['./processes.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-system-processes',
+    templateUrl: './processes.component.html',
+    styleUrls: ['./processes.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [FsListModule, FsDateModule],
 })
 export class ProcessesComponent implements OnInit, OnDestroy {
 

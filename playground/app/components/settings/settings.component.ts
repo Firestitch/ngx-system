@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { FsMessage } from '@firestitch/message';
 import { of } from 'rxjs';
+import { SettingsComponent as SettingsComponent_1 } from '../../../../src/app/modules/system/components/settings/settings.component';
 
 @Component({
-  selector: 'settings',
-  templateUrl: 'settings.component.html',
-  styleUrls: ['settings.component.scss']
+    selector: 'settings',
+    templateUrl: 'settings.component.html',
+    styleUrls: ['settings.component.scss'],
+    standalone: true,
+    imports: [SettingsComponent_1]
 })
 export class SettingsComponent {
 

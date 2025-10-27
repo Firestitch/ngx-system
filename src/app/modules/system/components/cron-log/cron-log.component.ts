@@ -1,15 +1,36 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
 import { CronLogStates } from '../../consts/cron-log-states.const';
 import { indexNameValue } from '../../helpers/index-name-value';
+import { FsSkeletonModule } from '@firestitch/skeleton';
+import { FsDialogModule } from '@firestitch/dialog';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { FsLabelModule } from '@firestitch/label';
+import { NgStyle } from '@angular/common';
+import { FsDateModule } from '@firestitch/date';
+import { MatButton } from '@angular/material/button';
 
 
 @Component({
-  templateUrl: './cron-log.component.html',
-  styleUrls: ['./cron-log.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './cron-log.component.html',
+    styleUrls: ['./cron-log.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FsSkeletonModule,
+        FsDialogModule,
+        MatDialogTitle,
+        CdkScrollable,
+        MatDialogContent,
+        FsLabelModule,
+        NgStyle,
+        FsDateModule,
+        MatDialogActions,
+        MatButton,
+        MatDialogClose,
+    ],
 })
 export class CronLogComponent implements OnInit {
 

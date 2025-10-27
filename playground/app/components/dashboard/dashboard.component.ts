@@ -5,13 +5,16 @@ import { DashboardAction } from '@firestitch/package';
 
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { DashboardComponent as DashboardComponent_1 } from '../../../../src/app/modules/system/components/dashboard/dashboard.component';
 
 
 @Component({
-  selector: 'dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [DashboardComponent_1],
 })
 export class DashboardComponent {
 

@@ -6,11 +6,14 @@ import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { addSeconds } from 'date-fns';
+import { CronsComponent as CronsComponent_1 } from '../../../../src/app/modules/system/components/crons/crons.component';
 
 @Component({
-  selector: 'crons',
-  templateUrl: './crons.component.html',
-  styleUrls: ['./crons.component.scss'],
+    selector: 'crons',
+    templateUrl: './crons.component.html',
+    styleUrls: ['./crons.component.scss'],
+    standalone: true,
+    imports: [CronsComponent_1],
 })
 export class CronsComponent {
 

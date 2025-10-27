@@ -3,9 +3,9 @@ import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, ViewChil
 import { MatDialog } from '@angular/material/dialog';
 
 import { FsApi, RequestMethod, StreamEventData } from '@firestitch/api';
-import { parse } from '@firestitch/date';
+import { parse, FsDateModule } from '@firestitch/date';
 import { ItemType } from '@firestitch/filter';
-import { FsListActionSelected, FsListComponent, FsListConfig } from '@firestitch/list';
+import { FsListActionSelected, FsListComponent, FsListConfig, FsListModule } from '@firestitch/list';
 import { FsMessage } from '@firestitch/message';
 import { FsProcess } from '@firestitch/process';
 import { FsPrompt } from '@firestitch/prompt';
@@ -21,13 +21,24 @@ import { CronData } from '../../data/cron.data';
 import { CronState } from '../../enums';
 import { indexNameValue } from '../../helpers/index-name-value';
 import { CronComponent } from '../cron/cron.component';
+import { FsPopoverModule } from '@firestitch/popover';
+import { NgTemplateOutlet } from '@angular/common';
+import { CronNextRunComponent } from '../cron-next-run/cron-next-run.component';
 
 
 @Component({
-  selector: 'fs-system-crons',
-  templateUrl: './crons.component.html',
-  styleUrls: ['./crons.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-system-crons',
+    templateUrl: './crons.component.html',
+    styleUrls: ['./crons.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FsListModule,
+        FsPopoverModule,
+        NgTemplateOutlet,
+        FsDateModule,
+        CronNextRunComponent,
+    ],
 })
 export class CronsComponent implements OnInit, OnDestroy {
 

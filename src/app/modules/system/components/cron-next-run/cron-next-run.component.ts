@@ -7,13 +7,16 @@ import { Subject, timer } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 
 import { addDays, addHours, addMinutes, differenceInSeconds, getDaysInMonth, subSeconds } from 'date-fns';
+import { FsDateModule } from '@firestitch/date';
 
 
 @Component({
-  selector: 'app-next-run',
-  templateUrl: './cron-next-run.component.html',
-  styleUrls: ['./cron-next-run.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-next-run',
+    templateUrl: './cron-next-run.component.html',
+    styleUrls: ['./cron-next-run.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [FsDateModule],
 })
 export class CronNextRunComponent implements OnInit, OnDestroy {
 

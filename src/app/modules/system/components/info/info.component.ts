@@ -4,10 +4,11 @@ import { Observable } from 'rxjs';
 
 
 @Component({
-  selector: 'fs-system-info',
-  templateUrl: './info.component.html',
-  styleUrls: ['./info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-system-info',
+    templateUrl: './info.component.html',
+    styleUrls: ['./info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class InfoComponent implements AfterViewInit {
 

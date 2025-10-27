@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@a
 import { MatDialog } from '@angular/material/dialog';
 
 import { ItemType } from '@firestitch/filter';
-import { FsListComponent, FsListConfig, PaginationStrategy } from '@firestitch/list';
+import { FsListComponent, FsListConfig, PaginationStrategy, FsListModule } from '@firestitch/list';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -11,13 +11,23 @@ import { map } from 'rxjs/operators';
 import { ApiLogStates } from '../../consts';
 import { indexNameValue } from '../../helpers/index-name-value';
 import { ApiLogComponent } from '../api-log/api-log.component';
+import { MatIcon } from '@angular/material/icon';
+import { NgClass } from '@angular/common';
+import { FsDateModule } from '@firestitch/date';
 
 
 @Component({
-  selector: 'fs-system-api-logs',
-  templateUrl: './api-logs.component.html',
-  styleUrls: ['./api-logs.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-system-api-logs',
+    templateUrl: './api-logs.component.html',
+    styleUrls: ['./api-logs.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FsListModule,
+        MatIcon,
+        NgClass,
+        FsDateModule,
+    ],
 })
 export class ApiLogsComponent implements OnInit {
 

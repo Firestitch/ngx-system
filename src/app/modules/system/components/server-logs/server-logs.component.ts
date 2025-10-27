@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FsApi } from '@firestitch/api';
 import { index } from '@firestitch/common';
 import { ItemType } from '@firestitch/filter';
-import { FsListAction, FsListComponent, FsListConfig, PaginationStrategy } from '@firestitch/list';
+import { FsListAction, FsListComponent, FsListConfig, PaginationStrategy, FsListModule } from '@firestitch/list';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -13,13 +13,21 @@ import { map } from 'rxjs/operators';
 import { LogTypes } from '../../../../consts';
 
 import { ServerLogComponent } from './components';
+import { FsBadgeModule } from '@firestitch/badge';
+import { FsDateModule } from '@firestitch/date';
 
 
 @Component({
-  selector: 'fs-system-server-logs',
-  templateUrl: './server-logs.component.html',
-  styleUrls: ['./server-logs.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-system-server-logs',
+    templateUrl: './server-logs.component.html',
+    styleUrls: ['./server-logs.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FsListModule,
+        FsBadgeModule,
+        FsDateModule,
+    ],
 })
 export class ServerLogsComponent implements OnInit {
 

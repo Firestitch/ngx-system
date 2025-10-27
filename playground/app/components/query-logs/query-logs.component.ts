@@ -1,13 +1,16 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { of } from 'rxjs';
+import { QueryLogsComponent as QueryLogsComponent_1 } from '../../../../src/app/modules/query-logs/components/query-logs/query-logs.component';
 
 
 @Component({
-  selector: 'query-logs',
-  templateUrl: './query-logs.component.html',
-  styleUrls: ['./query-logs.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'query-logs',
+    templateUrl: './query-logs.component.html',
+    styleUrls: ['./query-logs.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [QueryLogsComponent_1],
 })
 export class QueryLogsComponent {
 

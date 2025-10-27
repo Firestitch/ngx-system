@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Inject, OnDestroy, OnInit,
 } from '@angular/core';
 
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
 import { FsApi, RequestMethod, StreamEventData, StreamEventType } from '@firestitch/api';
 import { FsMessage } from '@firestitch/message';
@@ -20,12 +20,35 @@ import { Process } from '../../interfaces';
 
 import { ProcessStates } from './../../consts/process-states.const';
 import { ProcessState } from './../../enums/process-state.enum';
+import { FsSkeletonModule } from '@firestitch/skeleton';
+import { FsDialogModule } from '@firestitch/dialog';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { FsLabelModule } from '@firestitch/label';
+import { NgClass } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatButton } from '@angular/material/button';
+import { FsDateModule } from '@firestitch/date';
 
 
 @Component({
-  templateUrl: './process.component.html',
-  styleUrls: ['./process.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './process.component.html',
+    styleUrls: ['./process.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FsSkeletonModule,
+        FsDialogModule,
+        MatDialogTitle,
+        CdkScrollable,
+        MatDialogContent,
+        FsLabelModule,
+        NgClass,
+        MatProgressSpinner,
+        MatDialogActions,
+        MatButton,
+        MatDialogClose,
+        FsDateModule,
+    ],
 })
 export class ProcessComponent implements OnInit, OnDestroy {
 

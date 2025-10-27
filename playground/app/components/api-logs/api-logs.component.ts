@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { of } from 'rxjs';
+import { ApiLogsComponent as ApiLogsComponent_1 } from '../../../../src/app/modules/system/components/api-logs/api-logs.component';
 
 
 @Component({
-  selector: 'api-logs',
-  templateUrl: 'api-logs.component.html',
-  styleUrls: ['api-logs.component.scss']
+    selector: 'api-logs',
+    templateUrl: 'api-logs.component.html',
+    styleUrls: ['api-logs.component.scss'],
+    standalone: true,
+    imports: [ApiLogsComponent_1]
 })
 export class ApiLogsComponent {
 

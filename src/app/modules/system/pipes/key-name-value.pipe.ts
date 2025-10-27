@@ -2,7 +2,8 @@ import { Injectable, Pipe, PipeTransform } from '@angular/core';
 
 
 @Pipe({
-  name: 'keyNameValue',
+    name: 'keyNameValue',
+    standalone: true,
 })
 @Injectable()
 export class KeyNameValuePipe implements PipeTransform {

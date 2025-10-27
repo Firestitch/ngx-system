@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { UpgradeLogsComponent as UpgradeLogsComponent_1 } from '../../../../src/app/modules/system/components/upgrade-logs/upgrade-logs.component';
 
 
 @Component({
-  selector: 'upgrade-logs',
-  templateUrl: 'upgrade-logs.component.html',
-  styleUrls: ['upgrade-logs.component.scss']
+    selector: 'upgrade-logs',
+    templateUrl: 'upgrade-logs.component.html',
+    styleUrls: ['upgrade-logs.component.scss'],
+    standalone: true,
+    imports: [UpgradeLogsComponent_1]
 })
 export class UpgradeLogsComponent {
 

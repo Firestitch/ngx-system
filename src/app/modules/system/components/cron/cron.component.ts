@@ -2,17 +2,42 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit,
 } from '@angular/core';
 
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
 import { CronProcessStates, CronStates } from '../../consts';
 import { CronData } from '../../data/cron.data';
 import { indexNameValue } from '../../helpers/index-name-value';
+import { FsSkeletonModule } from '@firestitch/skeleton';
+import { FsDialogModule } from '@firestitch/dialog';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatTabGroup, MatTab, MatTabContent } from '@angular/material/tabs';
+import { FsLabelModule } from '@firestitch/label';
+import { FsDateModule } from '@firestitch/date';
+import { CronLogsComponent } from '../cron-logs/cron-logs.component';
+import { MatButton } from '@angular/material/button';
 
 
 @Component({
-  templateUrl: './cron.component.html',
-  styleUrls: ['./cron.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './cron.component.html',
+    styleUrls: ['./cron.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FsSkeletonModule,
+        FsDialogModule,
+        MatDialogTitle,
+        CdkScrollable,
+        MatDialogContent,
+        MatTabGroup,
+        MatTab,
+        FsLabelModule,
+        FsDateModule,
+        MatTabContent,
+        CronLogsComponent,
+        MatDialogActions,
+        MatButton,
+        MatDialogClose,
+    ],
 })
 export class CronComponent implements OnInit {
 

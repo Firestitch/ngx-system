@@ -1,4 +1,4 @@
-export { FsSystemQueryLogsModule } from './app/modules/query-logs/query-logs.module';
+
 export { FsSystemModule } from './app/modules/system/fs-system.module';
 
 export { QueryLogsComponent } from './app/modules/query-logs/components';

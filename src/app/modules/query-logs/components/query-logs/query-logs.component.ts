@@ -3,19 +3,29 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@a
 import { MatDialog } from '@angular/material/dialog';
 
 import { ItemType } from '@firestitch/filter';
-import { FsListComponent, FsListConfig } from '@firestitch/list';
+import { FsListComponent, FsListConfig, FsListModule } from '@firestitch/list';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { QueryLogComponent } from '..';
+import { NgClass } from '@angular/common';
+import { FsDateModule } from '@firestitch/date';
+import { FsCommonModule } from '@firestitch/common';
 
 
 @Component({
-  selector: 'fs-system-query-logs',
-  templateUrl: './query-logs.component.html',
-  styleUrls: ['./query-logs.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-system-query-logs',
+    templateUrl: './query-logs.component.html',
+    styleUrls: ['./query-logs.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FsListModule,
+        NgClass,
+        FsDateModule,
+        FsCommonModule,
+    ],
 })
 export class QueryLogsComponent implements OnInit {
 
