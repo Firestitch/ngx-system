@@ -48,9 +48,9 @@ export class CronNextRunComponent implements OnInit, OnDestroy {
       next = addDays(next, nextDays);
       next = subSeconds(next, next.getSeconds());
 
-      this.duration = differenceInSeconds(next, now);
+      this.duration = Math.max(0, differenceInSeconds(next, now));
     } else {
-      this.duration = 60 - now.getSeconds();
+      this.duration = Math.max(0, 60 - now.getSeconds());
     }
   }
 
@@ -90,7 +90,7 @@ export class CronNextRunComponent implements OnInit, OnDestroy {
         }
       }
 
-      return minutes[0] - now.getMinutes();
+      return minutes[0] - now.getUTCMinutes();
     }
 
     return 0;
@@ -120,7 +120,7 @@ export class CronNextRunComponent implements OnInit, OnDestroy {
         }
       }
 
-      return days[0] - getDaysInMonth(now);
+      return days[0] - now.getDate();
     }
 
     return 0;
