@@ -100,6 +100,15 @@
           <pre>{{apiLog.response|json}}</pre>
         </fs-label-field>
       }
+
+      @if (apiLog.headers) {
+        <fs-label-field>
+          <fs-label>
+            Headers
+          </fs-label>
+          <pre>{{apiLog.headers|json}}</pre>
+        </fs-label-field>
+      }
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
