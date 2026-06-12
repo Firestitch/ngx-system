@@ -6,15 +6,15 @@
     <div class="fs-row.column-gap-lg.row-gap-sm.wrap.align-start">
       <fs-label-field>
         <fs-label>
-          Error Type
-        </fs-label>
-        {{ LogTypes[log().type] || log().type }}
-      </fs-label-field>
-      <fs-label-field>
-        <fs-label>
           Message
         </fs-label>
         {{ log().message }}
+      </fs-label-field>
+      <fs-label-field>
+        <fs-label>
+          Error Type
+        </fs-label>
+        {{ LogTypes[log().type] || log().type }}
       </fs-label-field>
       @if (log().url) {
         <fs-label-field>
@@ -30,28 +30,36 @@
         </fs-label>
         {{ log().createDate|fsDateFormat: 'full-date-time' }}
       </fs-label-field>
-      <fs-label-field>
-        <fs-label>
-          File
-        </fs-label>
-        {{ log().file }} &#64; {{ log().line }}
-      </fs-label-field>
+      @if (log().file) {
+        <fs-label-field>
+          <fs-label>
+            File
+          </fs-label>
+          {{ log().file }} &#64; {{ log().line }}
+        </fs-label-field>
+      }
     </div>
     @if (backtrace() || logData() || server()) {
       <mat-tab-group>
         @if (backtrace()) {
           <mat-tab label="Backtrace">
-            <pre>{{ backtrace() }}</pre>
+            <pre>
+              {{ backtrace() }}
+            </pre>
           </mat-tab>
         }
         @if (logData()) {
           <mat-tab label="Data">
-            <pre>{{ logData() }}</pre>
+            <pre>
+              {{ logData() }}
+            </pre>
           </mat-tab>
         }
         @if (server()) {
           <mat-tab label="$_SERVER">
-            <pre>{{ server() }}</pre>
+            <pre>
+              {{ server() }}
+            </pre>
           </mat-tab>
         }
       </mat-tab-group>
