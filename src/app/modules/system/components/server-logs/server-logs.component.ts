@@ -5,16 +5,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { FsApi } from '@firestitch/api';
 import { index } from '@firestitch/common';
 import { ItemType } from '@firestitch/filter';
-import { FsListAction, FsListComponent, FsListConfig, PaginationStrategy, FsListModule } from '@firestitch/list';
+import { FsListAction, FsListComponent, FsListConfig, FsListModule, PaginationStrategy } from '@firestitch/list';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { LogTypes } from '../../../../consts';
 
-import { ServerLogComponent } from './components';
 import { FsBadgeModule } from '@firestitch/badge';
 import { FsDateModule } from '@firestitch/date';
+import { ServerLogComponent } from './components';
 
 
 @Component({
@@ -95,6 +95,27 @@ export class ServerLogsComponent implements OnInit {
           type: ItemType.Keyword,
           name: 'keyword',
           label: 'Search',
+        },
+        {
+          type: ItemType.DateRange,
+          name: 'createDate',
+          label: ['From Date', 'To Date'],
+        },
+        {
+          type: ItemType.Select,
+          name: 'types',
+          label: 'Type',
+          multiple: true,
+          values: LogTypes,
+        },
+        {
+          type: ItemType.Select,
+          name: 'acknowledged',
+          label: 'Acknowledged',
+          values: [
+            { name: 'Acknowledged', value: '1' },
+            { name: 'Unacknowledged', value: '0' },
+          ],
         },
       ],
       fetch: (query) => {

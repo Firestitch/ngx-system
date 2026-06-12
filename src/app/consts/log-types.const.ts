@@ -1,4 +1,5 @@
 export const LogTypes = [
+  { value: '0', name: 'Debug' },              // LoggerModel::LEVEL_DEBUG
   { value: '1', name: 'Fatal Error' },        // E_ERROR
   { value: '2', name: 'Warning' },            // E_WARNING
   { value: '4', name: 'Parse Error' },        // E_PARSE
