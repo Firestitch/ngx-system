@@ -8,7 +8,7 @@
         <fs-label>
           Error Type
         </fs-label>
-        {{ log.type }}
+        {{ LogTypes[log.type] || log.type }}
       </fs-label-field>
       <fs-label-field>
         <fs-label>
@@ -37,32 +37,25 @@
         {{ log.file }} &#64; {{ log.line }}
       </fs-label-field>
     </div>
-    @if (log.data) {
-      <fs-label-field>
-        <fs-label>
-          Data
-        </fs-label>
-        <pre>
-          {{ log.data|json }}
-        </pre>
-      </fs-label-field>
+    @if (backtrace || logData || server) {
+      <mat-tab-group>
+        @if (backtrace) {
+          <mat-tab label="Backtrace">
+            <pre>{{ backtrace }}</pre>
+          </mat-tab>
+        }
+        @if (logData) {
+          <mat-tab label="Data">
+            <pre>{{ logData }}</pre>
+          </mat-tab>
+        }
+        @if (server) {
+          <mat-tab label="$_SERVER">
+            <pre>{{ server }}</pre>
+          </mat-tab>
+        }
+      </mat-tab-group>
     }
-    <fs-label-field>
-      <fs-label>
-        Backtrace
-      </fs-label>
-      <pre>
-        {{ log.backtrace|json }}
-      </pre>
-    </fs-label-field>
-    <fs-label-field>
-      <fs-label>
-        $_SERVER
-      </fs-label>
-      <pre>
-        {{ log.server|json }}
-      </pre>
-    </fs-label-field>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button
@@ -70,6 +63,12 @@
         [mat-dialog-close]="true"
         color="primary">
       Done
+    </button>
+    <button
+        mat-button
+        type="button"
+        (click)="copy()">
+      Copy
     </button>
   </mat-dialog-actions>
 </fs-dialog>

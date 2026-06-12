@@ -1,16 +1,18 @@
-import { CommonModule, JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTabsModule } from '@angular/material/tabs';
 
-import { FsBadgeModule } from '@firestitch/badge';
+import { FsClipboard } from '@firestitch/clipboard';
+import { index } from '@firestitch/common';
 import { FsDateModule } from '@firestitch/date';
 import { FsDialogModule } from '@firestitch/dialog';
 import { FsLabelModule } from '@firestitch/label';
+import { FsMessage } from '@firestitch/message';
 import { FsSkeletonModule } from '@firestitch/skeleton';
+
+import { LogTypes } from '../../../../../../consts';
 
 
 @Component({
@@ -19,15 +21,10 @@ import { FsSkeletonModule } from '@firestitch/skeleton';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    CommonModule,
     MatDialogModule,
     MatButtonModule,
-    MatIconModule,
-    MatTooltipModule,
+    MatTabsModule,
     FsLabelModule,
-    FsLabelModule,
-    FsBadgeModule,
-    JsonPipe,
     FsDateModule,
     FsSkeletonModule,
     FsDialogModule,
@@ -36,25 +33,44 @@ import { FsSkeletonModule } from '@firestitch/skeleton';
 export class ServerLogComponent implements OnInit {
   data = inject(MAT_DIALOG_DATA);
 
+  private _clipboard = inject(FsClipboard);
+  private _message = inject(FsMessage);
 
   public log;
+  public backtrace: string;
+  public logData: string;
+  public server: string;
+  public LogTypes: Record<string, string> = index(LogTypes, 'value', 'name');
 
   public ngOnInit() {
-
     if (this.data.log) {
       this.log = this.data.log;
+      this.backtrace = this._prettify(this.log.backtrace);
+      this.logData = this._prettify(this.log.data);
+      this.server = this._prettify(this.log.server);
+    }
+  }
+
+  public copy() {
+    this._clipboard.copy(JSON.stringify(this.log, null, 2));
+    this._message.success('Copied to clipboard');
+  }
+
+  private _prettify(value): string {
+    if (typeof value === 'string') {
+      value = value.trim();
 
       try {
-        this.log.backtrace = JSON.parse(this.log.backtrace);
+        value = JSON.parse(value);
       } catch (e) {
-        //
-      }
-
-      try {
-        this.log.server = JSON.parse(this.log.server);
-      } catch (e) {
-        // 
+        return value;
       }
     }
+
+    if (!value || (typeof value === 'object' && Object.keys(value).length === 0)) {
+      return '';
+    }
+
+    return JSON.stringify(value, null, 2);
   }
 }
