@@ -45,7 +45,7 @@ export class ServerLogComponent implements OnInit {
   public ngOnInit() {
     if (this.data.log) {
       this.log = this.data.log;
-      this.backtrace = this._prettify(this.log.backtrace);
+      this.backtrace = this._prettifyBacktrace(this.log.backtrace);
       this.logData = this._prettify(this.log.data);
       this.server = this._prettify(this.log.server);
     }
@@ -54,6 +54,57 @@ export class ServerLogComponent implements OnInit {
   public copy() {
     this._clipboard.copy(JSON.stringify(this.log, null, 2));
     this._message.success('Copied to clipboard');
+  }
+
+  private _prettifyBacktrace(value): string {
+    if (typeof value === 'string') {
+      value = value.trim();
+
+      try {
+        value = JSON.parse(value);
+      } catch (e) {
+        return value;
+      }
+    }
+
+    if (!Array.isArray(value)) {
+      return this._prettify(value);
+    }
+
+    return value
+      .map((frame, idx) => {
+        const call = [frame.class, frame.type, frame.function]
+          .filter((part) => !!part)
+          .join('');
+        const args = (frame.args || [])
+          .map((arg) => this._formatArg(arg))
+          .join(', ');
+        const location = frame.file
+          ? `${frame.file}(${frame.line ?? '?'})`
+          : '[internal function]';
+
+        return `#${idx} ${location}: ${call}(${args})`;
+      })
+      .join('\n');
+  }
+
+  private _formatArg(arg): string {
+    if (typeof arg === 'string') {
+      const max = 60;
+      const value = arg.replace(/\s+/g, ' ');
+
+      return `'${value.length > max ? `${value.substring(0, max)}…` : value}'`;
+    }
+
+    if (Array.isArray(arg)) {
+      return 'Array';
+    }
+
+    if (arg && typeof arg === 'object') {
+      return 'Object';
+    }
+
+    return String(arg);
   }
 
   private _prettify(value): string {
