@@ -48,8 +48,8 @@
                 matInput
                 [(ngModel)]="setting.value"
                 [name]="'setting' + setting.id">
-              <mat-hint>
-                {{ setting.instruction }}
+              <mat-hint
+                [innerHTML]="setting.instruction | linkify">
               </mat-hint>
             </mat-form-field>
           }
@@ -65,8 +65,8 @@
                 [(ngModel)]="setting.value"
                 [name]="'setting' + setting.id">
               </textarea>
-              <mat-hint>
-                {{ setting.instruction }}
+              <mat-hint
+                [innerHTML]="setting.instruction | linkify">
               </mat-hint>
             </mat-form-field>
           }
@@ -88,8 +88,8 @@
                   </mat-option>
                 }
               </mat-select>
-              <mat-hint>
-                {{ setting.instruction }}
+              <mat-hint
+                [innerHTML]="setting.instruction | linkify">
               </mat-hint>
             </mat-form-field>
           }
@@ -105,8 +105,8 @@
                 fsDatePicker
                 [(ngModel)]="setting.value"
                 [name]="'setting' + setting.id">
-              <mat-hint>
-                {{ setting.instruction }}
+              <mat-hint
+                [innerHTML]="setting.instruction | linkify">
               </mat-hint>
             </mat-form-field>
           }
@@ -122,8 +122,8 @@
                 fsColorPicker
                 [(ngModel)]="setting.value"
                 [name]="'setting' + setting.id">
-              <mat-hint>
-                {{ setting.instruction }}
+              <mat-hint
+                [innerHTML]="setting.instruction | linkify">
               </mat-hint>
             </mat-form-field>
           }
@@ -139,8 +139,8 @@
                 fsTimePicker
                 [(ngModel)]="setting.value"
                 [name]="'setting' + setting.id">
-              <mat-hint>
-                {{ setting.instruction }}
+              <mat-hint
+                [innerHTML]="setting.instruction | linkify">
               </mat-hint>
             </mat-form-field>
           }
@@ -154,8 +154,9 @@
               <div fsFileLabel>
                 {{ setting.label }}
               </div>
-              <div fsFileHint>
-                {{ setting.instruction }}
+              <div
+                fsFileHint
+                [innerHTML]="setting.instruction | linkify">
               </div>
             </fs-file-picker>
           }

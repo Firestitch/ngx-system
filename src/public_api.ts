@@ -15,6 +15,7 @@ export { ServerLogsComponent } from './app/modules/system/components/server-logs
 export { SettingsComponent } from './app/modules/system/components/settings';
 export { UpgradeLogsComponent } from './app/modules/system/components/upgrade-logs';
 export { KeyNameValuePipe } from './app/modules/system/pipes/key-name-value.pipe';
+export { LinkifyPipe } from './app/modules/system/pipes/linkify.pipe';
 
 export { ApiLogStates, CronStates, ProcessStates } from './app/modules/system/consts';
 export { ApiLogState, CronState, ProcessState } from './app/modules/system/enums';

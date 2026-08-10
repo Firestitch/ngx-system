@@ -22,6 +22,7 @@ import { FsDatePickerModule } from '@firestitch/datepicker';
 import { FsColorPickerModule } from '@firestitch/colorpicker';
 import { FsFileModule } from '@firestitch/file';
 import { KeyNameValuePipe } from '../../pipes/key-name-value.pipe';
+import { LinkifyPipe } from '../../pipes/linkify.pipe';
 
 
 @Component({
@@ -51,6 +52,7 @@ import { KeyNameValuePipe } from '../../pipes/key-name-value.pipe';
         FsFileModule,
         MatButton,
         KeyNameValuePipe,
+        LinkifyPipe,
     ],
 })
 export class SettingsComponent implements OnInit {
