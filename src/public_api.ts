@@ -20,6 +20,6 @@ export { LinkifyPipe } from './app/modules/system/pipes/linkify.pipe';
 export { ApiLogStates, CronStates, ProcessStates } from './app/modules/system/consts';
 export { ApiLogState, CronState, ProcessState } from './app/modules/system/enums';
 
-export { DashboardAction, FsSystemConfig, ProcessAction } from './app/modules/system/interfaces';
+export { DashboardAction, FsSystemConfig, ProcessAction, UpgradeEvent } from './app/modules/system/interfaces';
 
 export { FS_SYSTEM_CONFIG } from './app/modules/system/injectors/system-config.injector';
