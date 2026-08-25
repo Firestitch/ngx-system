@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 
-import { StreamEventData } from '@firestitch/api';
+import { FsApi, StreamEventData } from '@firestitch/api';
 import { BuildData, FsBuildService } from '@firestitch/build';
 import { FsMessage } from '@firestitch/message';
 import { FsProcess, ProcessState } from '@firestitch/process';
 
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { filter, map, take, takeUntil } from 'rxjs/operators';
 
 import { differenceInMinutes } from 'date-fns';
@@ -44,11 +44,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _cdRef = inject(ChangeDetectorRef);
   private _buildService = inject(FsBuildService);
   private _process = inject(FsProcess);
+  private _api = inject(FsApi);
 
 
-  @Input() public init: () => any;
-  @Input() public upgrade: () => any;
-  @Input() public load: () => any;
+  /**
+   * All three are optional. Left unset, the component reads the standard system
+   * endpoints itself — the paths every application using this library already
+   * serves. One is supplied only to point the component somewhere else.
+   */
+  @Input() public init: () => Observable<any>;
+  @Input() public upgrade: () => Observable<any>;
+  @Input() public load: () => Observable<any>;
 
   @Input() public actions: DashboardAction[] = [];
 
@@ -89,7 +95,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   public initClick() {
-    this.init()
+    this._init()
       .subscribe(() => {
         this._message.success('Successfully initialized the system');
       });
@@ -112,7 +118,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public upgradeClick() {
     const process = this._process.run(
       'System upgrade',
-      this.upgrade()
+      this._upgrade()
         .pipe(
           map((event) => this._upgradeLine(event)),
           filter((line): line is string => line !== null),
@@ -187,8 +193,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
+  private _dashboardGet(): Observable<any> {
+    return this.load
+      ? this.load()
+      : this._api.get('system/dashboard', {}, { key: 'dashboard' });
+  }
+
+  private _init(): Observable<any> {
+    return this.init
+      ? this.init()
+      : this._api.get('system/init', {}, { key: '' });
+  }
+
+  /**
+   * The upgrade endpoint is read as a stream by default, which is what fills the
+   * process log line by line while the run is still going. An application that
+   * supplies its own `upgrade` decides for itself — a plain request emits once,
+   * produces no lines, and the process is a labelled spinner.
+   */
+  private _upgrade(): Observable<any> {
+    return this.upgrade
+      ? this.upgrade()
+      : this._api.stream('GET', 'system/upgrade', { stream: true }, { key: '' });
+  }
+
   private _load() {
-    this.load()
+    this._dashboardGet()
       .subscribe((dashboard) => {
         this.dashboard = dashboard;
         this.dashboard.cronRanAttention = !dashboard.cronRan ||
