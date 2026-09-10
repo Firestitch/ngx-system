@@ -38,6 +38,7 @@ import { InfoComponent } from './components/info/info.component';
 import { ProcessComponent } from './components/process/process.component';
 import { ProcessesComponent } from './components/processes/processes.component';
 import { ServerLogsComponent } from './components/server-logs/server-logs.component';
+import { SettingInstructionsComponent } from './components/setting-instructions/setting-instructions.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { UpgradeLogsComponent } from './components/upgrade-logs/upgrade-logs.component';
 import { FS_SYSTEM_CONFIG } from './injectors/system-config.injector';
@@ -85,6 +86,7 @@ import { KeyNameValuePipe } from './pipes/key-name-value.pipe';
         ProcessComponent,
         CronComponent,
         CronLogComponent,
+        SettingInstructionsComponent,
     ],
     exports: [
         DashboardComponent,

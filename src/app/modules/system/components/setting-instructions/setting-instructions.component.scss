@@ -1,0 +1,21 @@
+// The dialog is sized by its content, so without a measure a one-paragraph
+// instruction would render as a single very wide line. The renderer supplies its
+// own typography; this only bounds how wide the text runs.
+fs-markdown-renderer {
+  display: block;
+  max-width: 700px;
+}
+
+:host ::ng-deep {
+  // The renderer builds a full Crepe editor and only flips it readonly afterwards,
+  // so Crepe's floating widgets — block handle, tooltips, the embed and slash menus
+  // — stay in the DOM, absolutely positioned inside `.milkdown`. One parked below
+  // the text stretches the scrollable overflow of whatever scrolls around it, which
+  // reads as a scrollbar with nothing to scroll to. Clip it to the rendered content;
+  // none of those widgets is reachable in a read-only render. Horizontal stays
+  // scrollable so wide code blocks and tables are still readable.
+  fs-markdown-renderer .markdown-renderer-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 
 import { FsClipboard } from '@firestitch/clipboard';
+import { MatDialog } from '@angular/material/dialog';
 import { parse } from '@firestitch/date';
 import { FsMessage } from '@firestitch/message';
 import { FsPrompt } from '@firestitch/prompt';
@@ -13,7 +14,7 @@ import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import { NgClass } from '@angular/common';
-import { MatFormField, MatLabel, MatHint } from '@angular/material/form-field';
+import { MatFormField, MatLabel, MatHint, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
@@ -23,6 +24,7 @@ import { FsColorPickerModule } from '@firestitch/colorpicker';
 import { FsFileModule } from '@firestitch/file';
 import { KeyNameValuePipe } from '../../pipes/key-name-value.pipe';
 import { LinkifyPipe } from '../../pipes/linkify.pipe';
+import { SettingInstructionsComponent } from '../setting-instructions/setting-instructions.component';
 
 
 @Component({
@@ -45,6 +47,7 @@ import { LinkifyPipe } from '../../pipes/linkify.pipe';
         MatInput,
         FormsModule,
         MatHint,
+        MatSuffix,
         MatSelect,
         MatOption,
         FsDatePickerModule,
@@ -59,6 +62,7 @@ export class SettingsComponent implements OnInit {
   private _message = inject(FsMessage);
   private _clipboard = inject(FsClipboard);
   private _prompt = inject(FsPrompt);
+  private _dialog = inject(MatDialog);
   private _cdRef = inject(ChangeDetectorRef);
 
 
@@ -156,6 +160,22 @@ export class SettingsComponent implements OnInit {
           this._message.error(e);
         }
       }
+    });
+  }
+
+  /**
+   * Opens the long-form setup steps for settings that carry them. The inline hint
+   * covers what the field is; this covers work that has to happen elsewhere before
+   * a value can even be obtained.
+   */
+  public openInstructions(setting): void {
+    this._dialog.open(SettingInstructionsComponent, {
+      // Sized by its content rather than fixed: instructions run from a couple of
+      // sentences to a dozen steps, and a fixed height leaves the short ones mostly
+      // empty. The caps stop a long one from filling the screen edge to edge.
+      maxWidth: '80vw',
+      maxHeight: '80vh',
+      data: { setting },
     });
   }
 

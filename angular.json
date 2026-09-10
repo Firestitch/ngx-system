@@ -20,7 +20,12 @@
             "tsConfig": "playground/tsconfig.app.json",
             "assets": [
               "playground/favicon.ico",
-              "playground/assets"
+              "playground/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/@firestitch/markdown-editor/assets",
+                "output": "assets/markdown-editor"
+              }
             ],
             "styles": [
               "playground/styles.scss"

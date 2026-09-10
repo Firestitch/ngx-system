@@ -12,6 +12,7 @@ export { InfoComponent } from './app/modules/system/components/info';
 export { ProcessComponent } from './app/modules/system/components/process';
 export { ProcessesComponent } from './app/modules/system/components/processes';
 export { ServerLogsComponent } from './app/modules/system/components/server-logs';
+export { SettingInstructionsComponent } from './app/modules/system/components/setting-instructions';
 export { SettingsComponent } from './app/modules/system/components/settings';
 export { UpgradeLogsComponent } from './app/modules/system/components/upgrade-logs';
 export { KeyNameValuePipe } from './app/modules/system/pipes/key-name-value.pipe';

@@ -1,0 +1,8 @@
+<fs-dialog>
+  <fs-dialog-title [close]="true">
+    {{ setting.label }}
+  </fs-dialog-title>
+  <mat-dialog-content>
+    <fs-markdown-renderer [markdown]="setting.instructions"></fs-markdown-renderer>
+  </mat-dialog-content>
+</fs-dialog>

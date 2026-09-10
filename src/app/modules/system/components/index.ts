@@ -11,5 +11,6 @@ export * from './process';
 export * from './processes';
 export * from './server-log';
 export * from './server-logs';
+export * from './setting-instructions';
 export * from './settings';
 export * from './upgrade-logs';
